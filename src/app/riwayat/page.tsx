@@ -188,7 +188,7 @@ async function History() {
               </p>
             ) : null}
           </div>
-          <div className="space-y-4 lg:border-l lg:border-line lg:pl-8">
+          <div className="space-y-4 lg:pl-4">
             <p className="text-sm text-muted">Latihan yang melatih kemampuan ini</p>
             <p className="text-lg font-semibold">{practice.title}</p>
             <Link href={`/latihan/${practice.id}?mood=kesal`} className={`${primaryButton} w-full`}>
@@ -216,11 +216,11 @@ async function History() {
           <h2 id="kemampuan-judul" className="font-display text-2xl font-semibold">
             Semua kemampuan
           </h2>
-          <ul className="grid border-t border-line sm:grid-cols-2 sm:gap-x-10">
+          <ul className="grid gap-y-5 sm:grid-cols-2 sm:gap-x-12">
             {skills.map((k) => (
               <li
                 key={k.label}
-                className="grid grid-cols-[1fr_6rem] items-center gap-4 border-b border-line py-3"
+                className="grid grid-cols-[1fr_6rem] items-center gap-4"
               >
                 <span>
                   <span className="block font-medium">{k.label}</span>
@@ -240,7 +240,8 @@ async function History() {
         <h2 id="sesi-judul" className="font-display text-2xl font-semibold">
           Semua sesi
         </h2>
-        <ol className="divide-y divide-line border-y border-line">
+        {/* Tanpa garis antar-baris: tiap baris punya latar saat disorot. */}
+        <ol className="-mx-3 space-y-1">
           {sessions.map((s, i) => {
             const scenario = getScenario(s.scenarioId);
             const prev = previousOf(i);
@@ -249,7 +250,7 @@ async function History() {
               <li key={s.id}>
                 <Link
                   href={`/riwayat/${s.id}`}
-                  className="grid gap-3 py-4 hover:bg-accent-soft sm:grid-cols-[1fr_10rem_7rem] sm:items-center sm:px-3"
+                  className="grid gap-2 rounded-xl px-3 py-3.5 hover:bg-accent-soft sm:grid-cols-[1fr_10rem_7rem] sm:items-center sm:gap-3"
                 >
                   <span className="min-w-0 space-y-0.5">
                     <span className="block truncate font-semibold">

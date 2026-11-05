@@ -48,12 +48,8 @@ export function ScoreChart({ points }: { points: ChartPoint[] }) {
           <span>0</span>
         </div>
         <div className="relative h-48">
-          {/* Garis bantu tipis di 0, 50, 100. */}
-          <div aria-hidden="true" className="absolute inset-0 flex flex-col justify-between">
-            <span className="border-t border-line" />
-            <span className="border-t border-line" />
-            <span className="border-t border-line-2" />
-          </div>
+          {/* Hanya garis dasar; angka 0-50-100 di kiri sudah cukup sebagai skala. */}
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 border-t border-line-2" />
           <ol className="absolute inset-0 flex items-end gap-[2px]">
             {points.map((p) => (
               <li key={p.id} className="group relative flex h-full min-w-0 flex-1 items-end justify-center">

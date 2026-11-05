@@ -88,7 +88,7 @@ function Hero() {
               can be in your room within 15 minutes.”
             </p>
           </div>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-line pt-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pt-2">
             <p className="text-sm text-muted">Rapor setelah percakapan</p>
             <p className="font-display text-2xl font-semibold tabular-nums">
               16 dari 20 poin
@@ -178,7 +178,7 @@ function ReportProof() {
             within 15 minutes.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3 text-sm">
+        <div className="flex flex-wrap items-center gap-2 pt-1 text-sm">
           <span className="text-muted">Latih lagi:</span>
           <span lang="en" className="rounded-md border border-line px-2 py-0.5">
             conditioning <span className="tabular-nums text-muted">76</span>
@@ -341,7 +341,7 @@ function ScenarioPreview() {
             <blockquote lang="en" className="text-lg leading-snug text-ink">
               “{teaser(sc.openingLines.kesal)}”
             </blockquote>
-            <div className="flex items-center gap-3 border-t border-line pt-3">
+            <div className="flex items-center gap-3 pt-1">
               <GuestAvatar scenario={sc} />
               <div className="min-w-0">
                 <h3 className="font-semibold">{sc.title}</h3>
@@ -398,11 +398,11 @@ function Principles() {
         </h2>
         <p className={lede}>Lima aturan yang tertulis di kode, bukan janji.</p>
       </div>
-      <ol className="border-t border-line">
+      <ol className="space-y-10">
         {items.map((it, i) => (
           <li
             key={it.title}
-            className="reveal group grid grid-cols-[3.5rem_1fr] items-baseline gap-4 border-b border-line py-7 sm:grid-cols-[5rem_1fr]"
+            className="reveal group grid grid-cols-[3.5rem_1fr] items-baseline gap-4 sm:grid-cols-[5rem_1fr]"
           >
             <span className="font-display text-3xl font-semibold tabular-nums text-muted transition-colors group-hover:text-ink sm:text-4xl">
               {String(i + 1).padStart(2, "0")}
@@ -424,7 +424,7 @@ function Close() {
   return (
     <section
       aria-labelledby="penutup-judul"
-      className="reveal border-t border-line pt-20 text-center"
+      className="reveal pt-10 text-center"
     >
       <h2 id="penutup-judul" className={display}>
         <span className="block">Latihan dulu.</span>

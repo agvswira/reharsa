@@ -93,7 +93,7 @@ export function ScenarioPicker({
             aria-labelledby={`grup-${g.category}-judul`}
             className="scroll-mt-24 space-y-5"
           >
-            <div className="flex flex-wrap items-end justify-between gap-2 border-b border-line pb-3">
+            <div className="flex flex-wrap items-end justify-between gap-2">
               <div className="space-y-1">
                 <h2
                   id={`grup-${g.category}-judul`}

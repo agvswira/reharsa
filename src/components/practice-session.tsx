@@ -419,9 +419,9 @@ export function PracticeSession({
               <h3 id="dinilai" className="font-display text-xl font-semibold">
                 Yang dinilai, dan seperti apa skor 4
               </h3>
-              <ol className="divide-y divide-line border-y border-line">
+              <ol className="space-y-4">
                 {scenario.criteria.map((c, i) => (
-                  <li key={c.id} className="grid grid-cols-[2rem_1fr] gap-3 py-3">
+                  <li key={c.id} className="grid grid-cols-[2rem_1fr] gap-3">
                     <span className="font-display font-semibold tabular-nums text-muted">
                       {String(i + 1).padStart(2, "0")}
                     </span>

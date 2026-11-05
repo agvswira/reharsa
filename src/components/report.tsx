@@ -137,9 +137,9 @@ export function Report({
         <h2 id="kriteria" className="text-xl font-bold">
           Skor per kriteria
         </h2>
-        <ol className="divide-y divide-line border-y border-line">
+        <ol className="space-y-8 pt-2">
           {evaluation.criteria.map((c) => (
-            <li key={c.id} className="space-y-2 py-4">
+            <li key={c.id} className="space-y-2">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3 className="font-bold">{labelOf(c.id)}</h3>
                 <div className="flex items-center gap-3">
@@ -149,7 +149,7 @@ export function Report({
               </div>
               <p className="max-w-prose">{c.comment}</p>
               {c.evidence ? (
-                <blockquote lang="en" className="border-l-2 border-line pl-3 text-sm text-muted">
+                <blockquote lang="en" className="text-sm italic text-muted">
                   Ucapanmu: “{c.evidence}”
                 </blockquote>
               ) : (
@@ -264,7 +264,7 @@ export function Report({
         </ol>
       </details>
 
-      <div className="flex flex-wrap items-center gap-4 border-t border-line pt-6">
+      <div className="flex flex-wrap items-center gap-4 pt-4">
         {onRestart ? (
           <button
             type="button"

@@ -103,7 +103,7 @@ async function Picker() {
               {next.scenario.department} · {channelLabel(next.scenario)}
             </p>
           </div>
-          <div className="space-y-5 lg:border-l lg:border-line lg:pl-8">
+          <div className="space-y-5 lg:pl-4">
             <div className="flex items-center gap-3">
               <GuestAvatar scenario={next.scenario} size="lg" />
               <div>
