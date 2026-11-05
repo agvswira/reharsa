@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { PracticeTimeline } from "@/components/practice-timeline";
-import { channelLabel, GROUPS, SCENARIOS } from "@/lib/scenarios";
+import {
+  channelLabel,
+  ORDERED,
+  SCENARIOS,
+  type Category,
+} from "@/lib/scenarios";
 
 // Halaman depan: komponen server tanpa JavaScript tambahan di browser.
 // Struktur mengikuti referensi (hero, perbandingan, bukti, langkah, prinsip,
@@ -272,49 +277,82 @@ function Steps() {
   );
 }
 
+// Cuplikan pembuka: kalimat pertama yang cukup panjang dari pembuka "kesal",
+// supaya kartu tetap ringkas.
+function teaser(line: string) {
+  const parts = line.match(/[^.?!]+[.?!]+/g) ?? [line];
+  let out = "";
+  for (const p of parts) {
+    out += p;
+    if (out.trim().length >= 45) break;
+  }
+  return out.trim();
+}
+
+const CATEGORY_LABEL: Record<Category, string> = {
+  harian: "Sehari-hari",
+  sulit: "Situasi sulit",
+  wawancara: "Wawancara",
+};
+
+// Dinding kutipan: setiap kartu adalah kalimat pembuka tamu, jadi pengunjung
+// langsung "mendengar" situasinya sebelum membaca judulnya.
 function ScenarioPreview() {
   return (
     <section
       id="situasi"
       aria-labelledby="situasi-judul"
-      className="reveal scroll-mt-20 space-y-10"
+      className="scroll-mt-20 space-y-10"
     >
-      <div className="max-w-3xl space-y-4">
+      <div className="reveal mx-auto max-w-3xl space-y-4 text-center">
         <h2 id="situasi-judul" className={h2}>
-          {SCENARIOS.length} situasi yang benar-benar terjadi.
+          {SCENARIOS.length} tamu menunggumu.
         </h2>
-        <p className={lede}>
-          Tamu bisa memberi kabar baru di tengah percakapan, seperti di hotel
-          sungguhan.
+        <p className={`${lede} mx-auto`}>
+          Situasi sehari-hari sampai yang sulit, masing-masing dengan kejutan
+          di tengah percakapan.
         </p>
       </div>
-      <div className="divide-y divide-line border-y border-line">
-        {GROUPS.map((g) => (
-          <div
-            key={g.category}
-            className="grid items-start gap-4 py-6 md:grid-cols-[14rem_1fr] md:gap-10"
+      <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+        {ORDERED.map((sc) => (
+          <li
+            key={sc.id}
+            className="card mb-4 break-inside-avoid space-y-4 p-5 transition-colors hover:border-edge"
           >
-            <h3 className="text-xl font-bold">{g.title}</h3>
-            <ul className="flex flex-wrap gap-2">
-              {SCENARIOS.filter((s) => s.category === g.category).map((s) => (
-                <li
-                  key={s.id}
-                  className="rounded-full border border-line-2 px-4 py-2 text-sm font-medium"
-                >
-                  {s.title}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="flex items-center justify-between gap-3 text-xs">
+              <span
+                className={`rounded-full px-2.5 py-1 font-semibold ${
+                  sc.category === "sulit"
+                    ? "bg-ink text-paper"
+                    : "border border-line-2 text-soft"
+                }`}
+              >
+                {CATEGORY_LABEL[sc.category]}
+              </span>
+              <span className="text-muted">{channelLabel(sc)}</span>
+            </div>
+            <blockquote lang="en" className="text-lg leading-snug text-ink">
+              “{teaser(sc.openingLines.kesal)}”
+            </blockquote>
+            <div className="border-t border-line pt-3">
+              <h3 className="font-semibold">{sc.title}</h3>
+              <p className="text-sm text-muted">
+                {sc.guest.name} · {sc.guest.origin}
+              </p>
+            </div>
+          </li>
         ))}
+      </ul>
+      <div className="flex justify-center">
+        <Link href="/latihan" className={primaryButton}>
+          Pilih situasimu
+        </Link>
       </div>
-      <Link href="/latihan" className={primaryButton}>
-        Mulai latihan
-      </Link>
     </section>
   );
 }
 
+// Judul menempel di kiri saat daftar bernomor di kanan digulir.
 function Principles() {
   const items = [
     {
@@ -342,30 +380,32 @@ function Principles() {
     <section
       id="prinsip"
       aria-labelledby="prinsip-judul"
-      className="reveal scroll-mt-20 space-y-10"
+      className="grid scroll-mt-20 gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16"
     >
-      <div className="max-w-3xl space-y-4">
+      <div className="space-y-4 self-start lg:sticky lg:top-28">
         <h2 id="prinsip-judul" className={h2}>
           Yang kami jaga.
         </h2>
+        <p className={lede}>Lima aturan yang tertulis di kode, bukan janji.</p>
       </div>
-      <dl className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+      <ol className="border-t border-line">
         {items.map((it, i) => (
-          <div
+          <li
             key={it.title}
-            className={`space-y-2 border-t border-line pt-4 ${
-              i === 0 ? "md:col-span-2 md:max-w-3xl" : ""
-            }`}
+            className="reveal group grid grid-cols-[3.5rem_1fr] items-baseline gap-4 border-b border-line py-7 sm:grid-cols-[5rem_1fr]"
           >
-            <dt
-              className={`font-semibold tracking-[-0.014em] ${i === 0 ? "text-2xl" : "text-xl"}`}
-            >
-              {it.title}
-            </dt>
-            <dd className="text-muted">{it.body}</dd>
-          </div>
+            <span className="font-display text-3xl font-semibold tabular-nums text-muted transition-colors group-hover:text-ink sm:text-4xl">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="space-y-1">
+              <h3 className="text-[clamp(1.25rem,1rem+1vw,1.75rem)] font-semibold tracking-[-0.02em]">
+                {it.title}
+              </h3>
+              <p className="text-muted">{it.body}</p>
+            </div>
+          </li>
         ))}
-      </dl>
+      </ol>
     </section>
   );
 }
