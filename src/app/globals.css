@@ -8,7 +8,9 @@
   - paper = latar, surface = kartu, ink = teks utama, line = garis tipis,
     edge = tepi kontrol (minimal 3:1), track = ruas kosong meter.
   - accent = warna tombol utama (putih di gelap, hitam di terang).
-  - alert = satu-satunya warna status, selalu disertai teks.
+  - alert = warna status merah (error, emosi tinggi, skor rendah).
+  - good / warn = tingkat skor hijau dan kuning. Ketiganya hanya untuk
+    tingkat atau status dan selalu disertai teks (lihat DESIGN.md).
 */
 
 :root,
@@ -29,6 +31,8 @@
   --accent-soft: rgb(255 255 255 / 0.07);
   --alert: #f87171;
   --alert-soft: rgb(248 113 113 / 0.12);
+  --good: #4ade80;
+  --warn: #fbbf24;
   --glow: rgb(255 255 255 / 0.16);
   --card-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.6),
@@ -53,6 +57,8 @@
   --accent-soft: rgb(0 0 0 / 0.05);
   --alert: #b91c1c;
   --alert-soft: rgb(185 28 28 / 0.08);
+  --good: #15803d;
+  --warn: #b45309;
   --glow: rgb(0 0 0 / 0.06);
   --card-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.8), 0 1px 2px rgb(0 0 0 / 0.06),
@@ -75,6 +81,8 @@
   --color-accent-soft: var(--accent-soft);
   --color-alert: var(--alert);
   --color-alert-soft: var(--alert-soft);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
   --shadow-card: var(--card-shadow);
   --radius-card: 18px;
   --font-sans: var(--font-mona);

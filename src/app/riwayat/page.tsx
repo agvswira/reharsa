@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ScoreChart } from "@/components/score-chart";
 import {
+  levelOf,
   MOOD_LABEL,
   pct,
   progressByScenario,
@@ -44,13 +45,16 @@ export default function RiwayatPage() {
   );
 }
 
+// Empat ruas untuk skor 0-4, diwarnai menurut tingkat (merah, kuning,
+// hijau). Labelnya ditulis di samping, jadi warna bukan satu-satunya tanda.
 function SkillBar({ avg }: { avg: number }) {
+  const level = levelOf((avg / 4) * 100);
   return (
     <span aria-hidden="true" className="grid grid-cols-4 gap-1">
       {[1, 2, 3, 4].map((n) => (
         <span key={n} className="h-2 overflow-hidden rounded-sm bg-track">
           <span
-            className="block h-full bg-ink"
+            className={`block h-full ${level.bar}`}
             style={{ width: `${Math.max(0, Math.min(1, avg - (n - 1))) * 100}%` }}
           />
         </span>
@@ -58,6 +62,8 @@ function SkillBar({ avg }: { avg: number }) {
     </span>
   );
 }
+
+const skillLevel = (avg: number) => levelOf((avg / 4) * 100).label;
 
 async function History() {
   const user = await currentUser();
@@ -171,8 +177,8 @@ async function History() {
             <div className="max-w-sm space-y-2">
               <SkillBar avg={weakest.avg} />
               <p className="text-sm text-muted tabular-nums">
-                Rata-rata {oneDecimal(weakest.avg)} dari 4, dari{" "}
-                {weakest.count} penilaian
+                Rata-rata {oneDecimal(weakest.avg)} dari 4 ({skillLevel(weakest.avg)}),
+                dari {weakest.count} penilaian
               </p>
             </div>
             {strongest ? (
@@ -192,7 +198,9 @@ async function History() {
         </section>
       ) : null}
 
-      <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+      {/* Grafik selebar halaman, daftar kemampuan dua kolom di bawahnya:
+          kalau berdampingan, kartu grafik ikut memanjang setinggi daftar. */}
+      <div className="space-y-12">
         {points.length >= 2 ? (
           <ScoreChart points={points} />
         ) : (
@@ -208,13 +216,17 @@ async function History() {
           <h2 id="kemampuan-judul" className="font-display text-2xl font-semibold">
             Semua kemampuan
           </h2>
-          <ul className="divide-y divide-line border-y border-line">
+          <ul className="grid border-t border-line sm:grid-cols-2 sm:gap-x-10">
             {skills.map((k) => (
-              <li key={k.label} className="grid grid-cols-[1fr_6rem] items-center gap-4 py-3">
+              <li
+                key={k.label}
+                className="grid grid-cols-[1fr_6rem] items-center gap-4 border-b border-line py-3"
+              >
                 <span>
                   <span className="block font-medium">{k.label}</span>
                   <span className="block text-sm text-muted tabular-nums">
-                    {oneDecimal(k.avg)} dari 4 · {k.count} penilaian
+                    {oneDecimal(k.avg)} dari 4, {skillLevel(k.avg)} ·{" "}
+                    {k.count} penilaian
                   </span>
                 </span>
                 <SkillBar avg={k.avg} />
@@ -254,7 +266,7 @@ async function History() {
                       className="h-1.5 flex-1 overflow-hidden rounded-full bg-track"
                     >
                       <span
-                        className="block h-full rounded-full bg-ink"
+                        className={`block h-full rounded-full ${levelOf(pct(s)).bar}`}
                         style={{ width: `${pct(s)}%` }}
                       />
                     </span>

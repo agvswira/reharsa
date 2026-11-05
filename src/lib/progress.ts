@@ -82,6 +82,16 @@ export function recommend(progress: Record<string, ScenarioProgress>): {
   };
 }
 
+// Tingkat skor dari persen (0-100). Batas 50 dan 75 setara rata-rata 2 dan
+// 3 dari 4. Warna selalu ditemani label teks, tidak pernah berdiri sendiri.
+export type Level = { label: string; bar: string };
+
+export function levelOf(percent: number): Level {
+  if (percent >= 75) return { label: "kuat", bar: "bg-good" };
+  if (percent >= 50) return { label: "cukup", bar: "bg-warn" };
+  return { label: "perlu dilatih", bar: "bg-alert" };
+}
+
 export function initials(name: string) {
   return name
     .split(/\s+/)

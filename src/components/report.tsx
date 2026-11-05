@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { levelOf } from "@/lib/progress";
 import type { Scenario } from "@/lib/scenarios";
 import type {
   Coaching,
@@ -27,15 +28,16 @@ function average(values: number[]) {
   return Math.round(values.reduce((a, b) => a + b, 0) / values.length);
 }
 
+// Warna ruas mengikuti tingkat skor (lihat levelOf); angka skor selalu
+// tertulis di sebelahnya.
 function ScoreBar({ score }: { score: number }) {
+  const fill = levelOf((score / 4) * 100).bar;
   return (
     <span className="flex gap-1" aria-hidden="true">
       {[1, 2, 3, 4].map((n) => (
         <span
           key={n}
-          className={`h-2.5 w-8 rounded-sm ${
-            n <= score ? (score <= 2 ? "bg-alert" : "bg-ink") : "bg-track"
-          }`}
+          className={`h-2.5 w-8 rounded-sm ${n <= score ? fill : "bg-track"}`}
         />
       ))}
     </span>

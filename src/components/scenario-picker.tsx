@@ -1,5 +1,5 @@
 import { Monogram } from "@/components/monogram";
-import { MOOD_LABEL, type ScenarioProgress } from "@/lib/progress";
+import { levelOf, MOOD_LABEL, type ScenarioProgress } from "@/lib/progress";
 import {
   channelLabel,
   GROUPS,
@@ -54,7 +54,9 @@ export function BestScore({ progress }: { progress?: ScenarioProgress }) {
             : "Belum pernah dicoba"}
         </span>
         <span className="font-semibold tabular-nums">
-          {progress ? `${progress.best}/${progress.max}` : ""}
+          {progress
+            ? `${progress.best}/${progress.max}, ${levelOf(progress.bestPct).label}`
+            : ""}
         </span>
       </div>
       <span
@@ -62,7 +64,7 @@ export function BestScore({ progress }: { progress?: ScenarioProgress }) {
         className="block h-1.5 overflow-hidden rounded-full bg-track"
       >
         <span
-          className="block h-full rounded-full bg-ink"
+          className={`block h-full rounded-full ${levelOf(progress?.bestPct ?? 0).bar}`}
           style={{ width: `${progress?.bestPct ?? 0}%` }}
         />
       </span>

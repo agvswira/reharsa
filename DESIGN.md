@@ -20,9 +20,11 @@ Monokrom gelap: latar hitam, teks putih keperakan, kartu hampir hitam yang mengi
 | `--hair` | `rgba(255,255,255,.08)` | Garis pemisah, tepi kartu | dekorasi |
 | `--hair-2` | `rgba(255,255,255,.14)` | Tepi tombol hantu | |
 | `--edge` | `rgba(255,255,255,.42)` | Tepi kontrol input (minimal 3:1) | |
-| `--alert` | `#f87171` | Hanya status: emosi tamu tinggi, skor rendah, error. Selalu disertai teks | 7.6:1 |
+| `--alert` | `#f87171` | Status merah: emosi tamu tinggi, skor "perlu dilatih" (di bawah 50%), error. Selalu disertai teks | 7.0:1 di kartu |
+| `--warn` | `#fbbf24` | Tingkat skor "cukup" (50 sampai 74%). Selalu disertai teks | 11.6:1 di kartu |
+| `--good` | `#4ade80` | Tingkat skor "kuat" (75% ke atas). Selalu disertai teks | 11.1:1 di kartu |
 
-Tambahan Reharsa dibanding referensi: `--alert`, karena meter emosi dan error butuh warna status. Tidak ada warna aksen lain.
+Tambahan Reharsa dibanding referensi: tiga warna tingkat (`--alert`, `--warn`, `--good`). Warna ini hanya dipakai di bar skor, grafik riwayat, dan meter emosi, tidak pernah sebagai hiasan atau aksen. Tombol, teks, dan tepi tetap monokrom.
 
 ### Tema terang (pilihan pemilik)
 
@@ -37,7 +39,9 @@ Gelap adalah bawaan. Tema terang tetap tersedia lewat tombol di header, sebagai 
 | `--muted` | `#52525b` | 7.4:1 |
 | `--hair` / `--hair-2` | `rgba(0,0,0,.08)` / `rgba(0,0,0,.14)` | dekorasi |
 | `--edge` | `rgba(0,0,0,.45)` | minimal 3:1 |
-| `--alert` | `#b91c1c` | 6.2:1 |
+| `--alert` | `#b91c1c` | 6.5:1 |
+| `--warn` | `#b45309` | 5.0:1 |
+| `--good` | `#15803d` | 5.0:1 |
 
 Di tema terang, tombol utama menjadi pil hitam dengan teks putih.
 
@@ -49,6 +53,7 @@ Di tema terang, tombol utama menjadi pil hitam dengan teks putih.
 | Bento grid untuk jaminan | Diganti daftar dua kolom |
 | Ikon Lucide di deretan fakta | Dihapus, fakta ditandai titik kecil |
 | Panah di banyak tombol | Dihapus |
+| Satu warna status saja | Pemilik minta bar skor berwarna menurut tingkat: merah, kuning, hijau. Dipakai hanya untuk tingkat skor, selalu dengan label teks. |
 | Ikon di saklar tema | Pengecualian: matahari dan bulan dipakai di saklar tema gelap/terang, karena tanpa simbol saklar tidak terbaca sebagai pengatur tema. Ikon tidak dipakai di tempat lain. |
 
 ## Tipografi

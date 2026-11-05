@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { levelOf } from "@/lib/progress";
 
 export type ChartPoint = {
   id: string;
@@ -22,6 +23,20 @@ export function ScoreChart({ points }: { points: ChartPoint[] }) {
           Skor tiap sesi dalam persen, dari yang paling lama. Pilih batang untuk
           membuka rapornya.
         </p>
+        <ul className="flex flex-wrap gap-x-4 gap-y-1 pt-1 text-sm text-muted">
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden="true" className="size-2.5 rounded-sm bg-good" />
+            75% ke atas, kuat
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden="true" className="size-2.5 rounded-sm bg-warn" />
+            50 sampai 74%, cukup
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden="true" className="size-2.5 rounded-sm bg-alert" />
+            di bawah 50%, perlu dilatih
+          </li>
+        </ul>
       </figcaption>
       <div className="grid grid-cols-[2.5rem_1fr] gap-2">
         <div
@@ -44,11 +59,11 @@ export function ScoreChart({ points }: { points: ChartPoint[] }) {
               <li key={p.id} className="group relative flex h-full min-w-0 flex-1 items-end justify-center">
                 <Link
                   href={`/riwayat/${p.id}`}
-                  aria-label={`${p.label}, ${p.date}: ${p.pct} persen`}
+                  aria-label={`${p.label}, ${p.date}: ${p.pct} persen, ${levelOf(p.pct).label}`}
                   className="flex h-full w-full max-w-10 items-end rounded-t-[4px] outline-offset-2"
                 >
                   <span
-                    className="block w-full rounded-t-[4px] bg-ink transition-opacity group-hover:opacity-80"
+                    className={`block w-full rounded-t-[4px] transition-opacity group-hover:opacity-80 ${levelOf(p.pct).bar}`}
                     style={{ height: `max(${p.pct}%, 3px)` }}
                   />
                 </Link>
@@ -58,7 +73,7 @@ export function ScoreChart({ points }: { points: ChartPoint[] }) {
                 >
                   <span className="block font-semibold">{p.label}</span>
                   <span className="block text-muted">
-                    {p.date} · {p.pct}%
+                    {p.date} · {p.pct}%, {levelOf(p.pct).label}
                   </span>
                 </span>
               </li>
