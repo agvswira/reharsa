@@ -62,7 +62,7 @@ async function Picker() {
     <div className="space-y-12">
       <div className="space-y-3">
         <h1 className={pageTitle}>
-          Halo, {user.name}.
+          Om Swastiastu, {user.name}.
         </h1>
         <p className="max-w-prose text-lg text-muted">
           {historyFailed

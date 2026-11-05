@@ -15,25 +15,28 @@
 
 :root,
 :root[data-theme="dark"] {
-  --paper: #000000;
-  --paper-2: #060606;
-  --surface: #0d0d0f;
-  --surface-2: #08080a;
-  --ink: #f4f4f5;
-  --soft: #d4d4d8;
-  --muted: #a1a1aa;
-  --line: rgb(255 255 255 / 0.08);
-  --line-2: rgb(255 255 255 / 0.14);
-  --track: rgb(255 255 255 / 0.16);
-  --edge: rgb(255 255 255 / 0.42);
-  --accent: #f4f4f5;
-  --accent-ink: #000000;
-  --accent-soft: rgb(255 255 255 / 0.07);
+  /* Batu candi: hitam hangat seperti batu vulkanik gerbang pura. */
+  --paper: #0d0b09;
+  --paper-2: #110e0b;
+  --surface: #17130f;
+  --surface-2: #120f0c;
+  --ink: #f4efe6;
+  --soft: #d9d1c4;
+  --muted: #a69d90;
+  --line: rgb(244 239 230 / 0.08);
+  --line-2: rgb(244 239 230 / 0.14);
+  --track: rgb(244 239 230 / 0.16);
+  --edge: rgb(244 239 230 / 0.42);
+  --accent: #f4efe6;
+  --accent-ink: #0d0b09;
+  --accent-soft: rgb(244 239 230 / 0.07);
+  /* Cahaya hangat yang lewat celah candi bentar di hero. */
+  --lamp: rgb(240 190 120 / 0.16);
   --alert: #f87171;
   --alert-soft: rgb(248 113 113 / 0.12);
   --good: #4ade80;
   --warn: #fbbf24;
-  --glow: rgb(255 255 255 / 0.16);
+  --glow: rgb(244 239 230 / 0.16);
   --card-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.6),
     0 28px 56px -32px rgb(0 0 0 / 0.95);
@@ -41,25 +44,27 @@
 }
 
 :root[data-theme="light"] {
-  --paper: #fafafa;
-  --paper-2: #f4f4f5;
-  --surface: #ffffff;
-  --surface-2: #ffffff;
-  --ink: #0a0a0b;
-  --soft: #27272a;
-  --muted: #52525b;
-  --line: rgb(0 0 0 / 0.08);
-  --line-2: rgb(0 0 0 / 0.14);
-  --track: rgb(0 0 0 / 0.1);
-  --edge: rgb(0 0 0 / 0.45);
-  --accent: #0a0a0b;
-  --accent-ink: #ffffff;
-  --accent-soft: rgb(0 0 0 / 0.05);
+  /* Paras: krem hangat seperti batu paras ukiran Bali. */
+  --paper: #f5efe4;
+  --paper-2: #ede5d6;
+  --surface: #fbf8f1;
+  --surface-2: #fbf8f1;
+  --ink: #1c1814;
+  --soft: #3b342c;
+  --muted: #5e554a;
+  --line: rgb(28 24 20 / 0.08);
+  --line-2: rgb(28 24 20 / 0.14);
+  --track: rgb(28 24 20 / 0.1);
+  --edge: rgb(28 24 20 / 0.45);
+  --accent: #1c1814;
+  --accent-ink: #fbf8f1;
+  --accent-soft: rgb(28 24 20 / 0.05);
+  --lamp: rgb(200 120 40 / 0.12);
   --alert: #b91c1c;
   --alert-soft: rgb(185 28 28 / 0.08);
   --good: #15803d;
   --warn: #b45309;
-  --glow: rgb(0 0 0 / 0.06);
+  --glow: rgb(28 24 20 / 0.06);
   --card-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.8), 0 1px 2px rgb(0 0 0 / 0.06),
     0 24px 48px -32px rgb(0 0 0 / 0.25);
@@ -138,7 +143,7 @@ body {
   /* Sorot cahaya di belakang pusat visual hero: gradasi saja, tanpa blur. */
   .beam {
     background:
-      radial-gradient(ellipse 38% 55% at 50% 45%, var(--glow), transparent 70%),
+      radial-gradient(ellipse 38% 55% at 50% 45%, var(--lamp), transparent 70%),
       linear-gradient(
         180deg,
         transparent 0%,

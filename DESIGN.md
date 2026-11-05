@@ -6,44 +6,57 @@ Dial: ENERGY 2 / RHYTHM 2 / MOTION 2.
 
 ## Karakter
 
-Monokrom gelap: latar hitam, teks putih keperakan, kartu hampir hitam yang mengilap tipis, garis putih tipis, tombol pil putih. Putih adalah satu-satunya warna. Kesannya tenang, mahal, dan fokus, sehingga percakapan dan skor menjadi satu-satunya hal yang menonjol.
+Monokrom hangat bernuansa Bali: struktur dan ketenangan dari OpenLC, tetapi bahannya diambil dari bangunan hotel dan pura di Bali. Tema gelap adalah batu candi (hitam vulkanik yang hangat), tema terang adalah batu paras (krem). Tidak ada warna aksen untuk UI; nuansa Bali datang dari bahan, satu motif gerbang, dan bahasa sapaan, bukan dari ornamen yang ditebar.
+
+## Nuansa Bali (pilihan pemilik)
+
+| Unsur | Di mana | Alasan |
+| --- | --- | --- |
+| Palet batu candi dan paras | Seluruh aplikasi | Bahan bangunan khas hotel dan pura Bali; tetap monokrom, jadi bersih dan modern |
+| Siluet candi bentar | Hanya hero halaman depan, layar sm ke atas | Gerbang yang menyambut tamu di hampir setiap hotel Bali; kartu percakapan berdiri di celahnya, artinya masuk ke layanan |
+| Cahaya hangat (`--lamp`) | Hanya di balik gerbang hero | Kesan cahaya sore lewat gerbang; satu-satunya warna hangat non-status |
+| Sapaan "Om Swastiastu" | Judul halaman Latihan | Salam yang dipakai di ruang publik Bali, termasuk hotel |
+
+Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), pola ukiran atau batik sebagai latar berulang, dan foto stok pura atau sawah di hero. Ukiran patra punggel sempat dicoba lalu dibatalkan karena versi sederhananya terbaca sebagai sulur generik.
 
 ## Token
 
 | Token | Nilai | Pakai untuk | Kontras |
 | --- | --- | --- | --- |
-| `--bg` | `#000000` ke `#060606` (gradasi vertikal) | Latar halaman | |
-| `--card` | `#0d0d0f` ke `#08080a` | Kartu, panel | |
-| `--text` | `#f4f4f5` | Teks utama, tombol utama | 19.1:1 |
-| `--soft` | `#d4d4d8` | Teks sekunder yang tetap penting | 14.2:1 |
-| `--muted` | `#a1a1aa` | Keterangan, label | 7.6:1 di kartu |
-| `--hair` | `rgba(255,255,255,.08)` | Garis pemisah, tepi kartu | dekorasi |
-| `--hair-2` | `rgba(255,255,255,.14)` | Tepi tombol hantu | |
-| `--edge` | `rgba(255,255,255,.42)` | Tepi kontrol input (minimal 3:1) | |
-| `--alert` | `#f87171` | Status merah: emosi tamu tinggi, skor "perlu dilatih" (di bawah 50%), error. Selalu disertai teks | 7.0:1 di kartu |
-| `--warn` | `#fbbf24` | Tingkat skor "cukup" (50 sampai 74%). Selalu disertai teks | 11.6:1 di kartu |
-| `--good` | `#4ade80` | Tingkat skor "kuat" (75% ke atas). Selalu disertai teks | 11.1:1 di kartu |
+| `--bg` | `#0d0b09` ke `#110e0b` (gradasi vertikal) | Latar halaman, batu candi | |
+| `--card` | `#17130f` ke `#120f0c` | Kartu, panel | |
+| `--text` | `#f4efe6` | Teks utama, tombol utama | 17.2:1 |
+| `--soft` | `#d9d1c4` | Teks sekunder yang tetap penting | 12.2:1 di kartu |
+| `--muted` | `#a69d90` | Keterangan, label | 6.9:1 di kartu |
+| `--hair` | `rgb(244 239 230 / .08)` | Tepi kartu | dekorasi |
+| `--hair-2` | `rgb(244 239 230 / .14)` | Tepi tombol hantu | |
+| `--edge` | `rgb(244 239 230 / .42)` | Tepi kontrol input (minimal 3:1) | |
+| `--lamp` | `rgb(240 190 120 / .16)` | Cahaya di balik candi bentar, tidak di tempat lain | dekorasi |
+| `--alert` | `#f87171` | Status merah: emosi tamu tinggi, skor "perlu dilatih" (di bawah 50%), error. Selalu disertai teks | 6.7:1 di kartu |
+| `--warn` | `#fbbf24` | Tingkat skor "cukup" (50 sampai 74%). Selalu disertai teks | 11.1:1 di kartu |
+| `--good` | `#4ade80` | Tingkat skor "kuat" (75% ke atas). Selalu disertai teks | 10.6:1 di kartu |
 
 Tambahan Reharsa dibanding referensi: tiga warna tingkat (`--alert`, `--warn`, `--good`). Warna ini hanya dipakai di bar skor, grafik riwayat, dan meter emosi, tidak pernah sebagai hiasan atau aksen. Tombol, teks, dan tepi tetap monokrom.
 
 ### Tema terang (pilihan pemilik)
 
-Gelap adalah bawaan. Tema terang tetap tersedia lewat tombol di header, sebagai kebalikan monokrom dari tema gelap:
+Gelap adalah bawaan. Tema terang tetap tersedia lewat tombol di header, sebagai batu paras:
 
 | Token | Nilai | Kontras |
 | --- | --- | --- |
-| `--bg` | `#fafafa` ke `#f4f4f5` | |
-| `--card` | `#ffffff` | |
-| `--text` | `#0a0a0b` | 19.0:1 |
-| `--soft` | `#27272a` | 14.3:1 |
-| `--muted` | `#52525b` | 7.4:1 |
-| `--hair` / `--hair-2` | `rgba(0,0,0,.08)` / `rgba(0,0,0,.14)` | dekorasi |
-| `--edge` | `rgba(0,0,0,.45)` | minimal 3:1 |
-| `--alert` | `#b91c1c` | 6.5:1 |
-| `--warn` | `#b45309` | 5.0:1 |
-| `--good` | `#15803d` | 5.0:1 |
+| `--bg` | `#f5efe4` ke `#ede5d6` | |
+| `--card` | `#fbf8f1` | |
+| `--text` | `#1c1814` | 15.4:1 |
+| `--soft` | `#3b342c` | |
+| `--muted` | `#5e554a` | 5.8:1 sampai 6.9:1 |
+| `--hair` / `--hair-2` | `rgb(28 24 20 / .08)` / `rgb(28 24 20 / .14)` | dekorasi |
+| `--edge` | `rgb(28 24 20 / .45)` | minimal 3:1 |
+| `--lamp` | `rgb(200 120 40 / .12)` | dekorasi |
+| `--alert` | `#b91c1c` | 5.7:1 |
+| `--warn` | `#b45309` | 4.7:1 |
+| `--good` | `#15803d` | 4.4:1, hanya untuk bar (minimal 3:1), bukan teks |
 
-Di tema terang, tombol utama menjadi pil hitam dengan teks putih.
+Di tema terang, tombol utama menjadi pil gelap hangat dengan teks krem.
 
 ## Keputusan pemilik atas pola yang bentrok aturan anti-slop
 
