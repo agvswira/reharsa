@@ -5,9 +5,9 @@
 
 type Step = {
   when: string;
-  classroom?: { title: string; body?: string };
+  classroom?: { title: string };
   waiting?: string;
-  reharsa?: { title: string; body: string; emotion: number; turn: string };
+  reharsa?: { title: string; emotion: number; turn: string };
   report?: string;
 };
 
@@ -16,11 +16,9 @@ const STEPS: Step[] = [
     when: "Menit 0",
     classroom: {
       title: "Teman sekelas pura-pura jadi tamu.",
-      body: "Aksennya sama denganmu, dan ia tahu ini hanya latihan.",
     },
     reharsa: {
       title: "Mark membuka dengan marah.",
-      body: "AC kamarnya mati saat Nyepi dan ia ingin keluar hotel sekarang juga.",
       emotion: 8,
       turn: "Tamu bicara",
     },
@@ -29,8 +27,7 @@ const STEPS: Step[] = [
     when: "Menit 1",
     waiting: "Belum ada umpan balik.",
     reharsa: {
-      title: "Kamu minta maaf dan menjelaskan aturan Nyepi.",
-      body: "Mark masih kesal, tapi mulai mendengarkan.",
+      title: "Kamu minta maaf dan jelaskan aturan Nyepi.",
       emotion: 6,
       turn: "Giliran 1",
     },
@@ -39,8 +36,7 @@ const STEPS: Step[] = [
     when: "Menit 3",
     waiting: "Masih belum ada.",
     reharsa: {
-      title: "Kamu menawarkan teknisi dalam 15 menit.",
-      body: "Mark menerima dan menutup percakapan.",
+      title: "Kamu tawarkan teknisi dalam 15 menit.",
       emotion: 3,
       turn: "Giliran 2",
     },
@@ -49,16 +45,14 @@ const STEPS: Step[] = [
     when: "Menit 5",
     classroom: {
       title: "Guru melihat sekilas.",
-      body: "Ada puluhan pasangan lain yang juga menunggu.",
     },
     report:
-      "Rapor siap: skor per kriteria, kutipan ucapanmu, dan kalimat yang lebih baik.",
+      "Rapor siap, lengkap dengan kalimat yang lebih baik.",
   },
   {
     when: "Setelah kelas",
     classroom: {
-      title: "Catatan lisan, mudah terlupa.",
-      body: "Tidak ada yang bisa dibaca ulang sebelum latihan berikutnya.",
+      title: "Catatan lisan, lalu terlupa.",
     },
   },
 ];
@@ -101,9 +95,6 @@ export function PracticeTimeline() {
                   <div className="tl-entry-left">
                     <span className="tl-lane-label">Role-play antarteman</span>
                     <p className="tl-title">{step.classroom.title}</p>
-                    {step.classroom.body ? (
-                      <p className="tl-body">{step.classroom.body}</p>
-                    ) : null}
                   </div>
                 ) : null}
               </div>
@@ -113,7 +104,6 @@ export function PracticeTimeline() {
                   <div className="card tl-entry-right">
                     <span className="tl-lane-label">Dengan Reharsa</span>
                     <p className="tl-title">{step.reharsa.title}</p>
-                    <p className="tl-body">{step.reharsa.body}</p>
                     <div className="tl-foot">
                       <span>Emosi tamu {step.reharsa.emotion}/10</span>
                       <span className="text-muted">{step.reharsa.turn}</span>

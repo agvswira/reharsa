@@ -22,12 +22,10 @@ const ghostButton =
   "inline-flex h-[50px] items-center justify-center rounded-full border border-line-2 bg-accent-soft px-6 text-[15.5px] font-semibold text-ink hover:border-edge active:translate-y-px";
 
 function Hero() {
-  const facts = [
-    `${SCENARIOS.length} situasi latihan`,
-    `Tamu dengan aksen dari ${countries} negara`,
-    "Dinilai dengan rubrik layanan hotel",
-    "Umpan balik dalam bahasa Indonesia",
-    "Rekaman suara tidak disimpan",
+  const stats = [
+    { value: String(SCENARIOS.length), label: "situasi hotel" },
+    { value: String(countries), label: "negara asal tamu" },
+    { value: "0-4", label: "skor per kriteria" },
   ];
   return (
     <section
@@ -41,9 +39,7 @@ function Hero() {
         </span>
       </h1>
       <p className={`rise mt-6 ${lede} [animation-delay:300ms]`}>
-        Kamu melayani tamu hotel virtual lewat suara dalam bahasa Inggris, dari
-        reservasi telepon sampai keluhan. Setelahnya, rapor menunjuk kalimatmu
-        sendiri dan memberi contoh yang lebih baik.
+        Bicara lewat suara, lalu baca rapor yang menunjuk kalimatmu sendiri.
       </p>
       <div className="rise mt-8 flex flex-wrap justify-center gap-3 [animation-delay:420ms]">
         <Link href="/latihan" className={primaryButton}>
@@ -53,9 +49,6 @@ function Hero() {
           Lihat cara kerjanya
         </a>
       </div>
-      <p className="rise mt-4 text-sm text-muted [animation-delay:480ms]">
-        Gratis, cukup buat akun dengan email.
-      </p>
 
       {/* Pusat visual: satu putaran latihan, dari ucapan tamu sampai rapor,
           dengan sorot cahaya di belakangnya (hanya gradasi CSS). */}
@@ -95,17 +88,16 @@ function Hero() {
         </figure>
       </div>
 
-      <ul
-        aria-label="Yang sudah ada di Reharsa"
-        className="rise mt-16 flex max-w-4xl flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-medium text-soft [animation-delay:700ms]"
-      >
-        {facts.map((f) => (
-          <li key={f} className="flex items-center gap-2.5">
-            <span aria-hidden="true" className="size-1 rounded-full bg-ink" />
-            {f}
-          </li>
+      <dl className="rise mt-16 grid w-full max-w-3xl grid-cols-3 gap-4 [animation-delay:700ms]">
+        {stats.map((st) => (
+          <div key={st.label} className="flex flex-col-reverse gap-1">
+            <dt className="text-sm text-muted">{st.label}</dt>
+            <dd className="font-display text-[clamp(2.25rem,6vw,3.5rem)] font-semibold leading-none tabular-nums">
+              {st.value}
+            </dd>
+          </div>
         ))}
-      </ul>
+      </dl>
     </section>
   );
 }
@@ -121,11 +113,6 @@ function HowItWorks() {
         <h2 id="cara-kerja-judul" className={h2}>
           Latihan yang sama, dua cara.
         </h2>
-        <p className={`${lede} mx-auto`}>
-          Situasinya tamu Australia yang AC kamarnya mati saat Nyepi. Di kiri,
-          yang biasa terjadi saat role-play di kelas. Di kanan, contoh alur di
-          Reharsa.
-        </p>
       </div>
       <PracticeTimeline />
     </section>
@@ -144,14 +131,7 @@ function ReportProof() {
           Rapor yang menunjuk kalimatmu sendiri.
         </h2>
         <p className={lede}>
-          Setelah percakapan selesai, agen penilai membaca transkrip dan memberi
-          skor 0 sampai 4 untuk setiap kriteria. Setiap skor disertai kutipan
-          ucapanmu, alasan dalam bahasa Indonesia, dan contoh kalimat yang lebih
-          baik.
-        </p>
-        <p className="border-t border-line pt-4 text-muted">
-          Penilai terpisah dari tamu dan tidak menghukum aksen. Yang dinilai
-          kejelasan, kesopanan, dan ketepatan solusi.
+          Skor 0-4 per kriteria, kutipan ucapanmu, dan kalimat yang lebih baik.
         </p>
       </div>
       <figure aria-label="Contoh rapor" className="space-y-4 card p-5 sm:p-6">
@@ -201,7 +181,6 @@ function Steps() {
   const steps = [
     {
       title: "Buat akun dan masuk",
-      body: "Cukup nama panggilan, email, dan password. Semua rapor tersimpan di akunmu.",
       visual: (
         <div className="space-y-1.5 text-sm">
           <p className="rounded-md border border-line px-2.5 py-1 text-muted">
@@ -215,7 +194,6 @@ function Steps() {
     },
     {
       title: "Pilih situasi dan suasana tamu",
-      body: "Sabar, kesal, atau marah. Suasana menentukan cara tamu membuka percakapan.",
       visual: (
         <div className="flex gap-1.5">
           {["Sabar", "Kesal", "Marah"].map((m) => (
@@ -233,7 +211,6 @@ function Steps() {
     },
     {
       title: "Bicara sampai tamu puas",
-      body: "Izinkan mikrofon, tekan tombol, bicara, tekan lagi. Ucapanmu muncul sebagai teks saat kamu bicara.",
       visual: (
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-alert text-white">
@@ -253,7 +230,6 @@ function Steps() {
     },
     {
       title: "Baca rapor",
-      body: "Total poin, satu fokus latihan berikutnya, dan rincian per kriteria. Tersimpan di riwayatmu.",
       visual: (
         <div className="space-y-1">
           <p className="font-display text-2xl font-semibold tabular-nums">
@@ -270,11 +246,10 @@ function Steps() {
     <section aria-labelledby="langkah-judul" className="reveal space-y-10">
       <div className="max-w-3xl space-y-4">
         <h2 id="langkah-judul" className={h2}>
-          Mulai dalam empat langkah.
+          Empat langkah.
         </h2>
         <p className={lede}>
-          Butuh Chrome atau Edge, mikrofon, dan akun gratis supaya setiap rapor
-          tersimpan dan perkembanganmu terlihat.
+          Cukup Chrome atau Edge dan mikrofon.
         </p>
       </div>
       <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -290,7 +265,6 @@ function Steps() {
               {s.visual}
             </div>
             <h3 className="font-bold">{s.title}</h3>
-            <p className="text-muted">{s.body}</p>
           </li>
         ))}
       </ol>
@@ -310,28 +284,24 @@ function ScenarioPreview() {
           {SCENARIOS.length} situasi yang benar-benar terjadi.
         </h2>
         <p className={lede}>
-          Dari reservasi lewat telepon sampai tamu yang terjebak abu vulkanik.
-          Di tengah percakapan, tamu bisa memberi kabar baru yang memaksamu
-          menyesuaikan solusi, seperti di hotel sungguhan.
+          Tamu bisa memberi kabar baru di tengah percakapan, seperti di hotel
+          sungguhan.
         </p>
       </div>
       <div className="divide-y divide-line border-y border-line">
         {GROUPS.map((g) => (
           <div
             key={g.category}
-            className="grid gap-4 py-7 md:grid-cols-[18rem_1fr] md:gap-10"
+            className="grid items-start gap-4 py-6 md:grid-cols-[14rem_1fr] md:gap-10"
           >
-            <div className="space-y-1">
-              <h3 className="text-xl font-bold">{g.title}</h3>
-              <p className="text-muted">{g.note}</p>
-            </div>
-            <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            <h3 className="text-xl font-bold">{g.title}</h3>
+            <ul className="flex flex-wrap gap-2">
               {SCENARIOS.filter((s) => s.category === g.category).map((s) => (
-                <li key={s.id}>
-                  <p className="font-semibold">{s.title}</p>
-                  <p className="text-sm text-muted">
-                    {s.department} · {channelLabel(s)} · {s.guest.origin}
-                  </p>
+                <li
+                  key={s.id}
+                  className="rounded-full border border-line-2 px-4 py-2 text-sm font-medium"
+                >
+                  {s.title}
                 </li>
               ))}
             </ul>
@@ -349,23 +319,23 @@ function Principles() {
   const items = [
     {
       title: "Penilai terpisah dari tamu.",
-      body: "Agen tamu hanya bermain peran. Skor dibuat agen lain setelah percakapan selesai, jadi jalannya role-play tidak memengaruhi nilai.",
+      body: "Jalannya role-play tidak memengaruhi nilai.",
     },
     {
       title: "Tamu hanya tahu fakta hotel.",
-      body: "Harga, jam layanan, dan aturan Nyepi diambil dari lembar fakta skenario. Tamu tidak mengarang layanan yang tidak ada.",
+      body: "Tidak ada harga atau layanan karangan.",
     },
     {
       title: "Aksen tidak dihukum.",
-      body: "Bahasa Inggris yang jelas dan sopan tidak dikurangi nilainya hanya karena terdengar Indonesia.",
+      body: "Yang dinilai jelas dan sopan, bukan logat.",
     },
     {
-      title: "Reharsa tidak menyimpan rekaman suaramu.",
-      body: "Audio hanya dikirim ke layanan suara untuk diubah jadi teks dan dinilai, lalu tidak disimpan. Transkrip dan rapor disimpan di akunmu, dan hanya kamu yang bisa membukanya.",
+      title: "Rekaman suara tidak disimpan.",
+      body: "Hanya transkrip dan rapor, di akunmu sendiri.",
     },
     {
       title: "Alat latihan, bukan sertifikasi.",
-      body: "Skor membantu kamu tahu apa yang perlu dilatih. Kalau penilai kurang yakin, rapor memberi tahu bahwa skor itu hanya perkiraan.",
+      body: "Skor yang kurang yakin ditandai perkiraan.",
     },
   ];
   return (
@@ -378,10 +348,6 @@ function Principles() {
         <h2 id="prinsip-judul" className={h2}>
           Yang kami jaga.
         </h2>
-        <p className={lede}>
-          Batasan ini tertulis di kode Reharsa, bukan hanya janji di halaman
-          ini.
-        </p>
       </div>
       <dl className="grid gap-x-10 gap-y-8 md:grid-cols-2">
         {items.map((it, i) => (
