@@ -1,114 +1,158 @@
+import { Monogram } from "@/components/monogram";
+import { MOOD_LABEL, type ScenarioProgress } from "@/lib/progress";
 import {
   channelLabel,
   GROUPS,
-  ORDERED,
   SCENARIOS,
   type Mood,
+  type Scenario,
 } from "@/lib/scenarios";
 
-const MOODS: { value: Mood; label: string; hint: string }[] = [
-  { value: "sabar", label: "Sabar", hint: "mulai tenang" },
-  { value: "kesal", label: "Kesal", hint: "mulai jengkel" },
-  { value: "marah", label: "Marah", hint: "mulai emosi tinggi" },
+const MOODS: { value: Mood; hint: string }[] = [
+  { value: "sabar", hint: "mulai tenang" },
+  { value: "kesal", hint: "mulai jengkel" },
+  { value: "marah", hint: "mulai emosi tinggi" },
 ];
 
-/** Daftar situasi per kategori, masing-masing dengan pilihan suasana awal. */
-export function ScenarioPicker() {
+/** Pilihan suasana awal sebagai kontrol bersegmen; tetap radio asli. */
+export function MoodField({ scenario }: { scenario: Scenario }) {
   return (
-    <div className="space-y-12">
-      {GROUPS.map((g) => (
-        <section
-          key={g.category}
-          aria-labelledby={`grup-${g.category}`}
-          className="space-y-3"
-        >
-          <div className="space-y-1">
-            <h2
-              id={`grup-${g.category}`}
-              className="font-display text-2xl font-semibold"
-            >
-              {g.title}
-            </h2>
-            <p className="max-w-prose text-muted">{g.note}</p>
-          </div>
-          <ol className="divide-y divide-line border-y border-line">
-            {SCENARIOS.filter((s) => s.category === g.category).map((s) => (
-              <li key={s.id} className="py-7">
-                <form
-                  action={`/latihan/${s.id}`}
-                  className="grid gap-5 md:grid-cols-[13rem_1fr]"
+    <fieldset>
+      <legend className="mb-2 text-sm text-muted">
+        Suasana awal {scenario.kind === "interview" ? "pewawancara" : "tamu"}
+      </legend>
+      <div className="grid grid-cols-3 gap-1 rounded-full border border-line-2 p-1">
+        {MOODS.map((m) => (
+          <label
+            key={m.value}
+            className="flex min-h-10 cursor-pointer items-center justify-center rounded-full text-sm text-muted hover:text-ink has-[:checked]:bg-ink has-[:checked]:font-bold has-[:checked]:text-paper has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink"
+          >
+            <input
+              type="radio"
+              name="mood"
+              value={m.value}
+              defaultChecked={m.value === "kesal"}
+              className="sr-only"
+            />
+            {MOOD_LABEL[m.value]}
+            <span className="sr-only">, {m.hint}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+/** Skor terbaik di satu situasi, atau keterangan belum dicoba. */
+export function BestScore({ progress }: { progress?: ScenarioProgress }) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-baseline justify-between gap-3 text-sm">
+        <span className="text-muted">
+          {progress
+            ? `Skor terbaik dari ${progress.attempts}x latihan`
+            : "Belum pernah dicoba"}
+        </span>
+        <span className="font-semibold tabular-nums">
+          {progress ? `${progress.best}/${progress.max}` : ""}
+        </span>
+      </div>
+      <span
+        aria-hidden="true"
+        className="block h-1.5 overflow-hidden rounded-full bg-track"
+      >
+        <span
+          className="block h-full rounded-full bg-ink"
+          style={{ width: `${progress?.bestPct ?? 0}%` }}
+        />
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Daftar situasi per kategori. Kartu sengaja seragam: semuanya setara di
+ * katalog; yang membedakan adalah skor terbaik siswa dan kartu saran di atas.
+ */
+export function ScenarioPicker({
+  progress,
+}: {
+  progress: Record<string, ScenarioProgress>;
+}) {
+  return (
+    <div className="space-y-14">
+      {GROUPS.map((g) => {
+        const list = SCENARIOS.filter((s) => s.category === g.category);
+        const done = list.filter((s) => progress[s.id]).length;
+        return (
+          <section
+            key={g.category}
+            id={`grup-${g.category}`}
+            aria-labelledby={`grup-${g.category}-judul`}
+            className="scroll-mt-24 space-y-5"
+          >
+            <div className="flex flex-wrap items-end justify-between gap-2 border-b border-line pb-3">
+              <div className="space-y-1">
+                <h2
+                  id={`grup-${g.category}-judul`}
+                  className="font-display text-2xl font-semibold"
                 >
-                  <div className="space-y-1">
-                    <p className="font-display text-3xl font-semibold tabular-nums text-muted">
-                      {String(ORDERED.indexOf(s) + 1).padStart(2, "0")}
-                    </p>
-                    <p className="font-bold">{s.guest.name}</p>
-                    <p className="text-sm text-muted">
-                      {s.kind === "interview" ? "Pewawancara" : "Tamu"} dari{" "}
-                      {s.guest.origin}
-                    </p>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="space-y-1">
+                  {g.title}
+                </h2>
+                <p className="text-muted">{g.note}</p>
+              </div>
+              <p className="text-sm text-muted tabular-nums">
+                {done} dari {list.length} sudah dicoba
+              </p>
+            </div>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {list.map((s) => (
+                <li key={s.id}>
+                  <form
+                    action={`/latihan/${s.id}`}
+                    className="card flex h-full flex-col gap-5 p-5 transition-colors hover:border-edge"
+                  >
+                    <div className="space-y-2">
                       <p className="text-sm text-muted">
                         {s.department} · {channelLabel(s)}
                       </p>
-                      <h3 className="text-xl font-bold">{s.title}</h3>
-                      <p className="max-w-prose">{s.situation}</p>
+                      <h3 className="text-lg font-bold leading-snug">
+                        {s.title}
+                      </h3>
+                      <p className="line-clamp-3 text-sm text-muted">
+                        {s.situation}
+                      </p>
                     </div>
-                    <div>
-                      <p className="text-sm text-muted">Yang dinilai</p>
-                      <ul className="mt-1 flex flex-wrap gap-2">
-                        {s.criteria.map((c) => (
-                          <li
-                            key={c.id}
-                            className="rounded-md border border-line px-2.5 py-1 text-sm"
-                          >
-                            {c.label}
-                          </li>
-                        ))}
-                      </ul>
+
+                    <div className="flex items-center gap-3">
+                      <Monogram name={s.guest.name} />
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold">{s.guest.name}</p>
+                        <p className="text-sm text-muted">
+                          {s.kind === "interview" ? "Pewawancara" : "Tamu"} dari{" "}
+                          {s.guest.origin}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                      <fieldset>
-                        <legend className="mb-2 text-sm text-muted">
-                          Suasana awal{" "}
-                          {s.kind === "interview" ? "pewawancara" : "tamu"}
-                        </legend>
-                        <div className="flex flex-wrap gap-2">
-                          {MOODS.map((m) => (
-                            <label
-                              key={m.value}
-                              className="flex min-h-11 items-center gap-2 rounded-full border border-edge bg-surface px-3 hover:bg-paper has-[:checked]:border-ink has-[:checked]:font-bold"
-                            >
-                              <input
-                                type="radio"
-                                name="mood"
-                                value={m.value}
-                                defaultChecked={m.value === "kesal"}
-                                className="accent-[var(--accent)]"
-                              />
-                              {m.label}
-                              <span className="sr-only">, {m.hint}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </fieldset>
+
+                    <div className="mt-auto space-y-4">
+                      <BestScore progress={progress[s.id]} />
+                      <MoodField scenario={s} />
                       <button
                         type="submit"
-                        className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+                        className="min-h-11 w-full rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
                       >
-                        Mulai situasi ini
+                        {progress[s.id] ? "Latih lagi" : "Mulai situasi ini"}
                         <span className="sr-only">: {s.title}</span>
                       </button>
                     </div>
-                  </div>
-                </form>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ))}
+                  </form>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
     </div>
   );
 }

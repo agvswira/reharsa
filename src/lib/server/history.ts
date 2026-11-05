@@ -24,7 +24,10 @@ export type SavedSession = {
 export type SessionSummary = Pick<
   SavedSession,
   "id" | "scenarioId" | "mood" | "total" | "max" | "createdAt"
->;
+> & {
+  // Skor per kriteria, untuk melihat kemampuan yang kuat dan yang lemah.
+  criteria: { id: string; score: number }[];
+};
 
 export async function saveSession(
   userId: string,
@@ -52,7 +55,8 @@ export async function saveSession(
 
 export async function listSessions(userId: string): Promise<SessionSummary[]> {
   const { rows } = await pool.query(
-    `select id, scenario_id, mood, total, max, created_at
+    `select id, scenario_id, mood, total, max, created_at,
+            evaluation->'criteria' as criteria
        from practice_session
       where user_id = $1
       order by created_at desc
@@ -66,6 +70,12 @@ export async function listSessions(userId: string): Promise<SessionSummary[]> {
     total: r.total,
     max: r.max,
     createdAt: new Date(r.created_at).toISOString(),
+    criteria: Array.isArray(r.criteria)
+      ? r.criteria.map((c: { id: string; score: number }) => ({
+          id: c.id,
+          score: c.score,
+        }))
+      : [],
   }));
 }
 

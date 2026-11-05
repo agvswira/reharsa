@@ -9,6 +9,8 @@ import {
   useSyncExternalStore,
 } from "react";
 import { EmotionMeter } from "@/components/emotion-meter";
+import { Monogram } from "@/components/monogram";
+import { MOOD_LABEL, topLevel } from "@/lib/progress";
 import { Report, type ReportData } from "@/components/report";
 import {
   browserRecognitionAvailable,
@@ -351,14 +353,15 @@ export function PracticeSession({
   );
 
   const guestCard = (
-    <div className="card p-4">
-      <p className="text-sm text-muted">{guestLabel}</p>
-      <p className="font-display text-xl font-semibold">
-        {scenario.guest.name}
-      </p>
-      <p className="text-sm text-muted">
-        {scenario.guest.origin} · suasana awal {mood}
-      </p>
+    <div className="card flex items-center gap-3 p-4">
+      <Monogram name={scenario.guest.name} />
+      <div className="min-w-0">
+        <p className="truncate font-semibold">{scenario.guest.name}</p>
+        <p className="text-sm text-muted">
+          {guestLabel} dari {scenario.guest.origin} ·{" "}
+          {MOOD_LABEL[mood].toLowerCase()}
+        </p>
+      </div>
     </div>
   );
 
@@ -380,44 +383,62 @@ export function PracticeSession({
       {phase === "brief" ? (
         <section
           aria-labelledby="brief"
-          className="grid gap-8 lg:grid-cols-[1fr_18rem]"
+          className="grid gap-10 lg:grid-cols-[1fr_22rem]"
         >
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-8">
             <h2 id="brief" className="sr-only">
-              Brief
+              Brief latihan
             </h2>
-            <dl className="space-y-4">
-              <div>
-                <dt className="text-sm text-muted">Situasi</dt>
-                <dd className="max-w-prose text-lg">{scenario.situation}</dd>
-              </div>
-              <div>
+            <p className="max-w-prose text-xl leading-relaxed">
+              {scenario.situation}
+            </p>
+
+            <dl className="grid gap-4 sm:grid-cols-2">
+              <div className="card space-y-1 p-4">
                 <dt className="text-sm text-muted">Peranmu</dt>
-                <dd>{scenario.studentRole}</dd>
+                <dd className="font-semibold">{scenario.studentRole}</dd>
               </div>
-              <div>
+              <div className="card space-y-1 p-4">
                 <dt className="text-sm text-muted">Tujuan</dt>
-                <dd className="max-w-prose">{scenario.goal}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-muted">Yang dinilai</dt>
-                <dd>
-                  <ul className="mt-1 flex flex-wrap gap-2">
-                    {scenario.criteria.map((c) => (
-                      <li
-                        key={c.id}
-                        className="rounded-md border border-line px-2.5 py-1 text-sm"
-                      >
-                        {c.label}
-                      </li>
-                    ))}
-                  </ul>
-                </dd>
+                <dd>{scenario.goal}</dd>
               </div>
             </dl>
+
+            {/* Garis kiri menandai peringatan nyata (ada twist), bukan hiasan. */}
+            {scenario.twist ? (
+              <p className="border-l-2 border-ink pl-4">
+                <span className="font-semibold">Siap-siap menyesuaikan.</span>{" "}
+                <span className="text-muted">
+                  Di tengah percakapan, {scenario.guest.name} akan memberi kabar
+                  baru yang mengubah kebutuhannya.
+                </span>
+              </p>
+            ) : null}
+
+            <section aria-labelledby="dinilai" className="space-y-3">
+              <h3 id="dinilai" className="font-display text-xl font-semibold">
+                Yang dinilai, dan seperti apa skor 4
+              </h3>
+              <ol className="divide-y divide-line border-y border-line">
+                {scenario.criteria.map((c, i) => (
+                  <li key={c.id} className="grid grid-cols-[2rem_1fr] gap-3 py-3">
+                    <span className="font-display font-semibold tabular-nums text-muted">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span>
+                      <span className="block font-semibold">{c.label}</span>
+                      <span className="block text-sm text-muted">
+                        {topLevel(c.rubric)}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
             <details className="card p-4">
               <summary className="font-bold">
-                Fakta yang boleh kamu pakai ({scenario.facts.length})
+                Fakta hotel yang boleh kamu pakai ({scenario.facts.length})
               </summary>
               <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
                 {scenario.facts.map((f) => (
@@ -426,21 +447,72 @@ export function PracticeSession({
               </ul>
             </details>
           </div>
-          <div className="space-y-4 lg:pt-1">
-            {guestCard}
-            <p className="text-sm text-muted">
-              {voiceAvailable
-                ? `Jawab dengan suara dalam bahasa Inggris. ${scenario.guest.name} bicara duluan, jadi nyalakan suara perangkatmu dan izinkan mikrofon saat diminta.`
-                : "Browser ini tidak mendukung input suara, jadi jawab dengan mengetik dalam bahasa Inggris. Untuk latihan suara, buka di Chrome atau Edge."}
-            </p>
-            <button
-              type="button"
-              onClick={begin}
-              className="min-h-12 w-full rounded-full bg-accent px-5 text-lg font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
-            >
-              Mulai percakapan
-            </button>
-          </div>
+
+          <aside
+            aria-label="Persiapan"
+            className="lg:sticky lg:top-24 lg:self-start"
+          >
+            <div className="card space-y-5 p-5">
+              <div className="flex items-center gap-3">
+                <Monogram name={scenario.guest.name} size="lg" />
+                <div>
+                  <p className="text-lg font-semibold">{scenario.guest.name}</p>
+                  <p className="text-sm text-muted">
+                    {guestLabel} dari {scenario.guest.origin}
+                  </p>
+                </div>
+              </div>
+
+              <nav aria-label="Suasana awal" className="space-y-2">
+                <p className="text-sm text-muted">Suasana awal</p>
+                <div className="grid grid-cols-3 gap-1 rounded-full border border-line-2 p-1">
+                  {(["sabar", "kesal", "marah"] as const).map((m) => (
+                    <Link
+                      key={m}
+                      href={`/latihan/${scenario.id}?mood=${m}`}
+                      replace
+                      scroll={false}
+                      aria-current={m === mood ? "true" : undefined}
+                      className={`flex min-h-10 items-center justify-center rounded-full text-sm ${
+                        m === mood
+                          ? "bg-ink font-bold text-paper"
+                          : "text-muted hover:text-ink"
+                      }`}
+                    >
+                      {MOOD_LABEL[m]}
+                    </Link>
+                  ))}
+                </div>
+              </nav>
+
+              <ul className="space-y-2 text-sm">
+                <li className="flex gap-2">
+                  <span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-ink" />
+                  {voiceAvailable
+                    ? `Nyalakan suara perangkat. ${scenario.guest.name} bicara duluan.`
+                    : "Browser ini tidak mendukung suara, jadi kamu menjawab dengan mengetik. Untuk latihan suara, pakai Chrome atau Edge."}
+                </li>
+                {voiceAvailable ? (
+                  <li className="flex gap-2">
+                    <span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-ink" />
+                    Izinkan mikrofon saat diminta, lalu jawab dalam bahasa Inggris.
+                  </li>
+                ) : null}
+                <li className="flex gap-2">
+                  <span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-ink" />
+                  Maksimal {MAX_STUDENT_TURNS} giliran. Rapor tersimpan ke riwayatmu.
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                onClick={begin}
+                className="min-h-12 w-full rounded-full bg-accent px-5 text-lg font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+              >
+                Mulai percakapan
+              </button>
+            </div>
+          </aside>
         </section>
       ) : (
         <div className="grid gap-8 lg:grid-cols-[1fr_18rem]">
@@ -716,9 +788,19 @@ export function PracticeSession({
                 ))}
               </ul>
             </details>
-            <p className="text-sm text-muted tabular-nums">
-              Giliran {studentTurns} dari {MAX_STUDENT_TURNS}
-            </p>
+            <div className="space-y-2">
+              <p className="text-sm text-muted tabular-nums">
+                Giliran {studentTurns} dari {MAX_STUDENT_TURNS}
+              </p>
+              <div aria-hidden="true" className="grid grid-cols-10 gap-1">
+                {Array.from({ length: MAX_STUDENT_TURNS }, (_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 rounded-sm ${i < studentTurns ? "bg-ink" : "bg-track"}`}
+                  />
+                ))}
+              </div>
+            </div>
             <div className="hidden lg:block">{finishButton}</div>
           </aside>
         </div>
