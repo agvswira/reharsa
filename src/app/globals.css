@@ -142,6 +142,272 @@ body {
 }
 
 /*
+  Timeline dua jalur di halaman depan (komponen PracticeTimeline).
+  Desktop: jalur kiri, kolom waktu, jalur kanan, dengan garis tengah.
+  HP: satu kolom, label jalur ditampilkan di setiap entri.
+*/
+@layer components {
+  .tl {
+    --when-col: 112px;
+    --lane-gap: 28px;
+    --lanes-h: 64px;
+    --header-h: 4.25rem;
+    margin-top: clamp(40px, 6vw, 80px);
+  }
+  .tl-lanes {
+    display: none;
+  }
+  .tl-lane-head strong {
+    font-size: 15.5px;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  /* Di lebar menengah, label status disembunyikan supaya judul jalur muat. */
+  @media (min-width: 820px) and (max-width: 1079px) {
+    .tl-state {
+      display: none;
+    }
+  }
+  .tl-state {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .tl-track {
+    position: relative;
+  }
+  .tl-staff {
+    display: none;
+  }
+  .tl-steps {
+    display: grid;
+    gap: 36px;
+  }
+  .tl-step {
+    display: grid;
+    gap: 12px;
+  }
+  .tl-when span {
+    display: inline-flex;
+    height: 28px;
+    align-items: center;
+    padding: 0 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .tl-lane-label {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  .tl-quiet .tl-lane-label {
+    display: inline;
+  }
+  .tl-quiet {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .tl-title {
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
+    font-weight: 620;
+    letter-spacing: -0.014em;
+    line-height: 1.3;
+  }
+  .tl-body {
+    margin-top: 6px;
+    color: var(--muted);
+  }
+  .tl-entry-left {
+    padding: 18px 22px;
+    border: 1px dashed var(--line-2);
+    border-radius: var(--radius-card);
+  }
+  .tl-entry-right {
+    padding: 20px 22px;
+  }
+  .tl-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .tl-entry-report p {
+    padding-left: 14px;
+    border-left: 2px solid var(--ink);
+    font-weight: 600;
+  }
+
+  @media (min-width: 820px) {
+    .tl-lanes {
+      position: sticky;
+      top: var(--header-h);
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1fr var(--when-col) 1fr;
+      align-items: center;
+      column-gap: var(--lane-gap);
+      height: var(--lanes-h);
+      background: var(--paper);
+    }
+    /* Isi yang lewat di bawah header jalur memudar, tidak terpotong tajam. */
+    .tl-lanes::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: linear-gradient(180deg, var(--paper), transparent);
+      pointer-events: none;
+    }
+    .tl-lane-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .tl-lane-head--left {
+      grid-column: 1;
+      flex-direction: row-reverse;
+    }
+    .tl-lane-head--right {
+      grid-column: 3;
+    }
+    .tl-track {
+      padding-top: 24px;
+    }
+    .tl-staff {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      display: block;
+      width: 1px;
+      margin-left: -0.5px;
+      background: var(--line-2);
+    }
+    .tl-staff-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, var(--line-2), var(--ink));
+      transform-origin: top;
+    }
+    .tl-staff-light {
+      display: none;
+    }
+    .tl-steps {
+      gap: 0;
+    }
+    .tl-step {
+      grid-template-columns: 1fr var(--when-col) 1fr;
+      grid-template-areas: "left when right";
+      column-gap: var(--lane-gap);
+      align-items: start;
+      padding-block: clamp(22px, 3vw, 40px);
+    }
+    .tl-when {
+      grid-area: when;
+      display: flex;
+      justify-content: center;
+      padding-top: 16px;
+    }
+    .tl-cell--left {
+      grid-area: left;
+      text-align: right;
+    }
+    .tl-cell--right {
+      grid-area: right;
+    }
+    .tl-lane-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .tl-quiet {
+      padding-top: 20px;
+    }
+    .tl-entry-report {
+      padding-top: 14px;
+    }
+  }
+}
+
+/* Garis terisi dan baris menyala mengikuti gulir; hanya di browser yang
+   mendukung dan bila pengguna tidak memilih kurangi gerak. */
+@keyframes tl-fill {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes tl-light {
+  from {
+    top: 0%;
+  }
+  to {
+    top: 100%;
+  }
+}
+@keyframes tl-lit {
+  from {
+    opacity: 0.28;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 820px) {
+  @supports (animation-timeline: view()) {
+    .tl-track {
+      view-timeline: --tl block;
+    }
+    .tl-staff-fill,
+    .tl-staff-light {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --tl;
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+    .tl-staff-fill {
+      animation-name: tl-fill;
+    }
+    .tl-staff-light {
+      position: absolute;
+      left: 50%;
+      display: block;
+      width: 11px;
+      height: 11px;
+      margin: -5.5px 0 0 -5.5px;
+      border-radius: 50%;
+      background: var(--ink);
+      box-shadow: 0 0 0 4px var(--glow), 0 0 22px 6px var(--glow);
+      animation-name: tl-light;
+    }
+    .tl-step > * {
+      animation: tl-lit linear both;
+      animation-timeline: view();
+      animation-range: cover calc(45vh - 60px) cover 45vh;
+    }
+  }
+}
+
+/*
   Animasi, hanya CSS (tanpa library):
   - .rise: muncul sekali saat halaman dibuka.
   - .reveal: muncul saat digulir ke layar (animation-timeline); browser yang

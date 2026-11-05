@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { PracticeTimeline } from "@/components/practice-timeline";
 import { ServiceNotice } from "@/components/service-notice";
 import { SCENARIOS, type Mood } from "@/lib/scenarios";
 import { serviceStatus } from "@/lib/server/env";
@@ -129,62 +130,23 @@ function Hero() {
 }
 
 function HowItWorks() {
-  const classroom = [
-    "Lawan bicaranya teman sekelas dengan aksen yang sama.",
-    "Tamu pura-pura marah, lalu cepat luluh.",
-    "Guru menilai sekilas, karena ada puluhan siswa lain.",
-    "Umpan balik lisan, mudah lupa setelah kelas selesai.",
-  ];
-  const flow = [
-    { who: "Tamu", text: "Membuka dengan keluhan AC rusak saat Nyepi.", emotion: 8 },
-    { who: "Kamu", text: "Minta maaf dan jelaskan aturan Nyepi dengan sopan.", emotion: 6 },
-    { who: "Kamu", text: "Tawarkan teknisi dalam 15 menit atau pindah kamar.", emotion: 3 },
-    { who: "Rapor", text: "Skor per kriteria, kutipan ucapanmu, kalimat yang lebih baik." },
-  ];
   return (
     <section
       id="cara-kerja"
       aria-labelledby="cara-kerja-judul"
-      className="reveal scroll-mt-20 space-y-10"
+      className="scroll-mt-20"
     >
-      <div className="mx-auto max-w-3xl space-y-4 text-center">
+      <div className="reveal mx-auto max-w-3xl space-y-4 text-center">
         <h2 id="cara-kerja-judul" className={h2}>
           Latihan yang sama, dua cara.
         </h2>
         <p className={`${lede} mx-auto`}>
           Situasinya tamu Australia yang AC kamarnya mati saat Nyepi. Di kiri,
-          cara yang biasa terjadi di kelas. Di kanan, contoh alur di Reharsa.
+          yang biasa terjadi saat role-play di kelas. Di kanan, contoh alur di
+          Reharsa.
         </p>
       </div>
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-card border border-line p-6">
-          <h3 className="font-bold">Role-play antarteman</h3>
-          <ul className="mt-4 space-y-3 text-muted">
-            {classroom.map((c) => (
-              <li key={c} className="border-t border-line pt-3">
-                {c}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="card p-6">
-          <h3 className="font-bold">Dengan Reharsa</h3>
-          <ol className="mt-4 space-y-3">
-            {flow.map((f, i) => (
-              <li
-                key={i}
-                className="grid grid-cols-[4.5rem_1fr_auto] items-baseline gap-3 border-t border-line pt-3"
-              >
-                <span className="text-sm text-muted">{f.who}</span>
-                <span>{f.text}</span>
-                <span className="text-sm tabular-nums text-muted">
-                  {f.emotion !== undefined ? `emosi ${f.emotion}` : ""}
-                </span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+      <PracticeTimeline />
     </section>
   );
 }
