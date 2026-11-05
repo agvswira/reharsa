@@ -1,5 +1,6 @@
 import { GuestAvatar } from "@/components/guest-avatar";
 import { levelOf, MOOD_LABEL, type ScenarioProgress } from "@/lib/progress";
+import { sectionTitle } from "@/lib/ui";
 import {
   channelLabel,
   GROUPS,
@@ -97,7 +98,7 @@ export function ScenarioPicker({
               <div className="space-y-1">
                 <h2
                   id={`grup-${g.category}-judul`}
-                  className="font-display text-2xl font-semibold"
+                  className={sectionTitle}
                 >
                   {g.title}
                 </h2>
@@ -118,7 +119,7 @@ export function ScenarioPicker({
                       <p className="text-sm text-muted">
                         {s.department} · {channelLabel(s)}
                       </p>
-                      <h3 className="text-lg font-bold leading-snug">
+                      <h3 className="text-lg font-semibold leading-snug">
                         {s.title}
                       </h3>
                       <p className="line-clamp-3 text-sm text-muted">

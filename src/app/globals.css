@@ -250,15 +250,8 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 8px;
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid var(--line);
+    margin-top: 12px;
     font-size: 13.5px;
-    font-weight: 600;
-  }
-  .tl-entry-report p {
-    padding-left: 14px;
-    border-left: 2px solid var(--ink);
     font-weight: 600;
   }
 
@@ -353,9 +346,6 @@ body {
     }
     .tl-quiet {
       padding-top: 20px;
-    }
-    .tl-entry-report {
-      padding-top: 14px;
     }
   }
 }

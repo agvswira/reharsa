@@ -117,6 +117,11 @@ export const SCENARIOS: Scenario[] = [
     },
     hiddenGoal:
       "Wants a cool place to stay today. Accepts a room move or a quick repair plus a goodwill gesture. Calms down when the staff apologises, explains Nyepi respectfully and gives a concrete time frame.",
+    twist: {
+      at: 2,
+      reveal:
+        "Your wife is five months pregnant and the heat is making her feel faint, so you need a cool room quickly and want to know if a doctor can see her.",
+    },
     facts: [...HOTEL_FACTS, ...NYEPI_FACTS],
     kind: "service",
     criteria: [

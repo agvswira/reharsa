@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { pageTitle } from "@/lib/ui";
 
 export default function NotFound() {
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Situasi latihan tidak ditemukan</h1>
-      <p className="text-muted">
-        Alamat ini tidak cocok dengan situasi mana pun di Reharsa.
+    <div className="space-y-4 py-6 sm:py-12">
+      <h1 className={pageTitle}>Halaman tidak ditemukan</h1>
+      <p className="max-w-prose text-lg text-muted">
+        Alamat ini tidak cocok dengan halaman atau situasi mana pun di Reharsa.
       </p>
       <Link
         href="/latihan"

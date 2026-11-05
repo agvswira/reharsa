@@ -15,6 +15,7 @@ import {
 import { getScenario, ORDERED } from "@/lib/scenarios";
 import { currentUser } from "@/lib/server/auth";
 import { listSessions } from "@/lib/server/history";
+import { pageTitle, sectionTitle } from "@/lib/ui";
 
 export const metadata: Metadata = { title: "Riwayat latihan · Reharsa" };
 
@@ -76,7 +77,7 @@ async function History() {
     console.error("Gagal memuat riwayat:", err);
     return (
       <div className="space-y-6">
-        <h1 className="text-[clamp(2rem,1.3rem+2.5vw,3.5rem)]">Riwayat latihan</h1>
+        <h1 className={pageTitle}>Riwayat latihan</h1>
         <div role="alert" className="card space-y-4 p-6 sm:p-8">
           <p className="text-lg">
             Riwayatmu tidak bisa dimuat sekarang. Rapor yang sudah tersimpan
@@ -93,7 +94,7 @@ async function History() {
   if (sessions.length === 0) {
     return (
       <div className="space-y-6">
-        <h1 className="text-[clamp(2rem,1.3rem+2.5vw,3.5rem)]">Riwayat latihan</h1>
+        <h1 className={pageTitle}>Riwayat latihan</h1>
         <div className="card space-y-4 p-6 sm:p-8">
           <p className="text-lg">
             Belum ada latihan. Setelah kamu menyelesaikan satu situasi, rapor,
@@ -149,7 +150,7 @@ async function History() {
   return (
     <div className="space-y-12">
       <div className="space-y-3">
-        <h1 className="text-[clamp(2rem,1.3rem+2.5vw,3.5rem)]">Riwayat latihan</h1>
+        <h1 className={pageTitle}>Riwayat latihan</h1>
         <p className="max-w-prose text-lg text-muted">
           {sessions.length} sesi, rata-rata skor {average}%.
           {change !== null
@@ -213,7 +214,7 @@ async function History() {
         )}
 
         <section aria-labelledby="kemampuan-judul" className="space-y-4">
-          <h2 id="kemampuan-judul" className="font-display text-2xl font-semibold">
+          <h2 id="kemampuan-judul" className={sectionTitle}>
             Semua kemampuan
           </h2>
           <ul className="grid gap-y-5 sm:grid-cols-2 sm:gap-x-12">
@@ -237,7 +238,7 @@ async function History() {
       </div>
 
       <section aria-labelledby="sesi-judul" className="space-y-4">
-        <h2 id="sesi-judul" className="font-display text-2xl font-semibold">
+        <h2 id="sesi-judul" className={sectionTitle}>
           Semua sesi
         </h2>
         {/* Tanpa garis antar-baris: tiap baris punya latar saat disorot. */}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { levelOf } from "@/lib/progress";
+import { sectionTitle } from "@/lib/ui";
 import type { Scenario } from "@/lib/scenarios";
 import type {
   Coaching,
@@ -134,14 +135,14 @@ export function Report({
       </section>
 
       <section aria-labelledby="kriteria" className="space-y-4">
-        <h2 id="kriteria" className="text-xl font-bold">
+        <h2 id="kriteria" className={sectionTitle}>
           Skor per kriteria
         </h2>
         <ol className="space-y-8 pt-2">
           {evaluation.criteria.map((c) => (
             <li key={c.id} className="space-y-2">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="font-bold">{labelOf(c.id)}</h3>
+                <h3 className="text-lg font-semibold">{labelOf(c.id)}</h3>
                 <div className="flex items-center gap-3">
                   <ScoreBar score={c.score} />
                   <span className="font-bold tabular-nums">{c.score}/4</span>
@@ -169,7 +170,7 @@ export function Report({
 
       {coaching.better_phrases.length > 0 ? (
         <section aria-labelledby="kalimat" className="space-y-4">
-          <h2 id="kalimat" className="text-xl font-bold">
+          <h2 id="kalimat" className={sectionTitle}>
             Kalimat yang bisa lebih baik
           </h2>
           <ul className="space-y-6">
@@ -190,7 +191,7 @@ export function Report({
       ) : null}
 
       <section aria-labelledby="pengucapan" className="space-y-4">
-        <h2 id="pengucapan" className="text-xl font-bold">
+        <h2 id="pengucapan" className={sectionTitle}>
           Pengucapan
         </h2>
         {pronunciation.length > 0 ? (
@@ -198,19 +199,19 @@ export function Report({
             <dl className="flex flex-wrap gap-x-10 gap-y-3">
               <div>
                 <dt className="text-sm text-muted">Kejelasan kata</dt>
-                <dd className="text-2xl font-bold tabular-nums">
+                <dd className="font-display text-2xl font-semibold tabular-nums">
                   {average(pronunciation.map((p) => p.accuracy))}/100
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-muted">Kelancaran</dt>
-                <dd className="text-2xl font-bold tabular-nums">
+                <dd className="font-display text-2xl font-semibold tabular-nums">
                   {average(pronunciation.map((p) => p.fluency))}/100
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-muted">Kalimat dinilai</dt>
-                <dd className="text-2xl font-bold tabular-nums">
+                <dd className="font-display text-2xl font-semibold tabular-nums">
                   {pronunciation.length}
                 </dd>
               </div>

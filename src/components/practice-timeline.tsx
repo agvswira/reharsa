@@ -1,58 +1,84 @@
 // Timeline dua jalur di halaman depan, diadaptasi dari "credit timeline"
 // referensi OpenLC. Versi ini komponen server tanpa JavaScript: garis tengah
 // terisi dan baris menyala lewat animasi CSS yang mengikuti gulir
-// (lihat .tl-* di globals.css). Semua isi adalah contoh alur.
+// (lihat .tl-* di globals.css).
+//
+// Isinya satu latihan yang sama dijalani dua cara, tahap demi tahap. Jalur
+// Reharsa mengikuti skenario "AC kamar rusak saat Nyepi" apa adanya: fakta,
+// kejutan di giliran kedua, dan wewenang staf sesuai lembar fakta.
 
 type Step = {
   when: string;
-  classroom?: { title: string };
-  waiting?: string;
-  reharsa?: { title: string; emotion: number; turn: string };
-  report?: string;
+  // Jalur kelas: judul tegas, atau catatan redup bila tidak ada yang terjadi.
+  classroom?: string;
+  quiet?: string;
+  reharsa?: {
+    title: string;
+    // Emosi tamu setelah tahap ini, bila tahap ini bagian dari percakapan.
+    emotion?: number;
+    meta: string;
+  };
 };
 
 const STEPS: Step[] = [
   {
-    when: "Menit 0",
-    classroom: {
-      title: "Teman sekelas pura-pura jadi tamu.",
-    },
+    when: "Persiapan",
+    classroom: "Peran dibagi, naskah dibaca bersama.",
     reharsa: {
-      title: "Mark membuka dengan marah.",
+      title: "Kamu pilih situasi Nyepi dan suasana awal tamu: kesal.",
+      meta: "Brief dan fakta hotel",
+    },
+  },
+  {
+    when: "Tamu bicara",
+    classroom: "Teman sekelas jadi tamu. Aksennya sama, dan ia tahu ini latihan.",
+    reharsa: {
+      title: "Mark mengeluh AC mati dan ingin keluar mencari kafe.",
       emotion: 8,
-      turn: "Tamu bicara",
+      meta: "Suara beraksen Australia",
     },
   },
   {
-    when: "Menit 1",
-    waiting: "Belum ada umpan balik.",
+    when: "Kamu menjawab",
+    quiet: "Tidak ada yang mencatat kalimatmu.",
     reharsa: {
-      title: "Kamu minta maaf dan jelaskan aturan Nyepi.",
+      title: "Kamu minta maaf dan jelaskan aturan Nyepi dengan sopan.",
       emotion: 6,
-      turn: "Giliran 1",
+      meta: "Giliran 1",
     },
   },
   {
-    when: "Menit 3",
-    waiting: "Masih belum ada.",
+    when: "Kabar baru",
+    quiet: "Naskah tetap sama sampai akhir.",
     reharsa: {
-      title: "Kamu tawarkan teknisi dalam 15 menit.",
+      title: "Mark bilang istrinya hamil dan pusing karena panas.",
+      emotion: 7,
+      meta: "Giliran 2",
+    },
+  },
+  {
+    when: "Solusi",
+    quiet: "Belum ada umpan balik.",
+    reharsa: {
+      title: "Kamu pindahkan mereka ke Pool Villa dan tawarkan dokter jaga.",
       emotion: 3,
-      turn: "Giliran 2",
+      meta: "Giliran 3",
     },
   },
   {
-    when: "Menit 5",
-    classroom: {
-      title: "Guru melihat sekilas.",
+    when: "Selesai",
+    classroom: "Guru memberi catatan singkat. Puluhan pasangan lain menunggu.",
+    reharsa: {
+      title: "Rapor: skor 0-4 per kriteria, kutipan ucapanmu, kalimat yang lebih baik.",
+      meta: "Tersimpan di riwayat",
     },
-    report:
-      "Rapor siap, lengkap dengan kalimat yang lebih baik.",
   },
   {
-    when: "Setelah kelas",
-    classroom: {
-      title: "Catatan lisan, lalu terlupa.",
+    when: "Minggu depan",
+    classroom: "Catatan lisan sudah terlupa.",
+    reharsa: {
+      title: "Riwayat menunjukkan kemampuan yang paling perlu dilatih.",
+      meta: "Lanjut ke situasi yang disarankan",
     },
   },
 ];
@@ -63,11 +89,11 @@ export function PracticeTimeline() {
       <div className="tl-lanes" aria-hidden="true">
         <div className="tl-lane-head tl-lane-head--left">
           <strong>Role-play antarteman</strong>
-          <span className="tl-state">Menunggu umpan balik</span>
+          <span className="tl-state">Umpan balik lisan di akhir</span>
         </div>
         <div className="tl-lane-head tl-lane-head--right">
           <strong>Dengan Reharsa</strong>
-          <span className="tl-state">Contoh alur · Nyepi</span>
+          <span className="tl-state">Contoh: AC rusak saat Nyepi</span>
         </div>
       </div>
 
@@ -85,16 +111,16 @@ export function PracticeTimeline() {
               </div>
 
               <div className="tl-cell tl-cell--left">
-                {step.waiting ? (
+                {step.quiet ? (
                   <p className="tl-quiet">
                     <span className="tl-lane-label">Role-play antarteman: </span>
-                    {step.waiting}
+                    {step.quiet}
                   </p>
                 ) : null}
                 {step.classroom ? (
                   <div className="tl-entry-left">
                     <span className="tl-lane-label">Role-play antarteman</span>
-                    <p className="tl-title">{step.classroom.title}</p>
+                    <p className="tl-title">{step.classroom}</p>
                   </div>
                 ) : null}
               </div>
@@ -105,15 +131,11 @@ export function PracticeTimeline() {
                     <span className="tl-lane-label">Dengan Reharsa</span>
                     <p className="tl-title">{step.reharsa.title}</p>
                     <div className="tl-foot">
-                      <span>Emosi tamu {step.reharsa.emotion}/10</span>
-                      <span className="text-muted">{step.reharsa.turn}</span>
+                      {step.reharsa.emotion !== undefined ? (
+                        <span>Emosi tamu {step.reharsa.emotion}/10</span>
+                      ) : null}
+                      <span className="text-muted">{step.reharsa.meta}</span>
                     </div>
-                  </div>
-                ) : null}
-                {step.report ? (
-                  <div className="tl-entry-report">
-                    <span className="tl-lane-label">Dengan Reharsa</span>
-                    <p>{step.report}</p>
                   </div>
                 ) : null}
               </div>

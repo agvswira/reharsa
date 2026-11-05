@@ -276,7 +276,7 @@ function Steps() {
               </span>
               {s.visual}
             </div>
-            <h3 className="font-bold">{s.title}</h3>
+            <h3 className="font-semibold">{s.title}</h3>
           </li>
         ))}
       </ol>

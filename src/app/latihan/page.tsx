@@ -19,6 +19,7 @@ import { channelLabel, GROUPS, SCENARIOS } from "@/lib/scenarios";
 import { currentUser } from "@/lib/server/auth";
 import { serviceStatus } from "@/lib/server/env";
 import { listSessions } from "@/lib/server/history";
+import { pageTitle } from "@/lib/ui";
 
 export const metadata: Metadata = { title: "Pilih situasi · Reharsa" };
 
@@ -60,7 +61,7 @@ async function Picker() {
   return (
     <div className="space-y-12">
       <div className="space-y-3">
-        <h1 className="text-[clamp(2rem,1.3rem+2.5vw,3.5rem)]">
+        <h1 className={pageTitle}>
           Halo, {user.name}.
         </h1>
         <p className="max-w-prose text-lg text-muted">

@@ -11,6 +11,7 @@ import {
 import { EmotionMeter } from "@/components/emotion-meter";
 import { GuestAvatar } from "@/components/guest-avatar";
 import { MOOD_LABEL, topLevel } from "@/lib/progress";
+import { pageTitle } from "@/lib/ui";
 import { Report, type ReportData } from "@/components/report";
 import {
   browserRecognitionAvailable,
@@ -375,7 +376,7 @@ export function PracticeSession({
           {scenario.department} ·{" "}
           {scenario.channel === "telepon" ? "Telepon" : "Tatap muka"}
         </p>
-        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
+        <h1 className={pageTitle}>
           {scenario.title}
         </h1>
       </div>
@@ -416,7 +417,7 @@ export function PracticeSession({
             ) : null}
 
             <section aria-labelledby="dinilai" className="space-y-3">
-              <h3 id="dinilai" className="font-display text-xl font-semibold">
+              <h3 id="dinilai" className="font-display text-xl font-semibold tracking-[-0.02em]">
                 Yang dinilai, dan seperti apa skor 4
               </h3>
               <ol className="space-y-4">
