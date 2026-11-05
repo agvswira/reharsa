@@ -9,7 +9,13 @@ export type Recorder = {
   cancel: () => void;
 };
 
-export async function startRecording(): Promise<Recorder> {
+/**
+ * Mulai merekam. `onLevel` menerima volume 0-1 sekitar 15 kali per detik,
+ * supaya siswa melihat bahwa suaranya tertangkap mikrofon.
+ */
+export async function startRecording(
+  onLevel?: (level: number) => void,
+): Promise<Recorder> {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   const recorder = new MediaRecorder(stream);
   const chunks: Blob[] = [];
@@ -18,7 +24,30 @@ export async function startRecording(): Promise<Recorder> {
   };
   recorder.start();
 
-  const release = () => stream.getTracks().forEach((t) => t.stop());
+  let meterCtx: AudioContext | null = null;
+  let meterTimer: ReturnType<typeof setInterval> | null = null;
+  if (onLevel) {
+    meterCtx = new AudioContext();
+    const analyser = meterCtx.createAnalyser();
+    analyser.fftSize = 512;
+    meterCtx.createMediaStreamSource(stream).connect(analyser);
+    const samples = new Uint8Array(analyser.fftSize);
+    meterTimer = setInterval(() => {
+      analyser.getByteTimeDomainData(samples);
+      let sum = 0;
+      for (const s of samples) sum += ((s - 128) / 128) ** 2;
+      // RMS suara bicara biasanya 0.02-0.2; dikali agar terlihat jelas.
+      onLevel(Math.min(1, Math.sqrt(sum / samples.length) * 6));
+    }, 66);
+  }
+
+  const release = () => {
+    if (meterTimer) clearInterval(meterTimer);
+    void meterCtx?.close();
+    meterCtx = null;
+    onLevel?.(0);
+    stream.getTracks().forEach((t) => t.stop());
+  };
 
   return {
     stop: () =>

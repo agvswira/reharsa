@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Scenario } from "@/lib/scenarios";
 import type {
   Coaching,
@@ -54,14 +54,21 @@ export function Report({
   const { evaluation, coaching, pronunciation, pronFailures } = data;
 
   // Rapor menggantikan halaman percakapan yang mungkin sudah tergulir jauh;
-  // mulai baca dari atas, dari total poin.
+  // mulai baca dari atas, dan pindahkan fokus ke judul supaya pembaca layar
+  // langsung membacakan total poin.
+  const headingRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    headingRef.current?.focus();
   }, []);
   const total = evaluation.criteria.reduce((sum, c) => sum + c.score, 0);
   const max = scenario.criteria.length * 4;
   const labelOf = (id: string) =>
     scenario.criteria.find((c) => c.id === id)?.label ?? id;
+
+  // Satu kriteria dengan skor terendah jadi fokus latihan berikutnya.
+  const focus = [...evaluation.criteria].sort((a, b) => a.score - b.score)[0];
+  const showFocus = focus && focus.score < 4;
 
   const weakWords = pronunciation
     .flatMap((p) => p.words)
@@ -75,12 +82,30 @@ export function Report({
 
   return (
     <div className="space-y-10">
-      <section className="space-y-3">
-        <p className="text-sm text-muted">Rapor · {scenario.title}</p>
-        <h1 className="text-3xl font-bold tabular-nums sm:text-4xl">
-          {total} dari {max} poin
-        </h1>
-        <p className="max-w-prose text-lg">{coaching.summary}</p>
+      <section className="grid gap-8 lg:grid-cols-[1fr_20rem]">
+        <div className="space-y-3">
+          <p className="text-sm text-muted">Rapor · {scenario.title}</p>
+          <h1
+            ref={headingRef}
+            tabIndex={-1}
+            className="text-4xl font-semibold tabular-nums outline-none sm:text-5xl"
+          >
+            {total} dari {max} poin
+          </h1>
+          <p className="max-w-prose text-lg">{coaching.summary}</p>
+        </div>
+        {showFocus ? (
+          <div className="self-start rounded-md border border-line bg-surface p-4">
+            <p className="text-sm text-muted">Fokus latihan berikutnya</p>
+            <p className="font-display text-xl font-semibold">
+              {labelOf(focus.id)}
+            </p>
+            <p className="mt-1 text-sm tabular-nums text-muted">
+              Skor {focus.score}/4
+            </p>
+            <p className="mt-2">{focus.comment}</p>
+          </div>
+        ) : null}
       </section>
 
       <section aria-labelledby="kriteria" className="space-y-4">
@@ -99,7 +124,7 @@ export function Report({
               </div>
               <p className="max-w-prose">{c.comment}</p>
               {c.evidence ? (
-                <blockquote className="border-l-2 border-line pl-3 text-sm text-muted">
+                <blockquote lang="en" className="border-l-2 border-line pl-3 text-sm text-muted">
                   Ucapanmu: “{c.evidence}”
                 </blockquote>
               ) : (
@@ -128,7 +153,7 @@ export function Report({
                 <p className="text-muted">
                   <span className="sr-only">Kalimatmu: </span>“{p.original}”
                 </p>
-                <p className="rounded-md bg-accent-soft px-4 py-2 font-bold">
+                <p lang="en" className="rounded-md bg-accent-soft px-4 py-2 font-bold">
                   <span className="sr-only">Coba katakan: </span>
                   {p.suggestion}
                 </p>

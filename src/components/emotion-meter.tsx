@@ -1,5 +1,6 @@
 // Meter emosi 0-10. Sebelas ruas dipilih supaya setiap kenaikan atau
-// penurunan satu poin terlihat jelas tanpa membaca angka.
+// penurunan satu poin terlihat jelas tanpa membaca angka. Ini motif
+// identitas Reharsa: muncul di halaman depan, layar latihan, dan transkrip.
 
 export function emotionLabel(value: number) {
   if (value <= 3) return "tenang";
@@ -11,16 +12,19 @@ export function EmotionMeter({
   value,
   reason,
   who,
+  compact = false,
 }: {
   value: number;
   reason?: string;
   who: string;
+  // Versi ringkas untuk bilah atas di HP: tanpa alasan, ruas lebih tipis.
+  compact?: boolean;
 }) {
   return (
-    <div className="space-y-2">
+    <div className={compact ? "space-y-1.5" : "space-y-2"}>
       <div className="flex items-baseline justify-between gap-3">
         <p className="text-sm text-muted">Emosi {who}</p>
-        <p className="font-bold tabular-nums" aria-live="polite">
+        <p className="font-bold tabular-nums">
           {value}/10 · {emotionLabel(value)}
         </p>
       </div>
@@ -36,17 +40,15 @@ export function EmotionMeter({
         {Array.from({ length: 11 }, (_, i) => (
           <span
             key={i}
-            className={`h-2.5 rounded-sm transition-colors duration-300 ${
-              i <= value
-                ? value >= 7
-                  ? "bg-alert"
-                  : "bg-ink"
-                : "bg-line"
+            className={`${compact ? "h-1.5" : "h-2.5"} rounded-sm transition-colors duration-300 ${
+              i <= value ? (value >= 7 ? "bg-alert" : "bg-ink") : "bg-line"
             }`}
           />
         ))}
       </div>
-      {reason ? <p className="text-sm text-muted">{reason}</p> : null}
+      {reason && !compact ? (
+        <p className="text-sm text-muted">{reason}</p>
+      ) : null}
     </div>
   );
 }

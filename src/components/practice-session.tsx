@@ -92,6 +92,7 @@ export function PracticeSession({
   const [pronunciation, setPronunciation] = useState<PronunciationResult[]>([]);
   const [pronFailures, setPronFailures] = useState(0);
   const [report, setReport] = useState<ReportData | null>(null);
+  const [level, setLevel] = useState(0);
 
   const typing = typingChosen || !voiceAvailable;
 
@@ -99,6 +100,7 @@ export function PracticeSession({
   const captionRef = useRef<LiveCaption | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const listEndRef = useRef<HTMLLIElement | null>(null);
+  const composerRef = useRef<HTMLDivElement | null>(null);
   // Nomor pemutaran terakhir. Pemutaran yang sudah dipotong tidak boleh
   // mengubah status ketika akhirnya selesai.
   const speakIdRef = useRef(0);
@@ -107,9 +109,16 @@ export function PracticeSession({
   const limitReached = studentTurns >= MAX_STUDENT_TURNS;
   const canAnswer = phase === "talking" && !resolved && !limitReached;
 
+  // Gulir supaya pesan terakhir berada tepat di atas area jawab yang menempel
+  // di bawah layar. Tingginya berubah (mode suara atau ketik), jadi diukur.
   useEffect(() => {
-    listEndRef.current?.scrollIntoView({ block: "nearest" });
-  }, [turns.length, liveText]);
+    const end = listEndRef.current;
+    if (!end) return;
+    const covered = composerRef.current?.offsetHeight ?? 0;
+    const visibleBottom = window.innerHeight - covered - 16;
+    const overflow = end.getBoundingClientRect().bottom - visibleBottom;
+    if (overflow > 0) window.scrollBy({ top: overflow });
+  }, [turns.length, liveText, busy]);
 
   useEffect(() => {
     return () => {
@@ -202,7 +211,7 @@ export function PracticeSession({
     setLiveText("");
     interruptGuest();
     try {
-      recorderRef.current = await startRecording();
+      recorderRef.current = await startRecording(setLevel);
     } catch {
       setError(
         "Mikrofon tidak bisa dipakai. Izinkan akses mikrofon di browser, lalu coba lagi.",
@@ -316,258 +325,389 @@ export function PracticeSession({
 
   const recording = busy === "recording";
   const waiting = busy === "thinking" || busy === "transcribing";
+  const guestLabel = scenario.kind === "interview" ? "Pewawancara" : "Tamu";
+  const lastGuest = [...turns].reverse().find((t) => t.speaker === "guest");
+
+  const finishButton = (
+    <button
+      type="button"
+      onClick={() => void finish()}
+      disabled={
+        studentTurns === 0 || phase === "evaluating" || waiting || recording
+      }
+      className={`min-h-11 w-full rounded-md px-5 font-bold active:translate-y-px disabled:opacity-50 ${
+        resolved || limitReached
+          ? "bg-accent text-accent-ink hover:opacity-90"
+          : "border border-edge text-ink hover:bg-surface"
+      }`}
+    >
+      {phase === "evaluating" ? "Menilai..." : "Selesai dan lihat rapor"}
+    </button>
+  );
+
+  const guestCard = (
+    <div className="rounded-md border border-line bg-surface p-4">
+      <p className="text-sm text-muted">{guestLabel}</p>
+      <p className="font-display text-xl font-semibold">{scenario.guest.name}</p>
+      <p className="text-sm text-muted">
+        {scenario.guest.origin} · suasana awal {mood}
+      </p>
+    </div>
+  );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="space-y-2">
         <Link href="/" className="rounded text-sm text-muted underline">
           Kembali ke daftar situasi
         </Link>
-        <h1 className="text-2xl font-bold sm:text-3xl">{scenario.title}</h1>
-        <p className="text-muted">
-          {scenario.kind === "interview" ? "Pewawancara" : "Tamu"}:{" "}
-          {scenario.guest.name}, {scenario.guest.origin}
-        </p>
+        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
+          {scenario.title}
+        </h1>
       </div>
 
       {phase === "brief" ? (
-        <section className="space-y-6" aria-labelledby="brief">
-          <h2 id="brief" className="sr-only">
-            Brief
-          </h2>
-          <dl className="space-y-4">
-            <div>
-              <dt className="text-sm text-muted">Situasi</dt>
-              <dd className="max-w-prose">{scenario.situation}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-muted">Peranmu</dt>
-              <dd>{scenario.studentRole}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-muted">Tujuan</dt>
-              <dd className="max-w-prose">{scenario.goal}</dd>
-            </div>
-          </dl>
-          <details className="rounded-md border border-line bg-surface p-4">
-            <summary className="font-bold">
-              Fakta yang boleh kamu pakai ({scenario.facts.length})
-            </summary>
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-              {scenario.facts.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
-          </details>
-          <p className="text-sm text-muted">
-            {voiceAvailable
-              ? `Jawab dengan suara dalam bahasa Inggris. ${scenario.guest.name} bicara duluan, jadi nyalakan suara perangkatmu dan izinkan mikrofon saat diminta.`
-              : `Browser ini tidak mendukung input suara, jadi jawab dengan mengetik dalam bahasa Inggris. Untuk latihan suara, buka di Chrome atau Edge.`}
-          </p>
-          <button
-            type="button"
-            onClick={begin}
-            className="min-h-11 rounded-md bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
-          >
-            Mulai percakapan
-          </button>
-        </section>
-      ) : (
-        <section className="space-y-6" aria-labelledby="percakapan">
-          <h2 id="percakapan" className="sr-only">
-            Percakapan
-          </h2>
-
-          <div className="rounded-md border border-line bg-surface p-4">
-            <EmotionMeter value={emotion} reason={emotionReason} who={who} />
-          </div>
-
-          <ol className="space-y-4" aria-label="Transkrip">
-            {turns.map((t, i) => (
-              <li
-                key={i}
-                className={
-                  t.speaker === "guest"
-                    ? "max-w-[85%] space-y-1"
-                    : "ml-auto max-w-[85%] space-y-1 text-right"
-                }
-              >
-                <p className="text-sm text-muted">
-                  {t.speaker === "guest" ? scenario.guest.name : "Kamu"}
-                  {t.speaker === "guest" && t.emotion !== undefined
-                    ? ` · emosi ${t.emotion}`
-                    : ""}
-                </p>
-                <p
-                  className={`inline-block rounded-md px-4 py-2 text-left ${
-                    t.speaker === "guest"
-                      ? "border border-line bg-surface"
-                      : "bg-accent-soft"
-                  }`}
-                >
-                  {t.text}
-                </p>
-                {t.speaker === "guest" ? (
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => void playGuest(t.text, t.emotion ?? 5)}
-                      disabled={recording || waiting}
-                      className="min-h-11 rounded-md px-2 text-sm text-muted underline hover:text-ink disabled:opacity-50"
-                    >
-                      Dengar lagi
-                    </button>
-                  </div>
-                ) : null}
-              </li>
-            ))}
-            {recording ? (
-              <li className="ml-auto max-w-[85%] space-y-1 text-right">
-                <p className="text-sm text-muted">Kamu, sedang bicara</p>
-                <p
-                  aria-live="polite"
-                  className="inline-block min-h-10 rounded-md border border-dashed border-accent px-4 py-2 text-left"
-                >
-                  {liveText || (browserStt ? "Mendengarkan..." : "Merekam...")}
-                </p>
-              </li>
-            ) : null}
-            <li ref={listEndRef} aria-hidden="true" />
-          </ol>
-
-          <p className="text-sm text-muted" aria-live="polite">
-            {busy === "transcribing" && "Memproses ucapanmu..."}
-            {busy === "thinking" && `${scenario.guest.name} sedang menanggapi...`}
-            {busy === "speaking" &&
-              `${scenario.guest.name} sedang bicara. Kamu boleh langsung menjawab.`}
-            {phase === "evaluating" && "Menilai percakapanmu..."}
-          </p>
-
-          {error ? (
-            <div
-              role="alert"
-              className="flex flex-wrap items-center gap-3 rounded-md bg-alert-soft p-3 text-sm text-alert"
-            >
-              <p className="flex-1">{error}</p>
-              {retryPending ? (
-                <button
-                  type="button"
-                  onClick={() => void requestGuest(turns)}
-                  disabled={waiting}
-                  className="min-h-11 rounded-md border border-alert px-4 font-bold hover:bg-surface disabled:opacity-50"
-                >
-                  Kirim ulang
-                </button>
-              ) : null}
-            </div>
-          ) : null}
-
-          {resolved || limitReached ? (
-            <p className="rounded-md border border-line bg-surface p-3">
-              {resolved
-                ? `${scenario.guest.name} menganggap urusannya selesai. Lihat rapormu.`
-                : `Batas ${MAX_STUDENT_TURNS} giliran tercapai. Lihat rapormu.`}
-            </p>
-          ) : null}
-
-          {canAnswer ? (
-            typing ? (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const text = draft;
-                  setDraft("");
-                  void sendAnswer(text);
-                }}
-                className="space-y-2"
-              >
-                <label htmlFor="jawaban" className="block text-sm text-muted">
-                  Jawabanmu (bahasa Inggris)
-                </label>
-                <textarea
-                  id="jawaban"
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      e.currentTarget.form?.requestSubmit();
-                    }
-                  }}
-                  rows={3}
-                  maxLength={2000}
-                  placeholder="Type what you would say..."
-                  className="w-full rounded-md border border-line bg-surface p-3 text-ink placeholder:text-muted"
-                />
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="submit"
-                    disabled={waiting || !draft.trim()}
-                    className="min-h-11 rounded-md bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px disabled:opacity-50"
-                  >
-                    Kirim jawaban
-                  </button>
-                  {voiceAvailable ? (
-                    <button
-                      type="button"
-                      onClick={() => setTypingChosen(false)}
-                      className="min-h-11 rounded-md px-2 text-sm text-muted underline hover:text-ink"
-                    >
-                      Kembali bicara pakai mikrofon
-                    </button>
-                  ) : null}
-                </div>
-              </form>
-            ) : (
-              <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-                <button
-                  type="button"
-                  onClick={() => void (recording ? stopTalking() : startTalking())}
-                  disabled={waiting}
-                  aria-pressed={recording}
-                  className={`min-h-14 rounded-md px-6 text-lg font-bold active:translate-y-px disabled:opacity-50 ${
-                    recording
-                      ? "bg-alert text-white"
-                      : "bg-accent text-accent-ink hover:opacity-90"
-                  }`}
-                >
-                  {recording ? "Selesai bicara" : "Tekan untuk bicara"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTypingChosen(true)}
-                  disabled={recording}
-                  className="min-h-11 rounded-md px-2 text-sm text-muted underline hover:text-ink disabled:opacity-50"
-                >
-                  Tidak bisa bicara sekarang? Ketik saja
-                </button>
+        <section
+          aria-labelledby="brief"
+          className="grid gap-8 lg:grid-cols-[1fr_18rem]"
+        >
+          <div className="space-y-6">
+            <h2 id="brief" className="sr-only">
+              Brief
+            </h2>
+            <dl className="space-y-4">
+              <div>
+                <dt className="text-sm text-muted">Situasi</dt>
+                <dd className="max-w-prose text-lg">{scenario.situation}</dd>
               </div>
-            )
-          ) : null}
-
-          <div className="flex flex-wrap items-center gap-4 border-t border-line pt-4">
+              <div>
+                <dt className="text-sm text-muted">Peranmu</dt>
+                <dd>{scenario.studentRole}</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">Tujuan</dt>
+                <dd className="max-w-prose">{scenario.goal}</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">Yang dinilai</dt>
+                <dd>
+                  <ul className="mt-1 flex flex-wrap gap-2">
+                    {scenario.criteria.map((c) => (
+                      <li
+                        key={c.id}
+                        className="rounded-md border border-line px-2.5 py-1 text-sm"
+                      >
+                        {c.label}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+            <details className="rounded-md border border-line bg-surface p-4">
+              <summary className="font-bold">
+                Fakta yang boleh kamu pakai ({scenario.facts.length})
+              </summary>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
+                {scenario.facts.map((f) => (
+                  <li key={f}>{f}</li>
+                ))}
+              </ul>
+            </details>
+          </div>
+          <div className="space-y-4 lg:pt-1">
+            {guestCard}
+            <p className="text-sm text-muted">
+              {voiceAvailable
+                ? `Jawab dengan suara dalam bahasa Inggris. ${scenario.guest.name} bicara duluan, jadi nyalakan suara perangkatmu dan izinkan mikrofon saat diminta.`
+                : "Browser ini tidak mendukung input suara, jadi jawab dengan mengetik dalam bahasa Inggris. Untuk latihan suara, buka di Chrome atau Edge."}
+            </p>
             <button
               type="button"
-              onClick={() => void finish()}
-              disabled={
-                studentTurns === 0 ||
-                phase === "evaluating" ||
-                waiting ||
-                recording
-              }
-              className={`min-h-11 rounded-md px-5 font-bold active:translate-y-px disabled:opacity-50 ${
-                resolved || limitReached
-                  ? "bg-accent text-accent-ink hover:opacity-90"
-                  : "border border-ink text-ink hover:bg-surface"
-              }`}
+              onClick={begin}
+              className="min-h-12 w-full rounded-md bg-accent px-5 text-lg font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
             >
-              {phase === "evaluating" ? "Menilai..." : "Selesai dan lihat rapor"}
+              Mulai percakapan
             </button>
+          </div>
+        </section>
+      ) : (
+        <div className="grid gap-8 lg:grid-cols-[1fr_18rem]">
+          <section aria-labelledby="percakapan" className="min-w-0 space-y-4">
+            <h2 id="percakapan" className="sr-only">
+              Percakapan
+            </h2>
+
+            {/* Di HP meter emosi menempel di atas supaya tetap terlihat. */}
+            <div className="sticky top-0 z-10 -mx-4 border-b border-line bg-paper px-4 py-3 lg:hidden">
+              <EmotionMeter value={emotion} who={who} compact />
+            </div>
+
+            <ol className="space-y-5" aria-label="Transkrip">
+              {turns.map((t, i) => (
+                <li
+                  key={i}
+                  className={
+                    t.speaker === "guest"
+                      ? "max-w-[88%] space-y-1"
+                      : "ml-auto max-w-[88%] space-y-1 text-right"
+                  }
+                >
+                  <p className="text-sm text-muted">
+                    {t.speaker === "guest" ? scenario.guest.name : "Kamu"}
+                    {t.speaker === "guest" && t.emotion !== undefined
+                      ? ` · emosi ${t.emotion}`
+                      : ""}
+                  </p>
+                  <p
+                    lang="en"
+                    className={`inline-block rounded-md px-4 py-2.5 text-left text-lg leading-relaxed ${
+                      t.speaker === "guest"
+                        ? "border border-line bg-surface"
+                        : "bg-accent-soft"
+                    }`}
+                  >
+                    {t.text}
+                  </p>
+                  {t.speaker === "guest" ? (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => void playGuest(t.text, t.emotion ?? 5)}
+                        disabled={recording || waiting}
+                        className="min-h-11 rounded-md px-2 text-sm text-muted underline hover:text-ink disabled:opacity-50"
+                      >
+                        Dengar lagi
+                        <span className="sr-only">
+                          {" "}
+                          kalimat {scenario.guest.name}
+                        </span>
+                      </button>
+                    </div>
+                  ) : null}
+                </li>
+              ))}
+              {recording ? (
+                <li className="ml-auto max-w-[88%] space-y-1 text-right">
+                  <p className="text-sm text-muted">Kamu, sedang bicara</p>
+                  <p
+                    lang="en"
+                    className="inline-block min-h-11 rounded-md border border-dashed border-accent px-4 py-2.5 text-left text-lg"
+                  >
+                    {liveText ||
+                      (browserStt ? "Mendengarkan..." : "Merekam...")}
+                  </p>
+                </li>
+              ) : null}
+              <li ref={listEndRef} aria-hidden="true" />
+            </ol>
+
+            {/* Jawaban tamu diumumkan ke pembaca layar. */}
+            <p className="sr-only" aria-live="polite">
+              {lastGuest && busy !== "thinking"
+                ? `${scenario.guest.name}: ${lastGuest.text}. Emosi ${emotion} dari 10.`
+                : ""}
+            </p>
+
+            {error ? (
+              <div
+                role="alert"
+                className="flex flex-wrap items-center gap-3 rounded-md bg-alert-soft p-3 text-sm text-alert"
+              >
+                <p className="flex-1">{error}</p>
+                {retryPending ? (
+                  <button
+                    type="button"
+                    onClick={() => void requestGuest(turns)}
+                    disabled={waiting}
+                    className="min-h-11 rounded-md border border-alert px-4 font-bold hover:bg-surface disabled:opacity-50"
+                  >
+                    Kirim ulang
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+
+            {resolved || limitReached ? (
+              <p className="rounded-md border border-line bg-surface p-3">
+                {resolved
+                  ? `${scenario.guest.name} menganggap urusannya selesai. Lihat rapormu.`
+                  : `Batas ${MAX_STUDENT_TURNS} giliran tercapai. Lihat rapormu.`}
+              </p>
+            ) : null}
+
+            {/* Area jawab menempel di bawah supaya tombol bicara selalu terlihat. */}
+            <div
+              ref={composerRef}
+              className="sticky bottom-0 z-10 -mx-4 space-y-3 border-t border-line bg-paper px-4 pb-4 pt-3 sm:mx-0 sm:px-0"
+            >
+              <p className="min-h-5 text-sm text-muted" aria-live="polite">
+                {busy === "transcribing" && "Memproses ucapanmu..."}
+                {busy === "thinking" &&
+                  `${scenario.guest.name} sedang menanggapi...`}
+                {busy === "speaking" &&
+                  `${scenario.guest.name} sedang bicara. Kamu boleh langsung menjawab.`}
+                {phase === "evaluating" &&
+                  "Menilai percakapanmu. Biasanya butuh sekitar 15 detik."}
+              </p>
+
+              {canAnswer ? (
+                typing ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const text = draft;
+                      setDraft("");
+                      void sendAnswer(text);
+                    }}
+                    className="space-y-2"
+                  >
+                    <label htmlFor="jawaban" className="block text-sm text-muted">
+                      Jawabanmu (bahasa Inggris)
+                    </label>
+                    <textarea
+                      id="jawaban"
+                      lang="en"
+                      value={draft}
+                      onChange={(e) => setDraft(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          e.currentTarget.form?.requestSubmit();
+                        }
+                      }}
+                      rows={2}
+                      maxLength={2000}
+                      placeholder="Type what you would say..."
+                      className="w-full rounded-md border border-edge bg-surface p-3 text-lg text-ink placeholder:text-muted"
+                    />
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="submit"
+                        disabled={waiting || !draft.trim()}
+                        className="min-h-11 rounded-md bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px disabled:opacity-50"
+                      >
+                        Kirim jawaban
+                      </button>
+                      {voiceAvailable ? (
+                        <button
+                          type="button"
+                          onClick={() => setTypingChosen(false)}
+                          className="min-h-11 rounded-md px-2 text-sm text-muted underline hover:text-ink"
+                        >
+                          Kembali bicara pakai mikrofon
+                        </button>
+                      ) : null}
+                    </div>
+                  </form>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void (recording ? stopTalking() : startTalking())
+                      }
+                      disabled={waiting}
+                      aria-pressed={recording}
+                      aria-label={
+                        recording ? "Selesai bicara" : "Tekan untuk bicara"
+                      }
+                      className={`grid size-16 shrink-0 place-items-center rounded-full active:translate-y-px disabled:opacity-50 ${
+                        recording
+                          ? "bg-alert text-white"
+                          : "bg-accent text-accent-ink hover:opacity-90"
+                      }`}
+                    >
+                      {recording ? (
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          className="size-6"
+                          fill="currentColor"
+                        >
+                          <rect x="6" y="6" width="12" height="12" rx="2" />
+                        </svg>
+                      ) : (
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          className="size-7"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        >
+                          <rect x="9" y="3" width="6" height="11" rx="3" />
+                          <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+                        </svg>
+                      )}
+                    </button>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <p className="font-bold">
+                        {recording ? "Selesai bicara" : "Tekan untuk bicara"}
+                      </p>
+                      {recording ? (
+                        // Bar volume: bukti bahwa mikrofon menangkap suara.
+                        <div
+                          aria-hidden="true"
+                          className="flex h-5 items-end gap-1"
+                        >
+                          {[0.15, 0.35, 0.55, 0.75, 0.95].map((t) => (
+                            <span
+                              key={t}
+                              className={`w-1.5 rounded-sm transition-[height] duration-75 ${
+                                level >= t ? "bg-alert" : "bg-line"
+                              }`}
+                              style={{ height: `${30 + t * 70}%` }}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setTypingChosen(true)}
+                          className="min-h-11 rounded-md text-sm text-muted underline hover:text-ink"
+                        >
+                          Tidak bisa bicara sekarang? Ketik saja
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )
+              ) : null}
+
+              <div className="lg:hidden">{finishButton}</div>
+            </div>
+          </section>
+
+          <aside
+            aria-label="Info latihan"
+            className="space-y-4 lg:sticky lg:top-6 lg:self-start"
+          >
+            <div className="hidden lg:block">{guestCard}</div>
+            <div className="hidden rounded-md border border-line bg-surface p-4 lg:block">
+              <EmotionMeter value={emotion} reason={emotionReason} who={who} />
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm text-muted">Tujuan</p>
+              <p>{scenario.goal}</p>
+            </div>
+            <details className="rounded-md border border-line bg-surface p-4">
+              <summary className="font-bold">
+                Fakta yang boleh kamu pakai
+              </summary>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
+                {scenario.facts.map((f) => (
+                  <li key={f}>{f}</li>
+                ))}
+              </ul>
+            </details>
             <p className="text-sm text-muted tabular-nums">
               Giliran {studentTurns} dari {MAX_STUDENT_TURNS}
             </p>
-          </div>
-        </section>
+            <div className="hidden lg:block">{finishButton}</div>
+          </aside>
+        </div>
       )}
     </div>
   );

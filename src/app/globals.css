@@ -13,6 +13,8 @@
   --ink: #1f2328;
   --muted: #555b63;
   --line: #d9d4c9;
+  /* Tepi kontrol (kolom ketik, pilihan): 3.65:1 terhadap latar. */
+  --edge: #857f73;
   --accent: #1d6b57;
   --accent-ink: #ffffff;
   --accent-soft: #e3efe9;
@@ -27,6 +29,7 @@
   --ink: #ecead5;
   --muted: #a7acb2;
   --line: #33373d;
+  --edge: #7d838a;
   --accent: #6cc4a8;
   --accent-ink: #0d1f19;
   --accent-soft: #1d332b;
@@ -41,12 +44,14 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-edge: var(--edge);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
   --color-alert: var(--alert);
   --color-alert-soft: var(--alert-soft);
   --font-sans: var(--font-atkinson);
+  --font-display: var(--font-fraunces);
 }
 
 body {
@@ -70,6 +75,11 @@ body {
   :focus-visible {
     outline: 3px solid var(--accent);
     outline-offset: 2px;
+  }
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
   }
 }
 
