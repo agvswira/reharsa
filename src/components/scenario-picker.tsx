@@ -1,4 +1,4 @@
-import { Monogram } from "@/components/monogram";
+import { GuestAvatar } from "@/components/guest-avatar";
 import { levelOf, MOOD_LABEL, type ScenarioProgress } from "@/lib/progress";
 import {
   channelLabel,
@@ -127,7 +127,7 @@ export function ScenarioPicker({
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <Monogram name={s.guest.name} />
+                      <GuestAvatar scenario={s} />
                       <div className="min-w-0">
                         <p className="truncate font-semibold">{s.guest.name}</p>
                         <p className="text-sm text-muted">

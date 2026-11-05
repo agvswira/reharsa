@@ -9,7 +9,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import { EmotionMeter } from "@/components/emotion-meter";
-import { Monogram } from "@/components/monogram";
+import { GuestAvatar } from "@/components/guest-avatar";
 import { MOOD_LABEL, topLevel } from "@/lib/progress";
 import { Report, type ReportData } from "@/components/report";
 import {
@@ -354,7 +354,7 @@ export function PracticeSession({
 
   const guestCard = (
     <div className="card flex items-center gap-3 p-4">
-      <Monogram name={scenario.guest.name} />
+      <GuestAvatar scenario={scenario} />
       <div className="min-w-0">
         <p className="truncate font-semibold">{scenario.guest.name}</p>
         <p className="text-sm text-muted">
@@ -454,7 +454,7 @@ export function PracticeSession({
           >
             <div className="card space-y-5 p-5">
               <div className="flex items-center gap-3">
-                <Monogram name={scenario.guest.name} size="lg" />
+                <GuestAvatar scenario={scenario} size="lg" />
                 <div>
                   <p className="text-lg font-semibold">{scenario.guest.name}</p>
                   <p className="text-sm text-muted">

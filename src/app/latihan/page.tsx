@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { Monogram } from "@/components/monogram";
+import { GuestAvatar } from "@/components/guest-avatar";
 import {
   BestScore,
   MoodField,
@@ -105,7 +105,7 @@ async function Picker() {
           </div>
           <div className="space-y-5 lg:border-l lg:border-line lg:pl-8">
             <div className="flex items-center gap-3">
-              <Monogram name={next.scenario.guest.name} size="lg" />
+              <GuestAvatar scenario={next.scenario} size="lg" />
               <div>
                 <p className="font-semibold">{next.scenario.guest.name}</p>
                 <p className="text-sm text-muted">

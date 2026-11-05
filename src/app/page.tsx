@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GuestAvatar } from "@/components/guest-avatar";
 import { PracticeTimeline } from "@/components/practice-timeline";
 import {
   channelLabel,
@@ -69,10 +70,13 @@ function Hero() {
           <figcaption className="text-sm text-muted">
             Contoh latihan · {nyepi.title} · {channelLabel(nyepi)}
           </figcaption>
-          <div className="space-y-1">
-            <p className="text-sm font-semibold">
-              {nyepi.guest.name}, tamu dari {nyepi.guest.origin}
-            </p>
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <GuestAvatar scenario={nyepi} size="sm" />
+              <p className="text-sm font-semibold">
+                {nyepi.guest.name}, tamu dari {nyepi.guest.origin}
+              </p>
+            </div>
             <p lang="en" className="text-lg leading-relaxed text-soft">
               “{nyepi.openingLines.kesal}”
             </p>
@@ -337,11 +341,14 @@ function ScenarioPreview() {
             <blockquote lang="en" className="text-lg leading-snug text-ink">
               “{teaser(sc.openingLines.kesal)}”
             </blockquote>
-            <div className="border-t border-line pt-3">
-              <h3 className="font-semibold">{sc.title}</h3>
-              <p className="text-sm text-muted">
-                {sc.guest.name} · {sc.guest.origin}
-              </p>
+            <div className="flex items-center gap-3 border-t border-line pt-3">
+              <GuestAvatar scenario={sc} />
+              <div className="min-w-0">
+                <h3 className="font-semibold">{sc.title}</h3>
+                <p className="text-sm text-muted">
+                  {sc.guest.name} · {sc.guest.origin}
+                </p>
+              </div>
             </div>
           </li>
         ))}

@@ -132,6 +132,7 @@ Latihan memerlukan akun. Juri bisa membuat akun sendiri di halaman Daftar, atau 
 - Arah desain halaman depan diadaptasi dari landing page OpenLC (github.com/zghanw/openlc, lisensi MIT); lihat DESIGN.md
 - Groq API, Azure AI Speech, Neon Postgres, dan provider custom yang dikonfigurasi tim (layanan pihak ketiga)
 - Hotel Puri Sekar dan semua tokoh tamu adalah fiktif, dibuat tim untuk latihan.
+- Foto tamu dari Unsplash (Unsplash License), dipotong ke wajah. Orang di foto adalah model, bukan tokoh yang diperankan. Fotografer: Sophie Paterson, Nandu Vasudevan, Olga Zhuravleva, panitan punpuang, Let hho, Vicky Hladynets, Zoran Borojevic, Jake Nackos, Beatriz Cattel, Brooke Balentine, DICSON. Tautan tiap foto ada di [`src/lib/guest-photos.ts`](src/lib/guest-photos.ts).
 
 ## AI Coding Assistant
 
