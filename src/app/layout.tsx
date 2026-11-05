@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Mona_Sans } from "next/font/google";
 import Link from "next/link";
+import { Suspense } from "react";
 import { AccountNav } from "@/components/account-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
@@ -74,7 +75,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               aria-label="Akun"
               className="flex items-center gap-1 justify-self-end"
             >
-              <AccountNav />
+              {/* AccountNav membaca path saat ini; dengan cacheComponents
+                  bagian ini harus di dalam Suspense. */}
+              <Suspense fallback={<span className="w-24" aria-hidden="true" />}>
+                <AccountNav />
+              </Suspense>
               <ThemeToggle />
             </nav>
           </div>
