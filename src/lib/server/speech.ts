@@ -10,7 +10,11 @@ export const MAX_AUDIO_BYTES = 3 * 1024 * 1024;
  */
 export async function transcribe(audio: Blob): Promise<string> {
   if (!stt) {
-    throw new ServiceError("Speech-to-Text server belum dikonfigurasi.", 503);
+    console.error("STT belum dikonfigurasi: isi STT_BASE_URL, STT_MODEL, STT_API_KEY.");
+    throw new ServiceError(
+      "Suara tidak bisa diubah jadi teks saat ini. Coba lagi atau pakai mode ketik.",
+      503,
+    );
   }
   const form = new FormData();
   form.append("file", audio, "speech.wav");
@@ -52,7 +56,8 @@ export async function synthesize(
   emotion: number,
 ): Promise<ArrayBuffer> {
   if (!azure.key || !azure.region) {
-    throw new ServiceError("Azure TTS belum dikonfigurasi.", 503);
+    console.error("TTS belum dikonfigurasi: isi AZURE_SPEECH_KEY dan AZURE_SPEECH_REGION.");
+    throw new ServiceError("Suara tamu tidak tersedia saat ini.", 503);
   }
   // Emosi tamu mengubah tempo dan nada supaya marah dan tenang terdengar beda.
   const prosody =
@@ -103,7 +108,8 @@ export async function assessPronunciation(
   referenceText: string,
 ): Promise<PronunciationResult> {
   if (!azure.key || !azure.region) {
-    throw new ServiceError("Penilaian pengucapan belum dikonfigurasi.", 503);
+    console.error("Penilaian pengucapan belum dikonfigurasi: isi AZURE_SPEECH_KEY dan AZURE_SPEECH_REGION.");
+    throw new ServiceError("Penilaian pengucapan sedang tidak tersedia.", 503);
   }
   const config = {
     ReferenceText: referenceText,

@@ -269,16 +269,15 @@ export function Report({
               <p>Semua kata yang kamu ucapkan terdengar jelas.</p>
             )}
             <p className="text-sm text-muted">
-              Skor dari Azure Pronunciation Assessment. Ini mengukur seberapa
-              jelas kata terdengar, bukan seberapa mirip aksen penutur asli,
-              dan tidak dihitung ke poin rapor.
+              Skor ini mengukur seberapa jelas kata terdengar, bukan seberapa
+              mirip aksen penutur asli, dan tidak dihitung ke poin rapor.
             </p>
           </>
         ) : (
           <p className="text-muted">
             {pronFailures > 0
               ? "Penilaian pengucapan gagal untuk kalimatmu kali ini."
-              : "Belum ada kalimat yang dinilai pengucapannya. Penilaian ini hanya berjalan saat kamu bicara lewat mikrofon dan layanan Azure aktif."}
+              : "Belum ada kalimat yang dinilai pengucapannya. Penilaian ini hanya berjalan saat kamu menjawab lewat mikrofon."}
           </p>
         )}
       </section>
@@ -321,12 +320,6 @@ export function Report({
           Pilih situasi lain
         </Link>
       </div>
-      <p className="text-sm text-muted">
-        {data.providers
-          ? `Dinilai oleh ${data.providers.evaluator}, umpan balik oleh ${data.providers.coach}. `
-          : ""}
-        Skor ini alat latihan, bukan sertifikasi.
-      </p>
     </div>
   );
 }

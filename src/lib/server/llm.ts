@@ -85,8 +85,12 @@ export async function callJSON<T>(
 ): Promise<{ data: T; provider: string }> {
   const order = providerOrder(agent);
   if (order.length === 0) {
+    // Detail konfigurasi hanya untuk log pengembang, bukan untuk layar siswa.
+    console.error(
+      `Layanan AI belum dikonfigurasi: isi ${agent === "guest" ? "GUEST_LLM_ORDER" : "JUDGE_LLM_ORDER"} dan key provider-nya di .env.local.`,
+    );
     throw new ServiceError(
-      `Layanan AI belum dikonfigurasi. Isi ${agent === "guest" ? "GUEST_LLM_ORDER" : "JUDGE_LLM_ORDER"} dan key provider-nya di .env.local.`,
+      "Latihan sedang tidak bisa dipakai. Coba lagi beberapa saat lagi.",
       503,
     );
   }
@@ -129,7 +133,7 @@ export async function callJSON<T>(
   }
   console.error(`Semua provider untuk agen ${agent} gagal:`, failures);
   throw new ServiceError(
-    "Semua layanan AI sedang tidak bisa dihubungi atau kena batas kuota. Coba lagi sebentar.",
+    "Sistem sedang sibuk dan belum bisa menjawab. Coba lagi sebentar.",
     502,
   );
 }
