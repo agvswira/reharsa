@@ -18,6 +18,9 @@ const countries = new Set(SCENARIOS.map((s) => s.guest.origin)).size;
 // Skala tipografi dan tombol dari DESIGN.md (diturunkan dari referensi).
 const display =
   "font-display font-semibold leading-[1.04] tracking-[-0.03em] text-[clamp(2.4rem,7vw,5.5rem)] [text-wrap:balance]";
+// Judul hero lebih kecil dari judul penutup supaya muat dua baris di desktop.
+const heroTitle =
+  "font-display font-semibold leading-[1.05] tracking-[-0.03em] text-[clamp(2.25rem,4.6vw,4.25rem)] [text-wrap:balance]";
 const h2 = "text-[clamp(2rem,1.3rem+2.5vw,3.5rem)]";
 const lede =
   "max-w-[60ch] text-[clamp(1rem,0.95rem+0.25vw,1.125rem)] text-muted [text-wrap:pretty]";
@@ -37,7 +40,7 @@ function Hero() {
       aria-labelledby="hero-judul"
       className="flex flex-col items-center pt-6 text-center sm:pt-12"
     >
-      <h1 id="hero-judul" className={display}>
+      <h1 id="hero-judul" className={heroTitle}>
         <span className="rise block">Latih bicara dengan tamu asing,</span>
         <span className="rise block [animation-delay:120ms]">
           sebelum bertemu yang sungguhan.
