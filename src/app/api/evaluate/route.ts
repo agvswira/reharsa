@@ -7,6 +7,10 @@ import { rateLimit } from "@/lib/server/rate-limit";
 import { getScenario, MAX_STUDENT_TURNS, MOOD_START } from "@/lib/scenarios";
 import { PronunciationResultSchema, TurnSchema } from "@/lib/types";
 
+// Penilai dan pelatih berjalan berurutan, dan bisa pindah ke penyedia
+// cadangan; satu rapor bisa memakan lebih dari 15 detik.
+export const maxDuration = 60;
+
 const BodySchema = z.object({
   scenarioId: z.string(),
   mood: z.enum(Object.keys(MOOD_START) as ["sabar", "kesal", "marah"]),

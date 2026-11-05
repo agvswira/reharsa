@@ -6,6 +6,9 @@ import { getScenario, MAX_STUDENT_TURNS } from "@/lib/scenarios";
 import { TurnSchema } from "@/lib/types";
 import { requireUser } from "@/lib/server/auth";
 
+// Beri ruang bila penyedia utama gagal dan permintaan pindah ke cadangan.
+export const maxDuration = 60;
+
 const BodySchema = z.object({
   scenarioId: z.string(),
   emotion: z.number().min(0).max(10),

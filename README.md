@@ -9,13 +9,9 @@
   <p>
     <a href="#deployment-url"><strong>Live App</strong></a>
     &nbsp;|&nbsp;
-    <a href="#demo-account"><strong>Akun Demo</strong></a>
-    &nbsp;|&nbsp;
     <a href="src/lib/server/agents.ts"><strong>Kode AI</strong></a>
     &nbsp;|&nbsp;
     <a href="#ai--technology-disclosure"><strong>AI &amp; Technology Disclosure</strong></a>
-    &nbsp;|&nbsp;
-    <a href="DESIGN.md"><strong>Arah Desain</strong></a>
   </p>
   <p>
     <a href="https://nextjs.org/"><img alt="Next.js 16" src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"></a>
