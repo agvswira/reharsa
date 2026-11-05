@@ -79,13 +79,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <footer className="border-t border-line">
-          <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 sm:flex-row sm:items-baseline sm:justify-between sm:px-8">
+          <div className="mx-auto max-w-6xl px-4 py-8 sm:px-8">
             <p className="font-display text-lg font-semibold text-ink">
               Reharsa
-            </p>
-            <p className="text-sm text-muted">
-              Rekaman suara tidak disimpan. Hotel Puri Sekar dan semua tamu di
-              sini adalah tokoh fiktif untuk latihan.
             </p>
           </div>
         </footer>
