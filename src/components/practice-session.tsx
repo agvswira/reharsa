@@ -287,7 +287,12 @@ export function PracticeSession({
     try {
       const data = await postJSON<
         Omit<ReportData, "pronunciation" | "pronFailures">
-      >("/api/evaluate", { scenarioId: scenario.id, mood, turns, pronunciation });
+      >("/api/evaluate", {
+        scenarioId: scenario.id,
+        mood,
+        turns,
+        pronunciation,
+      });
       setReport({ ...data, pronunciation, pronFailures });
       setPhase("report");
     } catch (err) {
@@ -348,7 +353,9 @@ export function PracticeSession({
   const guestCard = (
     <div className="card p-4">
       <p className="text-sm text-muted">{guestLabel}</p>
-      <p className="font-display text-xl font-semibold">{scenario.guest.name}</p>
+      <p className="font-display text-xl font-semibold">
+        {scenario.guest.name}
+      </p>
       <p className="text-sm text-muted">
         {scenario.guest.origin} · suasana awal {mood}
       </p>
@@ -361,6 +368,10 @@ export function PracticeSession({
         <Link href="/" className="rounded text-sm text-muted underline">
           Kembali ke daftar situasi
         </Link>
+        <p className="text-sm text-muted">
+          {scenario.department} ·{" "}
+          {scenario.channel === "telepon" ? "Telepon" : "Tatap muka"}
+        </p>
         <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
           {scenario.title}
         </h1>
@@ -562,7 +573,10 @@ export function PracticeSession({
                     }}
                     className="space-y-2"
                   >
-                    <label htmlFor="jawaban" className="block text-sm text-muted">
+                    <label
+                      htmlFor="jawaban"
+                      className="block text-sm text-muted"
+                    >
                       Jawabanmu (bahasa Inggris)
                     </label>
                     <textarea

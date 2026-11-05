@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { PracticeTimeline } from "@/components/practice-timeline";
 import { ServiceNotice } from "@/components/service-notice";
-import { SCENARIOS, type Mood } from "@/lib/scenarios";
+import { SCENARIOS, type Category, type Mood } from "@/lib/scenarios";
 import { serviceStatus } from "@/lib/server/env";
 
 // Halaman depan: komponen server tanpa JavaScript tambahan di browser.
@@ -40,7 +40,8 @@ function DemoMeter() {
   return (
     <div className="demo-meter grid grid-cols-11 gap-1" aria-hidden="true">
       {Array.from({ length: 11 }, (_, i) => {
-        if (i > 8) return <span key={i} className="h-2.5 rounded-sm bg-track" />;
+        if (i > 8)
+          return <span key={i} className="h-2.5 rounded-sm bg-track" />;
         const drop = i > 3;
         return (
           <span
@@ -173,14 +174,13 @@ function ReportProof() {
           kejelasan, kesopanan, dan ketepatan solusi.
         </p>
       </div>
-      <figure
-        aria-label="Contoh rapor"
-        className="space-y-4 card p-5 sm:p-6"
-      >
+      <figure aria-label="Contoh rapor" className="space-y-4 card p-5 sm:p-6">
         <figcaption className="text-sm text-muted">Contoh rapor</figcaption>
         <div className="flex items-baseline justify-between gap-3">
           <p className="font-bold">Solusi &amp; aturan Nyepi</p>
-          <p className="font-display text-2xl font-semibold tabular-nums">3/4</p>
+          <p className="font-display text-2xl font-semibold tabular-nums">
+            3/4
+          </p>
         </div>
         <div className="grid grid-cols-4 gap-1" aria-hidden="true">
           {[1, 2, 3, 4].map((n) => (
@@ -190,12 +190,18 @@ function ReportProof() {
             />
           ))}
         </div>
-        <blockquote lang="en" className="border-l-2 border-line pl-3 text-muted">
+        <blockquote
+          lang="en"
+          className="border-l-2 border-line pl-3 text-muted"
+        >
           “I can send our technician to your room in 15 minutes.”
         </blockquote>
         <div className="space-y-1">
           <p className="text-sm text-muted">Coba katakan</p>
-          <p lang="en" className="rounded-md bg-accent-soft px-3 py-2 font-bold">
+          <p
+            lang="en"
+            className="rounded-md bg-accent-soft px-3 py-2 font-bold"
+          >
             Let me send our technician up right away. He should be with you
             within 15 minutes.
           </p>
@@ -276,7 +282,9 @@ function Steps() {
           <p className="font-display text-2xl font-semibold tabular-nums">
             16 dari 20
           </p>
-          <p className="text-sm text-muted">Fokus: Penutup &amp; terima kasih</p>
+          <p className="text-sm text-muted">
+            Fokus: Penutup &amp; terima kasih
+          </p>
         </div>
       ),
     },
@@ -288,7 +296,8 @@ function Steps() {
           Mulai dalam empat langkah.
         </h2>
         <p className={lede}>
-          Butuh Chrome atau Edge dan mikrofon. Akun tidak wajib; masuk hanya untuk menyimpan rapor.
+          Butuh Chrome atau Edge dan mikrofon. Akun tidak wajib; masuk hanya
+          untuk menyimpan rapor.
         </p>
       </div>
       <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -312,6 +321,29 @@ function Steps() {
   );
 }
 
+const GROUPS: { category: Category; title: string; note: string }[] = [
+  {
+    category: "harian",
+    title: "Sering terjadi setiap hari",
+    note: "Situasi yang hampir pasti kamu temui di minggu pertama magang.",
+  },
+  {
+    category: "sulit",
+    title: "Situasi sulit",
+    note: "Jarang terjadi, tapi menentukan apakah tamu kembali lagi.",
+  },
+  {
+    category: "wawancara",
+    title: "Wawancara kerja",
+    note: "Latihan sebelum melamar ke hotel atau kapal pesiar.",
+  },
+];
+
+// Nomor urut mengikuti urutan tampil per grup, bukan urutan array.
+const ORDERED = GROUPS.flatMap((g) =>
+  SCENARIOS.filter((s) => s.category === g.category),
+);
+
 function ScenarioList() {
   return (
     <section
@@ -325,79 +357,100 @@ function ScenarioList() {
       <Suspense fallback={null}>
         <CurrentServiceNotice />
       </Suspense>
-      <ol className="divide-y divide-line border-y border-line">
-        {SCENARIOS.map((s, i) => (
-          <li key={s.id} className="py-7">
-            <form
-              action={`/latihan/${s.id}`}
-              className="grid gap-5 md:grid-cols-[13rem_1fr]"
+      {GROUPS.map((g) => (
+        <section
+          key={g.category}
+          aria-labelledby={`grup-${g.category}`}
+          className="space-y-3"
+        >
+          <div className="space-y-1">
+            <h3
+              id={`grup-${g.category}`}
+              className="font-display text-2xl font-semibold"
             >
-              <div className="space-y-1">
-                <p className="font-display text-3xl font-semibold tabular-nums text-muted">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <p className="font-bold">{s.guest.name}</p>
-                <p className="text-sm text-muted">
-                  {s.kind === "interview" ? "Pewawancara" : "Tamu"} dari{" "}
-                  {s.guest.origin}
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold">{s.title}</h3>
-                  <p className="max-w-prose">{s.situation}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted">Yang dinilai</p>
-                  <ul className="mt-1 flex flex-wrap gap-2">
-                    {s.criteria.map((c) => (
-                      <li
-                        key={c.id}
-                        className="rounded-md border border-line px-2.5 py-1 text-sm"
-                      >
-                        {c.label}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                  <fieldset>
-                    <legend className="mb-2 text-sm text-muted">
-                      Suasana awal{" "}
-                      {s.kind === "interview" ? "pewawancara" : "tamu"}
-                    </legend>
-                    <div className="flex flex-wrap gap-2">
-                      {MOODS.map((m) => (
-                        <label
-                          key={m.value}
-                          className="flex min-h-11 items-center gap-2 rounded-full border border-edge bg-surface px-3 hover:bg-paper has-[:checked]:border-ink has-[:checked]:font-bold"
-                        >
-                          <input
-                            type="radio"
-                            name="mood"
-                            value={m.value}
-                            defaultChecked={m.value === "kesal"}
-                            className="accent-[var(--accent)]"
-                          />
-                          {m.label}
-                          <span className="sr-only">, {m.hint}</span>
-                        </label>
-                      ))}
+              {g.title}
+            </h3>
+            <p className="max-w-prose text-muted">{g.note}</p>
+          </div>
+          <ol className="divide-y divide-line border-y border-line">
+            {SCENARIOS.filter((s) => s.category === g.category).map((s) => (
+              <li key={s.id} className="py-7">
+                <form
+                  action={`/latihan/${s.id}`}
+                  className="grid gap-5 md:grid-cols-[13rem_1fr]"
+                >
+                  <div className="space-y-1">
+                    <p className="font-display text-3xl font-semibold tabular-nums text-muted">
+                      {String(ORDERED.indexOf(s) + 1).padStart(2, "0")}
+                    </p>
+                    <p className="font-bold">{s.guest.name}</p>
+                    <p className="text-sm text-muted">
+                      {s.kind === "interview" ? "Pewawancara" : "Tamu"} dari{" "}
+                      {s.guest.origin}
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted">
+                        {s.department} ·{" "}
+                        {s.channel === "telepon" ? "Telepon" : "Tatap muka"}
+                      </p>
+                      <h4 className="text-xl font-bold">{s.title}</h4>
+                      <p className="max-w-prose">{s.situation}</p>
                     </div>
-                  </fieldset>
-                  <button
-                    type="submit"
-                    className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
-                  >
-                    Mulai situasi ini
-                    <span className="sr-only">: {s.title}</span>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </li>
-        ))}
-      </ol>
+                    <div>
+                      <p className="text-sm text-muted">Yang dinilai</p>
+                      <ul className="mt-1 flex flex-wrap gap-2">
+                        {s.criteria.map((c) => (
+                          <li
+                            key={c.id}
+                            className="rounded-md border border-line px-2.5 py-1 text-sm"
+                          >
+                            {c.label}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                      <fieldset>
+                        <legend className="mb-2 text-sm text-muted">
+                          Suasana awal{" "}
+                          {s.kind === "interview" ? "pewawancara" : "tamu"}
+                        </legend>
+                        <div className="flex flex-wrap gap-2">
+                          {MOODS.map((m) => (
+                            <label
+                              key={m.value}
+                              className="flex min-h-11 items-center gap-2 rounded-full border border-edge bg-surface px-3 hover:bg-paper has-[:checked]:border-ink has-[:checked]:font-bold"
+                            >
+                              <input
+                                type="radio"
+                                name="mood"
+                                value={m.value}
+                                defaultChecked={m.value === "kesal"}
+                                className="accent-[var(--accent)]"
+                              />
+                              {m.label}
+                              <span className="sr-only">, {m.hint}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+                      <button
+                        type="submit"
+                        className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+                      >
+                        Mulai situasi ini
+                        <span className="sr-only">: {s.title}</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
     </section>
   );
 }
@@ -426,7 +479,11 @@ function Principles() {
     },
   ];
   return (
-    <section id="prinsip" aria-labelledby="prinsip-judul" className="reveal scroll-mt-20 space-y-10">
+    <section
+      id="prinsip"
+      aria-labelledby="prinsip-judul"
+      className="reveal scroll-mt-20 space-y-10"
+    >
       <div className="max-w-3xl space-y-4">
         <h2 id="prinsip-judul" className={h2}>
           Yang kami jaga.

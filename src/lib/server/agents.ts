@@ -29,12 +29,26 @@ export async function guestTurn(
 ) {
   const role = scenario.kind === "interview" ? "interviewer" : "hotel guest";
   const staff = scenario.kind === "interview" ? "candidate" : "staff member";
+  const channel =
+    scenario.channel === "telepon"
+      ? `This is a phone call. You cannot see the ${staff}; you only hear them. React to how things sound (long silences, unclear numbers) and ask them to repeat when needed.`
+      : `This is face to face at the desk or table.`;
+
+  // Balasan tamu ke-n setelah kalimat pembuka. Twist diungkap tepat sekali.
+  const replyNumber = turns.filter((t) => t.speaker === "guest").length;
+  const twist =
+    scenario.twist && replyNumber === scenario.twist.at
+      ? `\nIn THIS reply, after reacting to what the ${staff} said, bring up something new in your own words: ${scenario.twist.reveal} The ${staff} must now adapt their solution.`
+      : scenario.twist && replyNumber > scenario.twist.at
+        ? `\nYou already told the ${staff}: ${scenario.twist.reveal} Keep it in mind.`
+        : "";
 
   const system = `You are role-playing as ${scenario.guest.name}, a ${role} from ${scenario.guest.origin}, in a training simulation for Indonesian hospitality students.
 
 Persona: ${scenario.guest.persona}
 Situation: ${scenario.situation}
-What you want (never say this outright): ${scenario.hiddenGoal}
+${channel}
+What you want (never say this outright): ${scenario.hiddenGoal}${twist}
 
 Facts about this world. Treat them as the only truth. If the ${staff} says something that contradicts them, react the way a real ${role} would (confused or doubtful). Never invent new hotel facts, prices or services:
 ${scenario.facts.map((f) => `- ${f}`).join("\n")}

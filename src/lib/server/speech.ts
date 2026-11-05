@@ -61,7 +61,10 @@ export async function synthesize(
       : emotion <= 3
         ? { rate: "-4%", pitch: "-2%" }
         : { rate: "+0%", pitch: "+0%" };
-  const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${locale}"><voice name="${voice}"><prosody rate="${prosody.rate}" pitch="${prosody.pitch}">${escapeXml(text)}</prosody></voice></speak>`;
+  // Suara non-Inggris (misalnya ko-KR) membaca teks Inggris dengan aksen
+  // aslinya; xml:lang mengikuti bahasa suara, bukan bahasa teks.
+  const lang = voice.split("-").slice(0, 2).join("-") || locale;
+  const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${lang}"><voice name="${voice}"><prosody rate="${prosody.rate}" pitch="${prosody.pitch}">${escapeXml(text)}</prosody></voice></speak>`;
   const res = await fetch(
     `https://${azure.region}.tts.speech.microsoft.com/cognitiveservices/v1`,
     {
