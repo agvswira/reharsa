@@ -227,7 +227,7 @@ function Steps() {
       title: "Bicara sampai tamu puas",
       visual: (
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-full bg-alert text-white">
+          <span className="grid size-10 place-items-center rounded-full bg-alert text-alert-ink">
             <span className="size-3 rounded-sm bg-current" />
           </span>
           <span className="flex h-6 items-end gap-1">
@@ -439,15 +439,15 @@ function Close() {
         sizes="(min-width: 1152px) 1152px, 100vw"
         className="-z-20 object-cover"
       />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[rgb(13_11_9/0.68)]" />
-      <h2 id="penutup-judul" className={`${display} text-[#f4efe6]`}>
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-(--photo-scrim)" />
+      <h2 id="penutup-judul" className={`${display} text-(--photo-ink)`}>
         <span className="block">Latihan dulu.</span>
         <span className="block">Layani dengan tenang.</span>
       </h2>
       <div className="mt-8 flex justify-center">
         <Link
           href="/latihan"
-          className="inline-flex h-[50px] items-center justify-center rounded-full bg-[#f4efe6] px-6 text-[15.5px] font-semibold text-[#0d0b09] hover:opacity-90 active:translate-y-px focus-visible:outline-[#f4efe6]"
+          className="inline-flex h-[50px] items-center justify-center rounded-full bg-(--photo-ink) px-6 text-[15.5px] font-semibold text-(--photo-ink-on) hover:opacity-90 active:translate-y-px focus-visible:outline-(--photo-ink)"
         >
           Mulai latihan
         </Link>

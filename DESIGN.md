@@ -35,9 +35,12 @@ Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), p
 | `--hair-2` | `rgb(244 239 230 / .14)` | Tepi tombol hantu | |
 | `--edge` | `rgb(244 239 230 / .42)` | Tepi kontrol input (minimal 3:1) | |
 | `--lamp` | `rgb(240 190 120 / .16)` | Cahaya di balik kartu hero, tidak di tempat lain | dekorasi |
-| `--alert` | `#f87171` | Status merah: emosi tamu tinggi, skor "perlu dilatih" (di bawah 50%), error. Selalu disertai teks | 6.7:1 di kartu |
-| `--warn` | `#fbbf24` | Tingkat skor "cukup" (50 sampai 74%). Selalu disertai teks | 11.1:1 di kartu |
-| `--good` | `#4ade80` | Tingkat skor "kuat" (75% ke atas). Selalu disertai teks | 10.6:1 di kartu |
+| `--alert` | `#ef8a6f` (merah bata) | Status merah: emosi tamu tinggi, skor "perlu dilatih" (di bawah 50%), error. Selalu disertai teks. Teks di atasnya memakai `--alert-ink` `#0d0b09` (8.0:1) | 7.5:1 di kartu |
+| `--warn` | `#e8b552` (oker) | Tingkat skor "cukup" (50 sampai 74%). Selalu disertai teks | 9.8:1 di kartu |
+| `--good` | `#8cc78f` (hijau daun) | Tingkat skor "kuat" (75% ke atas). Selalu disertai teks | 9.4:1 di kartu |
+| `--photo-scrim`, `--photo-ink` | `rgb(13 11 9 / .68)`, `#f4efe6` | Panel foto penutup, sama di kedua tema | teks terburuk 6.7:1 |
+
+Warna tingkat sengaja dihangatkan dan diredam (bata, oker, hijau daun) supaya tidak terasa seperti warna bawaan Tailwind di atas palet batu. Bar tingkat minimal 3.8:1 terhadap ruas kosong.
 
 Tambahan Reharsa dibanding referensi: tiga warna tingkat (`--alert`, `--warn`, `--good`). Warna ini hanya dipakai di bar skor, grafik riwayat, dan meter emosi, tidak pernah sebagai hiasan atau aksen. Tombol, teks, dan tepi tetap monokrom.
 
@@ -55,9 +58,9 @@ Gelap adalah bawaan. Tema terang tetap tersedia lewat tombol di header, sebagai 
 | `--hair` / `--hair-2` | `rgb(28 24 20 / .08)` / `rgb(28 24 20 / .14)` | dekorasi |
 | `--edge` | `rgb(28 24 20 / .45)` | minimal 3:1 |
 | `--lamp` | `rgb(200 120 40 / .12)` | dekorasi |
-| `--alert` | `#b91c1c` | 5.7:1 |
-| `--warn` | `#b45309` | 4.7:1 |
-| `--good` | `#15803d` | 4.4:1, hanya untuk bar (minimal 3:1), bukan teks |
+| `--alert` | `#b13a24`, teks di atasnya `#fbf8f1` (5.7:1) | 5.2:1 sampai 5.7:1 |
+| `--warn` | `#9a5b0c` | 5.1:1 |
+| `--good` | `#3d7a3f` | 4.5:1 sampai 4.9:1 |
 
 Di tema terang, tombol utama menjadi pil gelap hangat dengan teks krem.
 

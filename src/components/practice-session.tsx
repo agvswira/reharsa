@@ -707,7 +707,7 @@ export function PracticeSession({
                       }
                       className={`grid size-16 shrink-0 place-items-center rounded-full active:translate-y-px disabled:opacity-50 ${
                         recording
-                          ? "bg-alert text-white"
+                          ? "bg-alert text-alert-ink"
                           : "bg-accent text-accent-ink hover:opacity-90"
                       }`}
                     >
