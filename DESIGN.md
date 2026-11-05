@@ -23,6 +23,15 @@ Monokrom hangat bernuansa Bali: struktur dan ketenangan dari OpenLC, tetapi baha
 
 Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), pola ukiran atau batik sebagai latar berulang, dan foto stok pura atau sawah di hero. Ukiran patra punggel sempat dicoba lalu dibatalkan karena versi sederhananya terbaca sebagai sulur generik. Siluet candi bentar gambar sendiri di hero juga dibatalkan: tanpa ornamen karang yang menjorok, bentuknya terbaca sebagai piramida berundak. Candi bentar cukup hadir lewat foto asli di bagian penutup.
 
+## Logo
+
+Dibuat pemilik. Candi bentar yang tersusun dari delapan batang suara (empat per sisi), tertinggi di celah dalam dan menurun ke luar, berdiri di alas dengan anak tangga, dan matahari kuning `#E5B14C` di celah gerbang. Maknanya: suaramu adalah gerbang menuju layanan di Bali. Batang membulat di puncak (suara) dan rata di dasar (bangunan).
+
+- Komponen: `src/components/logo.tsx` (`LogoMark`, `Logo`). Batang dan alas memakai `currentColor` sehingga gelap di tema terang dan krem di tema gelap; matahari tetap kuning.
+- Ikon: `src/app/favicon.ico` (16, 32, 48), `src/app/icon.svg`, `src/app/apple-icon.png` (180), semuanya tanda krem di atas ubin batu candi `#17130F` supaya terlihat di tab gelap maupun terang.
+- File merek untuk proposal: `public/brand/` (SVG dan PNG versi gelap dan krem, ikon aplikasi 512).
+- Nama "Reharsa" di samping tanda tetap teks asli (Bricolage Grotesque 600), bukan gambar, supaya terbaca pembaca layar dan mesin pencari.
+
 ## Token
 
 Tabel pertama adalah tema gelap (batu candi), beserta peran setiap token. Nilai tema terang, yang menjadi bawaan, ada di tabel berikutnya.

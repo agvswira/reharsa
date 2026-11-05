@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Mona_Sans } from "next/font/google";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Logo } from "@/components/logo";
 import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
 
@@ -53,9 +54,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 px-4 sm:px-8 md:grid md:grid-cols-[1fr_auto_1fr]">
             <Link
               href="/"
-              className="justify-self-start rounded font-display text-xl font-semibold tracking-[-0.02em] text-ink"
+              aria-label="Reharsa, ke halaman depan"
+              className="justify-self-start rounded text-ink"
             >
-              Reharsa
+              <Logo />
             </Link>
             {/* SiteNav membaca path saat ini; dengan cacheComponents bagian
                 ini harus di dalam Suspense. */}
@@ -80,8 +82,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <footer className="border-t border-line">
           <div className="mx-auto max-w-6xl px-4 py-8 sm:px-8">
-            <p className="font-display text-lg font-semibold text-ink">
-              Reharsa
+            <p className="text-ink">
+              <Logo />
             </p>
           </div>
         </footer>
