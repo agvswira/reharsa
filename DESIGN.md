@@ -49,6 +49,7 @@ Di tema terang, tombol utama menjadi pil hitam dengan teks putih.
 | Bento grid untuk jaminan | Diganti daftar dua kolom |
 | Ikon Lucide di deretan fakta | Dihapus, fakta ditandai titik kecil |
 | Panah di banyak tombol | Dihapus |
+| Ikon di saklar tema | Pengecualian: matahari dan bulan dipakai di saklar tema gelap/terang, karena tanpa simbol saklar tidak terbaca sebagai pengatur tema. Ikon tidak dipakai di tempat lain. |
 
 ## Tipografi
 

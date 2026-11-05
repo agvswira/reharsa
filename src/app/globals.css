@@ -444,17 +444,27 @@ body {
   }
 }
 
-/* Saklar tema: kenop meluncur ke kanan saat gelap, sedikit memantul. */
+/* Saklar tema: kenop meluncur ke sisi mode aktif dengan sedikit pantulan,
+   simbol di dalam kenop berputar saat berganti. */
 .theme-knob {
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 [data-theme="dark"] .theme-knob {
-  transform: translateX(1.25rem);
+  transform: translateX(1.75rem);
 }
-.theme-track:active .theme-knob,
-button:active > .theme-track .theme-knob {
-  width: 1.5rem;
+.theme-sun,
+.theme-moon {
+  grid-area: 1 / 1;
+  transition:
+    transform 0.45s ease,
+    opacity 0.3s ease;
 }
-[data-theme="dark"] button:active > .theme-track .theme-knob {
-  transform: translateX(0.95rem);
+.theme-moon,
+[data-theme="dark"] .theme-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+[data-theme="dark"] .theme-moon {
+  opacity: 1;
+  transform: none;
 }
