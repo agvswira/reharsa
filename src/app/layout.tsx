@@ -6,7 +6,7 @@ import { Logo } from "@/components/logo";
 import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
 
-// Tipografi mengikuti DESIGN.md (diturunkan dari referensi OpenLC):
+// Tipografi mengikuti DESIGN.md:
 // Mona Sans untuk teks, Bricolage Grotesque untuk judul.
 const mona = Mona_Sans({
   variable: "--font-mona",

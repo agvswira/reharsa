@@ -10,14 +10,14 @@ import {
 } from "@/lib/scenarios";
 
 // Halaman depan: komponen server tanpa JavaScript tambahan di browser.
-// Struktur mengikuti referensi (hero, perbandingan, bukti, langkah, prinsip,
-// penutup), isi dan gaya mengikuti DESIGN.md. Semua cuplikan percakapan dan
+// Urutan: hero, perbandingan, bukti, langkah, prinsip, penutup. Isi dan gaya
+// mengikuti DESIGN.md. Semua cuplikan percakapan dan
 // rapor di halaman ini adalah contoh dan ditandai begitu di layar.
 
 const nyepi = SCENARIOS[0];
 const countries = new Set(SCENARIOS.map((s) => s.guest.origin)).size;
 
-// Skala tipografi dan tombol dari DESIGN.md (diturunkan dari referensi).
+// Skala tipografi dan tombol dari DESIGN.md.
 const display =
   "font-display font-semibold leading-[1.04] tracking-[-0.03em] text-[clamp(2.4rem,7vw,5.5rem)] [text-wrap:balance]";
 // Judul hero lebih kecil dari judul penutup supaya muat dua baris di desktop.

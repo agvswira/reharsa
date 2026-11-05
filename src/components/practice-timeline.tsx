@@ -1,5 +1,4 @@
-// Timeline dua jalur di halaman depan, diadaptasi dari "credit timeline"
-// referensi OpenLC. Versi ini komponen server tanpa JavaScript: garis tengah
+// Timeline dua jalur di halaman depan. Komponen server tanpa JavaScript: garis tengah
 // terisi dan baris menyala lewat animasi CSS yang mengikuti gulir
 // (lihat .tl-* di globals.css).
 //

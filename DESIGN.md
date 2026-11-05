@@ -1,12 +1,10 @@
 # Arah desain Reharsa
 
-Diturunkan dari landing page [OpenLC](https://github.com/zghanw/openlc) (`web/app/landing.css`), disesuaikan untuk Reharsa dan dibuat lebih ringan.
-
 Dial: ENERGY 2 / RHYTHM 2 / MOTION 2.
 
 ## Karakter
 
-Monokrom hangat bernuansa Bali: struktur dan ketenangan dari OpenLC, tetapi bahannya diambil dari bangunan hotel dan pura di Bali. Tema gelap adalah batu candi (hitam vulkanik yang hangat), tema terang adalah batu paras (krem). Tidak ada warna aksen untuk UI; nuansa Bali datang dari bahan, satu motif gerbang, dan bahasa sapaan, bukan dari ornamen yang ditebar.
+Monokrom hangat bernuansa Bali: struktur yang tenang, dengan bahan yang diambil dari bangunan hotel dan pura di Bali. Tema gelap adalah batu candi (hitam vulkanik yang hangat), tema terang adalah batu paras (krem). Tidak ada warna aksen untuk UI; nuansa Bali datang dari bahan, satu motif gerbang, dan bahasa sapaan, bukan dari ornamen yang ditebar.
 
 ## Nuansa Bali (pilihan pemilik)
 
@@ -18,7 +16,7 @@ Monokrom hangat bernuansa Bali: struktur dan ketenangan dari OpenLC, tetapi baha
 | Bunga jepun (frangipani) | Saat tamu puas (pesan selesai, rapor dengan emosi akhir 3 ke bawah), keadaan kosong riwayat | Simbol sambutan di hotel Bali; muncul hanya di momen yang berarti, bukan hiasan. Kelopak putih (`--petal`), pusat kuning (`--bloom`) |
 | Foto candi bentar di pantai | Hanya bagian penutup halaman depan, dengan lapisan gelap 0.68 | Gerbang yang sama dengan motif hero, kini foto sungguhan; satu-satunya foto tempat. Kontras teks terburuk 6.7:1 |
 | Hotel Puri Sekar, Ubud | Kepala halaman latihan, pengantar Latihan, kartu tamu di rapor | Rasa tempat: siswa sedang bertugas di hotel, bukan mengerjakan soal |
-| Panggung suara di layar latihan | Percakapan berlangsung | Seperti panggilan dengan tamu: foto tamu di tengah, kalimat yang sedang diucapkan besar, tombol bicara bulat di bawah. Panel selalu gelap (token ditimpa di `.stage`) sebagai satu titik fokus. Cincin di sekitar foto menunjukkan status nyata: riak hangat saat tamu bicara, mengikuti volume mikrofon saat kamu bicara, bernapas saat tamu berpikir; diam bila tidak ada apa-apa. Pengganti "AI orb" bercahaya di referensi, yang generik |
+| Panggung suara di layar latihan | Percakapan berlangsung | Seperti panggilan dengan tamu: foto tamu di tengah, kalimat yang sedang diucapkan besar, tombol bicara bulat di bawah. Panel selalu gelap (token ditimpa di `.stage`) sebagai satu titik fokus. Cincin di sekitar foto menunjukkan status nyata: riak hangat saat tamu bicara, mengikuti volume mikrofon saat kamu bicara, bernapas saat tamu berpikir; diam bila tidak ada apa-apa. Dipilih sebagai pengganti "AI orb" bercahaya, yang generik |
 | Rapor sebagai kartu komentar tamu | Kepala rapor | Menampilkan tamu dan perasaannya di akhir (data emosi asli); skor tetap ditandai sebagai rapor layanan dari agen penilai |
 
 Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), pola ukiran atau batik sebagai latar berulang, dan foto stok pura atau sawah di hero. Ukiran patra punggel sempat dicoba lalu dibatalkan karena versi sederhananya terbaca sebagai sulur generik. Siluet candi bentar gambar sendiri di hero juga dibatalkan: tanpa ornamen karang yang menjorok, bentuknya terbaca sebagai piramida berundak. Candi bentar cukup hadir lewat foto asli di bagian penutup.
@@ -54,7 +52,7 @@ Tabel pertama adalah tema gelap (batu candi), beserta peran setiap token. Nilai 
 
 Warna tingkat sengaja dihangatkan dan diredam (bata, oker, hijau daun) supaya tidak terasa seperti warna bawaan Tailwind di atas palet batu. Bar tingkat minimal 3.8:1 terhadap ruas kosong.
 
-Tambahan Reharsa dibanding referensi: tiga warna tingkat (`--alert`, `--warn`, `--good`). Warna ini hanya dipakai di bar skor, grafik riwayat, dan meter emosi, tidak pernah sebagai hiasan atau aksen. Tombol, teks, dan tepi tetap monokrom.
+Satu-satunya warna di luar palet monokrom: tiga warna tingkat (`--alert`, `--warn`, `--good`). Warna ini hanya dipakai di bar skor, grafik riwayat, dan meter emosi, tidak pernah sebagai hiasan atau aksen. Tombol, teks, dan tepi tetap monokrom.
 
 ### Tema terang (bawaan)
 
@@ -78,7 +76,7 @@ Di tema terang, tombol utama menjadi pil gelap hangat dengan teks krem.
 
 ## Keputusan pemilik atas pola yang bentrok aturan anti-slop
 
-| Pola di referensi | Keputusan |
+| Pola awal | Keputusan |
 | --- | --- |
 | Hanya tema gelap | Awalnya gelap sebagai bawaan; sejak nuansa Bali, terang (paras) menjadi bawaan dan gelap tetap ada |
 | Bento grid untuk jaminan | Diganti daftar dua kolom |
@@ -121,9 +119,9 @@ Di tema terang, tombol utama menjadi pil gelap hangat dengan teks krem.
 - Meter emosi contoh turun dari 8 ke 3 sekali saat halaman dibuka.
 - Semua gerak mati saat `prefers-reduced-motion: reduce`.
 
-## Yang sengaja tidak dibawa dari referensi (supaya ringan)
+## Yang sengaja dihindari (supaya ringan)
 
-| Di referensi | Pengganti di Reharsa | Alasan |
+| Pola yang dihindari | Pengganti di Reharsa | Alasan |
 | --- | --- | --- |
 | Library `motion` (framer) | Animasi CSS | Tanpa JavaScript tambahan |
 | Kanvas terowongan animasi | Sorot cahaya dari gradasi CSS, tanpa `filter: blur` | Tidak membebani GPU dan baterai HP |
