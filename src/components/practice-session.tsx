@@ -413,22 +413,19 @@ export function PracticeSession({
               {scenario.situation}
             </p>
 
-            <dl className="grid gap-4 sm:grid-cols-2">
-              <div className="card space-y-1 p-4">
-                <dt className="text-sm text-muted">Peranmu</dt>
-                <dd className="font-semibold">{scenario.studentRole}</dd>
-              </div>
-              <div className="card space-y-1 p-4">
-                <dt className="text-sm text-muted">Tujuan</dt>
-                <dd>{scenario.goal}</dd>
-              </div>
+            {/* Peran dan tujuan dalam satu kartu dua baris, supaya tidak ada
+                kartu kosong yang dipaksa sama tinggi. */}
+            <dl className="card grid gap-x-8 gap-y-4 p-5 sm:grid-cols-[9rem_1fr] sm:p-6">
+              <dt className="text-sm text-muted sm:pt-0.5">Peranmu</dt>
+              <dd className="font-semibold">{scenario.studentRole}</dd>
+              <dt className="text-sm text-muted sm:pt-0.5">Tujuanmu</dt>
+              <dd>{scenario.goal}</dd>
             </dl>
 
-            {/* Garis kiri menandai peringatan nyata (ada twist), bukan hiasan. */}
             {scenario.twist ? (
-              <p className="border-l-2 border-ink pl-4">
+              <p className="rounded-2xl bg-accent-soft p-4 sm:px-5">
                 <span className="font-semibold">Siap-siap menyesuaikan.</span>{" "}
-                <span className="text-muted">
+                <span className="text-soft">
                   Di tengah percakapan, {scenario.guest.name} akan memberi kabar
                   baru yang mengubah kebutuhannya.
                 </span>
@@ -472,15 +469,21 @@ export function PracticeSession({
             aria-label="Persiapan"
             className="lg:sticky lg:top-24 lg:self-start"
           >
-            <div className="card space-y-5 p-5">
-              <div className="flex items-center gap-3">
-                <GuestAvatar scenario={scenario} size="lg" />
-                <div>
-                  <p className="text-lg font-semibold">{scenario.guest.name}</p>
-                  <p className="text-sm text-muted">
-                    {guestLabel} dari {scenario.guest.origin}
-                  </p>
+            {/* Panggung kecil: pratinjau panggilan yang sama dengan layar
+                percakapan, jadi peralihan saat mulai terasa menyambung. */}
+            <div className="stage space-y-6 rounded-[28px] p-6">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <div className="voice-orb" data-state="ready" aria-hidden="true">
+                  <span className="voice-ring" />
+                  <span className="voice-ring" />
+                  <span className="voice-ring" />
+                  <GuestAvatar scenario={scenario} size="xl" />
                 </div>
+                <p className="text-lg font-semibold">{scenario.guest.name}</p>
+                <p className="text-sm text-muted">
+                  {guestLabel} dari {scenario.guest.origin} ·{" "}
+                  {scenario.channel === "telepon" ? "Telepon" : "Tatap muka"}
+                </p>
               </div>
 
               <nav aria-label="Suasana awal" className="space-y-2">
@@ -505,7 +508,7 @@ export function PracticeSession({
                 </div>
               </nav>
 
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-2 text-sm text-soft">
                 <li className="flex gap-2">
                   <span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-ink" />
                   {voiceAvailable

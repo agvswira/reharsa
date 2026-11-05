@@ -547,6 +547,11 @@ body {
   opacity: 0;
   pointer-events: none;
 }
+/* Siap: di brief, satu cincin diam menandai panggilan belum dimulai. */
+.voice-orb[data-state="ready"] .voice-ring:nth-child(1) {
+  opacity: 0.4;
+  transform: scale(1.06);
+}
 .voice-orb[data-state="listening"] .voice-ring:nth-child(1) {
   opacity: 0.85;
   border-color: rgb(244 239 230 / 0.6);
