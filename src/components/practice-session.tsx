@@ -287,7 +287,7 @@ export function PracticeSession({
     try {
       const data = await postJSON<
         Omit<ReportData, "pronunciation" | "pronFailures">
-      >("/api/evaluate", { scenarioId: scenario.id, turns });
+      >("/api/evaluate", { scenarioId: scenario.id, mood, turns, pronunciation });
       setReport({ ...data, pronunciation, pronFailures });
       setPhase("report");
     } catch (err) {

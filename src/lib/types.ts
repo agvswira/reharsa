@@ -66,6 +66,21 @@ export type PronunciationResult = {
   words: WordScore[];
 };
 
+export const PronunciationResultSchema = z.object({
+  accuracy: z.number().min(0).max(100),
+  fluency: z.number().min(0).max(100),
+  completeness: z.number().min(0).max(100),
+  words: z
+    .array(
+      z.object({
+        word: z.string().max(60),
+        accuracy: z.number().min(0).max(100),
+        errorType: z.string().max(40),
+      }),
+    )
+    .max(200),
+});
+
 export type ServiceStatus = {
   // Jumlah provider LLM yang terkonfigurasi (urutan cadangan).
   llm: number;

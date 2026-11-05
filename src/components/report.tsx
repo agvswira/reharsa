@@ -13,9 +13,11 @@ import type {
 export type ReportData = {
   evaluation: Evaluation;
   coaching: Coaching;
-  providers: { evaluator: string; coach: string };
+  // Tidak ada untuk rapor yang dibuka dari riwayat.
+  providers?: { evaluator: string; coach: string };
   pronunciation: PronunciationResult[];
   pronFailures: number;
+  saved?: { signedIn: boolean; id: string | null };
 };
 
 // Kata dengan akurasi di bawah angka ini ditandai untuk dilatih ulang.
@@ -45,11 +47,16 @@ export function Report({
   data,
   turns,
   onRestart,
+  restartHref,
+  dateLabel,
 }: {
   scenario: Scenario;
   data: ReportData;
   turns: Turn[];
-  onRestart: () => void;
+  // Rapor baru: ulangi di tempat. Rapor dari riwayat: tautan ke situasinya.
+  onRestart?: () => void;
+  restartHref?: string;
+  dateLabel?: string;
 }) {
   const { evaluation, coaching, pronunciation, pronFailures } = data;
 
@@ -84,7 +91,10 @@ export function Report({
     <div className="space-y-10">
       <section className="grid gap-8 lg:grid-cols-[1fr_20rem]">
         <div className="space-y-3">
-          <p className="text-sm text-muted">Rapor · {scenario.title}</p>
+          <p className="text-sm text-muted">
+            Rapor · {scenario.title}
+            {dateLabel ? ` · ${dateLabel}` : ""}
+          </p>
           <h1
             ref={headingRef}
             tabIndex={-1}
@@ -93,6 +103,24 @@ export function Report({
             {total} dari {max} poin
           </h1>
           <p className="max-w-prose text-lg">{coaching.summary}</p>
+          {data.saved?.id ? (
+            <p className="text-sm text-muted">
+              Rapor ini tersimpan.{" "}
+              <Link href="/riwayat" className="rounded font-semibold text-ink underline">
+                Lihat riwayat latihanmu
+              </Link>
+            </p>
+          ) : data.saved && !data.saved.signedIn ? (
+            <p className="text-sm text-muted">
+              Rapor ini tidak disimpan karena kamu belum masuk.{" "}
+              <Link
+                href="/masuk?next=/riwayat"
+                className="rounded font-semibold text-ink underline"
+              >
+                Masuk untuk menyimpan latihan berikutnya
+              </Link>
+            </p>
+          ) : null}
         </div>
         {showFocus ? (
           <div className="self-start card p-4">
@@ -240,23 +268,34 @@ export function Report({
       </details>
 
       <div className="flex flex-wrap items-center gap-4 border-t border-line pt-6">
-        <button
-          type="button"
-          onClick={onRestart}
-          className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
-        >
-          Ulangi situasi ini
-        </button>
+        {onRestart ? (
+          <button
+            type="button"
+            onClick={onRestart}
+            className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+          >
+            Ulangi situasi ini
+          </button>
+        ) : (
+          <Link
+            href={restartHref ?? `/latihan/${scenario.id}`}
+            className="inline-flex min-h-11 items-center rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+          >
+            Ulangi situasi ini
+          </Link>
+        )}
         <Link
-          href="/"
+          href="/#pilih-situasi"
           className="inline-flex min-h-11 items-center rounded-full border border-line-2 px-5 font-bold hover:bg-accent-soft"
         >
           Pilih situasi lain
         </Link>
       </div>
       <p className="text-sm text-muted">
-        Dinilai oleh {data.providers.evaluator}, umpan balik oleh{" "}
-        {data.providers.coach}. Skor ini alat latihan, bukan sertifikasi.
+        {data.providers
+          ? `Dinilai oleh ${data.providers.evaluator}, umpan balik oleh ${data.providers.coach}. `
+          : ""}
+        Skor ini alat latihan, bukan sertifikasi.
       </p>
     </div>
   );

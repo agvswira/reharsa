@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Mona_Sans } from "next/font/google";
 import Link from "next/link";
+import { AccountNav } from "@/components/account-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
@@ -66,9 +67,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Link href="/#prinsip" className={navLink}>
                 Prinsip
               </Link>
+              <AccountNav />
               <Link
                 href="/#pilih-situasi"
-                className="ml-1 inline-flex min-h-11 items-center rounded-full border border-line-2 px-4 text-sm font-semibold text-ink hover:bg-accent-soft"
+                className="ml-1 hidden min-h-11 items-center rounded-full border border-line-2 px-4 text-sm font-semibold text-ink hover:bg-accent-soft sm:inline-flex"
               >
                 Mulai latihan
               </Link>

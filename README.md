@@ -20,9 +20,10 @@ Sudah berfungsi:
 - Meter emosi tamu 0-10 yang berubah setiap giliran, beserta alasannya.
 - Mode ketik sebagai cadangan bila mikrofon atau layanan suara tidak tersedia.
 - Rapor: skor 1-4 per kriteria rubrik, kutipan ucapan siswa sebagai bukti, tingkat keyakinan penilai, contoh kalimat yang lebih baik, dan skor kejelasan pengucapan per kata.
-- Tema terang dan gelap.
+- Akun siswa (email + password, tidak wajib): rapor tersimpan otomatis, halaman riwayat dengan perbandingan skor 3 sesi pertama dan terbaru.
+- Tema gelap (bawaan) dan terang.
 
-Belum dibuat: akun siswa dan riwayat latihan, skrip evaluasi otomatis (`npm run eval`).
+Belum dibuat: skrip evaluasi otomatis (`npm run eval`).
 
 ## Tech Stack
 
@@ -31,7 +32,8 @@ Belum dibuat: akun siswa dan riwayat latihan, skrip evaluasi otomatis (`npm run 
 | Frontend | Next.js 16 (App Router), React 19, Tailwind CSS 4 |
 | Backend | Next.js Route Handlers (Node.js) |
 | Validasi | Zod |
-| Database | Belum ada (rencana: Supabase Free) |
+| Database | Postgres di Neon (tier gratis), driver `pg` |
+| Akun | Better Auth (email + password), sesi berbasis cookie |
 | Hosting | Vercel Hobby (rencana) |
 
 ## AI Implementation
@@ -75,7 +77,7 @@ Akhir sesi:
 transkrip → /api/evaluate → Agen Penilai + Agen Coach (paralel) → rapor
 ```
 
-Tidak ada database pada versi ini. Transkrip hanya ada di memori browser selama sesi; rekaman suara tidak disimpan.
+Database hanya menyimpan akun siswa dan rapor milik siswa yang sedang masuk (tabel `practice_session`: transkrip, skor, umpan balik, skor pengucapan). Rekaman suara tidak pernah disimpan. Setiap kueri riwayat difilter dengan `user_id`, jadi siswa hanya bisa membuka rapornya sendiri ([`src/lib/server/history.ts`](src/lib/server/history.ts)).
 
 ## Installation / Run Instructions
 
@@ -84,6 +86,8 @@ Butuh Node.js 20 atau lebih baru.
 ```bash
 npm install
 cp .env.example .env.local
+# isi key dan DATABASE_URL, lalu buat tabel:
+npm run db:migrate
 npm run dev
 ```
 
@@ -100,6 +104,8 @@ Kode tidak menyimpan URL, model, atau urutan bawaan; semuanya dibaca dari `.env.
 | `{NAMA}_JSON_MODE=false` | Opsional, untuk provider yang menolak `response_format` |
 | `STT_BASE_URL`, `STT_MODEL`, `STT_API_KEY` | Speech-to-Text (`/audio/transcriptions`) |
 | `AZURE_SPEECH_REGION`, `AZURE_SPEECH_KEY` | Suara tamu dan skor pengucapan |
+| `DATABASE_URL` | Koneksi Postgres untuk akun dan riwayat |
+| `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` | Kunci rahasia sesi login dan alamat aplikasi |
 
 Menambah provider, misalnya OpenRouter: tulis `OPENROUTER_BASE_URL`, `OPENROUTER_MODEL`, `OPENROUTER_API_KEY`, lalu sebut `OPENROUTER` di urutan agen.
 
@@ -109,7 +115,7 @@ Menambah provider, misalnya OpenRouter: tulis `OPENROUTER_BASE_URL`, `OPENROUTER
 
 ## Demo Account
 
-Tidak perlu login pada versi ini.
+Latihan bisa dicoba tanpa login. Untuk melihat riwayat tersimpan, tersedia satu akun demo juri berisi 5 sesi latihan sungguhan (balasan tamu dan skor dibuat AI; jawaban siswa ditulis tim dengan kualitas bertahap). Kredensialnya dikirim lewat form panitia, tidak dicantumkan di repository. Akun dapat dibuat ulang dengan `npm run demo:seed` ([`scripts/seed-demo.mjs`](scripts/seed-demo.mjs)).
 
 ## Known Limitations
 
@@ -117,13 +123,14 @@ Tidak perlu login pada versi ini.
 - Kuota tier gratis (Groq, Azure F0) dan provider custom bisa habis saat banyak pengguna.
 - Skor pengucapan Azure memakai acuan en-US; ditampilkan sebagai kejelasan kata dan tidak dihitung ke poin rapor.
 - Skor rapor adalah alat latihan, bukan sertifikasi.
-- Belum ada akun siswa dan riwayat latihan.
+- Belum ada reset password lewat email.
 
 ## Third-party Resources / Credits
 
-- Next.js, React, Tailwind CSS, Zod (lisensi MIT)
-- Font Atkinson Hyperlegible Next (SIL Open Font License)
-- Groq API, Azure AI Speech, dan provider custom yang dikonfigurasi tim (layanan pihak ketiga)
+- Next.js, React, Tailwind CSS, Zod, Better Auth, node-postgres (lisensi MIT)
+- Font Bricolage Grotesque dan Mona Sans (SIL Open Font License)
+- Arah desain halaman depan diadaptasi dari landing page OpenLC (github.com/zghanw/openlc, lisensi MIT); lihat DESIGN.md
+- Groq API, Azure AI Speech, Neon Postgres, dan provider custom yang dikonfigurasi tim (layanan pihak ketiga)
 - Hotel Puri Sekar dan semua tokoh tamu adalah fiktif, dibuat tim untuk latihan.
 
 ## AI Coding Assistant

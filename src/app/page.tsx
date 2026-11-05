@@ -288,7 +288,7 @@ function Steps() {
           Mulai dalam empat langkah.
         </h2>
         <p className={lede}>
-          Butuh Chrome atau Edge dan mikrofon. Tidak perlu membuat akun.
+          Butuh Chrome atau Edge dan mikrofon. Akun tidak wajib; masuk hanya untuk menyimpan rapor.
         </p>
       </div>
       <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -418,7 +418,7 @@ function Principles() {
     },
     {
       title: "Reharsa tidak menyimpan rekaman suaramu.",
-      body: "Audio dan transkrip dikirim ke layanan AI hanya untuk diproses. Reharsa tidak punya database, jadi tidak ada yang tersimpan di server kami; transkrip hilang saat sesi ditutup.",
+      body: "Audio hanya dikirim ke layanan suara untuk diubah jadi teks dan dinilai, lalu tidak disimpan. Transkrip dan rapor disimpan hanya bila kamu masuk ke akunmu, dan hanya kamu yang bisa membukanya.",
     },
     {
       title: "Alat latihan, bukan sertifikasi.",

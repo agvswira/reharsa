@@ -36,10 +36,10 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-pressed={theme === "dark"}
+      aria-label={theme === "dark" ? "Ganti ke tema terang" : "Ganti ke tema gelap"}
       className="min-h-11 rounded-full border border-line-2 px-4 text-sm text-ink hover:bg-accent-soft active:translate-y-px"
     >
-      {theme === "dark" ? "Tema terang" : "Tema gelap"}
+      {theme === "dark" ? "Terang" : "Gelap"}
     </button>
   );
 }
