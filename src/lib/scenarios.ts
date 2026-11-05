@@ -13,7 +13,8 @@ export const MOOD_START: Record<Mood, number> = {
 export type Criterion = {
   id: string;
   label: string;
-  // Deskripsi yang dibaca Agen Penilai. Skor 1-4.
+  // Deskripsi yang dibaca Agen Penilai. Skor 0-4; 0 berarti tidak ada
+  // ucapan yang menyentuh kriteria ini sama sekali.
   rubric: string;
 };
 
@@ -88,31 +89,31 @@ export const SCENARIOS: Scenario[] = [
         id: "listen",
         label: "Mendengar & empati",
         rubric:
-          "4: mengulang inti keluhan tamu dan menunjukkan empati dengan kalimat sendiri. 3: ada empati tapi generik. 2: langsung ke solusi tanpa mengakui perasaan tamu. 1: mengabaikan atau membantah tamu.",
+          "4: mengulang inti keluhan tamu dan menunjukkan empati dengan kalimat sendiri. 3: ada empati tapi generik. 2: langsung ke solusi tanpa mengakui perasaan tamu. 1: mengabaikan atau membantah tamu. 0: tidak menanggapi keluhan tamu sama sekali.",
       },
       {
         id: "apologize",
         label: "Permintaan maaf",
         rubric:
-          "4: minta maaf secara tulus dan spesifik atas masalah AC. 3: minta maaf tapi umum. 2: maaf yang terdengar defensif. 1: tidak minta maaf.",
+          "4: minta maaf secara tulus dan spesifik atas masalah AC. 3: minta maaf tapi umum. 2: maaf yang terdengar defensif. 1: maaf asal-asalan atau malah menyalahkan tamu. 0: tidak minta maaf sama sekali.",
       },
       {
         id: "solve",
         label: "Solusi & aturan Nyepi",
         rubric:
-          "4: menjelaskan aturan Nyepi dengan sopan DAN menawarkan solusi konkret sesuai fakta hotel (teknisi 15 menit, pindah kamar, kompensasi). 3: salah satu kuat, yang lain lemah. 2: solusi samar. 1: tidak ada solusi atau memberi info yang bertentangan dengan fakta.",
+          "4: menjelaskan aturan Nyepi dengan sopan DAN menawarkan solusi konkret sesuai fakta hotel (teknisi 15 menit, pindah kamar, kompensasi). 3: salah satu kuat, yang lain lemah. 2: solusi samar. 1: memberi info yang bertentangan dengan fakta. 0: tidak menawarkan solusi dan tidak menjelaskan aturan sama sekali.",
       },
       {
         id: "close",
         label: "Penutup & terima kasih",
         rubric:
-          "4: mengonfirmasi langkah berikutnya dan berterima kasih. 3: berterima kasih tanpa konfirmasi. 2: penutup canggung. 1: tidak ada penutup.",
+          "4: mengonfirmasi langkah berikutnya dan berterima kasih. 3: berterima kasih tanpa konfirmasi. 2: penutup canggung. 1: menutup dengan ketus atau terburu-buru. 0: tidak ada penutup sama sekali.",
       },
       {
         id: "language",
         label: "Bahasa layanan",
         rubric:
-          "4: bahasa Inggris jelas, sopan, kalimat lengkap, register layanan hotel. 3: jelas dengan sedikit kesalahan. 2: sering kaku atau kurang sopan. 1: sulit dipahami.",
+          "4: bahasa Inggris jelas, sopan, kalimat lengkap, register layanan hotel. 3: jelas dengan sedikit kesalahan. 2: sering kaku atau kurang sopan. 1: sulit dipahami. 0: tidak ada kalimat bahasa Inggris yang bisa dinilai.",
       },
     ],
   },
@@ -156,25 +157,25 @@ export const SCENARIOS: Scenario[] = [
         id: "greeting",
         label: "Sambutan & check-in",
         rubric:
-          "4: menyambut hangat, mengonfirmasi nama dan lama menginap, menyebut info penting (sarapan). 3: lengkap tapi kaku. 2: ada langkah check-in yang terlewat. 1: tidak memproses check-in.",
+          "4: menyambut hangat, mengonfirmasi nama dan lama menginap, menyebut info penting (sarapan). 3: lengkap tapi kaku. 2: ada langkah check-in yang terlewat. 1: sambutan dingin dan check-in kacau. 0: tidak memproses check-in sama sekali.",
       },
       {
         id: "accuracy",
         label: "Akurasi info pura",
         rubric:
-          "4: menjelaskan sarung, selendang, bahu dan lutut tertutup, serta area yang dibatasi sesuai fakta, dengan bahasa yang menghormati. 3: sebagian besar benar. 2: samar. 1: salah atau mengarang aturan.",
+          "4: menjelaskan sarung, selendang, bahu dan lutut tertutup, serta area yang dibatasi sesuai fakta, dengan bahasa yang menghormati. 3: sebagian besar benar. 2: samar. 1: salah atau mengarang aturan. 0: tidak menjelaskan aturan pura sama sekali.",
       },
       {
         id: "proactive",
         label: "Layanan proaktif",
         rubric:
-          "4: menawarkan bantuan tambahan yang relevan (pinjam sarung di concierge, waktu berangkat). 3: menjawab saja dengan baik. 2: menjawab minimal. 1: tidak membantu.",
+          "4: menawarkan bantuan tambahan yang relevan (pinjam sarung di concierge, waktu berangkat). 3: menjawab saja dengan baik. 2: menjawab minimal. 1: jawaban tidak membantu. 0: tidak menawarkan bantuan apa pun.",
       },
       {
         id: "language",
         label: "Bahasa layanan",
         rubric:
-          "4: bahasa Inggris jelas, sopan, kalimat lengkap, register layanan hotel. 3: jelas dengan sedikit kesalahan. 2: sering kaku atau kurang sopan. 1: sulit dipahami.",
+          "4: bahasa Inggris jelas, sopan, kalimat lengkap, register layanan hotel. 3: jelas dengan sedikit kesalahan. 2: sering kaku atau kurang sopan. 1: sulit dipahami. 0: tidak ada kalimat bahasa Inggris yang bisa dinilai.",
       },
     ],
   },
@@ -214,25 +215,25 @@ export const SCENARIOS: Scenario[] = [
         id: "intro",
         label: "Perkenalan diri",
         rubric:
-          "4: ringkas, terstruktur, relevan dengan posisi. 3: jelas tapi panjang atau kurang relevan. 2: tidak terstruktur. 1: tidak menjawab.",
+          "4: ringkas, terstruktur, relevan dengan posisi. 3: jelas tapi panjang atau kurang relevan. 2: tidak terstruktur. 1: tidak relevan dengan posisi. 0: tidak memperkenalkan diri sama sekali.",
       },
       {
         id: "examples",
         label: "Contoh konkret",
         rubric:
-          "4: memberi contoh nyata dengan situasi, tindakan dan hasil. 3: ada contoh tapi tipis. 2: jawaban umum tanpa contoh. 1: tidak menjawab pertanyaan.",
+          "4: memberi contoh nyata dengan situasi, tindakan dan hasil. 3: ada contoh tapi tipis. 2: jawaban umum tanpa contoh. 1: contoh tidak relevan dengan pertanyaan. 0: tidak menjawab pertanyaan sama sekali.",
       },
       {
         id: "situational",
         label: "Menangani tamu sulit",
         rubric:
-          "4: langkah jelas yang menunjukkan empati dan solusi. 3: cukup baik. 2: samar. 1: tidak tepat.",
+          "4: langkah jelas yang menunjukkan empati dan solusi. 3: cukup baik. 2: samar. 1: tidak tepat. 0: tidak membahas cara menangani tamu sulit.",
       },
       {
         id: "language",
         label: "Kejelasan bahasa",
         rubric:
-          "4: bahasa Inggris jelas dan lancar, mudah dipahami. 3: jelas dengan sedikit kesalahan. 2: sering terputus atau salah. 1: sulit dipahami.",
+          "4: bahasa Inggris jelas dan lancar, mudah dipahami. 3: jelas dengan sedikit kesalahan. 2: sering terputus atau salah. 1: sulit dipahami. 0: tidak ada kalimat bahasa Inggris yang bisa dinilai.",
       },
     ],
   },

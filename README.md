@@ -19,7 +19,7 @@ Sudah berfungsi:
 - Percakapan suara dua arah: rekam dari mikrofon, ditranskripsi, tamu AI menjawab dengan suara beraksen.
 - Meter emosi tamu 0-10 yang berubah setiap giliran, beserta alasannya.
 - Mode ketik sebagai cadangan bila mikrofon atau layanan suara tidak tersedia.
-- Rapor: skor 1-4 per kriteria rubrik, kutipan ucapan siswa sebagai bukti, tingkat keyakinan penilai, contoh kalimat yang lebih baik, dan skor kejelasan pengucapan per kata.
+- Rapor: skor 0-4 per kriteria rubrik, kutipan ucapan siswa sebagai bukti, tingkat keyakinan penilai, contoh kalimat yang lebih baik, dan skor kejelasan pengucapan per kata.
 - Akun siswa (email + password, tidak wajib): rapor tersimpan otomatis, halaman riwayat dengan perbandingan skor 3 sesi pertama dan terbaru.
 - Tema gelap (bawaan) dan terang.
 
@@ -44,7 +44,7 @@ Belum dibuat: skrip evaluasi otomatis (`npm run eval`).
 | Agen Tamu | Rantai `GUEST_LLM_ORDER`, contoh Groq Qwen 3.8 27B → provider custom | Riwayat percakapan + emosi saat ini → `{reply, emotion, emotion_reason, resolved}` |
 | Text-to-Speech | Azure Neural TTS F0 (cadangan: suara browser) | Teks tamu + emosi → MP3 beraksen (en-AU, en-IN, en-GB) |
 | Pronunciation Assessment | Azure AI Speech F0 | Audio + teks → skor akurasi, kelancaran, skor per kata |
-| Agen Penilai | Rantai `JUDGE_LLM_ORDER`, contoh provider custom → Groq | Transkrip + rubrik → skor 1-4, kutipan bukti, keyakinan per kriteria |
+| Agen Penilai | Rantai `JUDGE_LLM_ORDER`, contoh provider custom → Groq | Transkrip + rubrik → skor 0-4, kutipan bukti, keyakinan per kriteria |
 | Agen Coach | Rantai `JUDGE_LLM_ORDER` | Transkrip → ringkasan dan contoh kalimat lebih baik |
 
 Semua LLM dipanggil lewat endpoint kompatibel OpenAI (`{BASE_URL}/chat/completions`), jadi endpoint, model, dan urutan provider diatur sepenuhnya lewat `.env.local` tanpa mengubah kode (lihat Konfigurasi). Provider yang membalas 429 atau 5xx dilewati sementara (sesuai header `retry-after`, default 60 detik) dan permintaan langsung pindah ke provider berikutnya.

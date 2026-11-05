@@ -82,16 +82,17 @@ Student goal: ${scenario.goal}
 Facts the student was allowed to use:
 ${scenario.facts.map((f) => `- ${f}`).join("\n")}
 
-Rubric (score each criterion 1-4):
+Rubric (score each criterion 0-4):
 ${scenario.criteria.map((c) => `- id "${c.id}" (${c.label}): ${c.rubric}`).join("\n")}
 
 Rules:
-- Base every score on what the STAFF actually said. "evidence" must be an exact quote from a STAFF line, or an empty string if nothing relevant was said (then the score is 1).
+- Score 0 when the STAFF said nothing that addresses the criterion at all. Then "evidence" is an empty string.
+- Otherwise score 1-4 by the rubric, based only on what the STAFF actually said. "evidence" must be an exact quote from a STAFF line.
 - Judge clarity and politeness, not how native the accent or word choice sounds. Indonesian-style English that is clear and polite is not penalised.
 - "comment" explains the score in Bahasa Indonesia in one or two sentences, addressed to the student as "kamu".
 - "confidence" is 0-1: lower it when the transcript is too short or the evidence is ambiguous.
 
-Reply only with JSON: {"criteria": [{"id": string, "score": integer 1-4, "evidence": string, "comment": string, "confidence": number}]} with exactly one entry per rubric id, in rubric order.`;
+Reply only with JSON: {"criteria": [{"id": string, "score": integer 0-4, "evidence": string, "comment": string, "confidence": number}]} with exactly one entry per rubric id, in rubric order.`;
 
   const user = `Transcript:\n${transcriptText(scenario, turns)}`;
 

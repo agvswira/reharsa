@@ -29,7 +29,7 @@ export const EvaluationSchema = z.object({
   criteria: z.array(
     z.object({
       id: z.string(),
-      score: z.number().int().min(1).max(4),
+      score: z.number().int().min(0).max(4),
       evidence: z.string().max(400),
       comment: z.string().max(400),
       confidence: z.number().min(0).max(1),

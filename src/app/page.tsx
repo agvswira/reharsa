@@ -164,7 +164,7 @@ function ReportProof() {
         </h2>
         <p className={lede}>
           Setelah percakapan selesai, agen penilai membaca transkrip dan memberi
-          skor 1 sampai 4 untuk setiap kriteria. Setiap skor disertai kutipan
+          skor 0 sampai 4 untuk setiap kriteria. Setiap skor disertai kutipan
           ucapanmu, alasan dalam bahasa Indonesia, dan contoh kalimat yang lebih
           baik.
         </p>
