@@ -19,11 +19,13 @@ function readTheme(): Theme {
   return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
+// Saklar tema. Posisi kenop diatur CSS dari data-theme (lihat .theme-knob di
+// globals.css), jadi sudah benar sejak render pertama tanpa berkedip.
 export function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, readTheme, () => null);
 
   function toggle() {
-    const next: Theme = theme === "dark" ? "light" : "dark";
+    const next: Theme = readTheme() === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     try {
       localStorage.setItem("reharsa-theme", next);
@@ -35,11 +37,16 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={theme === "dark"}
+      aria-label="Tema gelap"
+      title={theme === "dark" ? "Ganti ke tema terang" : "Ganti ke tema gelap"}
       onClick={toggle}
-      aria-label={theme === "dark" ? "Ganti ke tema terang" : "Ganti ke tema gelap"}
-      className="min-h-11 rounded-full border border-line-2 px-4 text-sm text-ink hover:bg-accent-soft active:translate-y-px"
+      className="group ml-1 grid min-h-11 min-w-11 place-items-center rounded-full"
     >
-      {theme === "dark" ? "Terang" : "Gelap"}
+      <span className="theme-track relative block h-7 w-12 rounded-full border border-edge bg-track transition-colors group-hover:border-ink">
+        <span className="theme-knob absolute left-[3px] top-[3px] block size-5 rounded-full bg-ink shadow-sm" />
+      </span>
     </button>
   );
 }

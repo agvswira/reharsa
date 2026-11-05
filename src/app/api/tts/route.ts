@@ -3,6 +3,7 @@ import { errorResponse, ServiceError } from "@/lib/server/env";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { synthesize } from "@/lib/server/speech";
 import { getScenario } from "@/lib/scenarios";
+import { requireUser } from "@/lib/server/auth";
 
 const BodySchema = z.object({
   scenarioId: z.string(),
@@ -13,6 +14,7 @@ const BodySchema = z.object({
 export async function POST(request: Request) {
   try {
     rateLimit(request, "tts", 200);
+    await requireUser(request);
     const body = BodySchema.safeParse(await request.json());
     if (!body.success) throw new ServiceError("Permintaan tidak valid.", 400);
     const scenario = getScenario(body.data.scenarioId);

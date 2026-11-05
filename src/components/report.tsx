@@ -17,7 +17,7 @@ export type ReportData = {
   providers?: { evaluator: string; coach: string };
   pronunciation: PronunciationResult[];
   pronFailures: number;
-  saved?: { signedIn: boolean; id: string | null };
+  saved?: { id: string | null };
 };
 
 // Kata dengan akurasi di bawah angka ini ditandai untuk dilatih ulang.
@@ -110,15 +110,10 @@ export function Report({
                 Lihat riwayat latihanmu
               </Link>
             </p>
-          ) : data.saved && !data.saved.signedIn ? (
+          ) : data.saved ? (
             <p className="text-sm text-muted">
-              Rapor ini tidak disimpan karena kamu belum masuk.{" "}
-              <Link
-                href="/masuk?next=/riwayat"
-                className="rounded font-semibold text-ink underline"
-              >
-                Masuk untuk menyimpan latihan berikutnya
-              </Link>
+              Rapor ini gagal disimpan ke riwayat, tapi isinya tetap bisa kamu
+              baca di sini.
             </p>
           ) : null}
         </div>
@@ -285,7 +280,7 @@ export function Report({
           </Link>
         )}
         <Link
-          href="/#pilih-situasi"
+          href="/latihan"
           className="inline-flex min-h-11 items-center rounded-full border border-line-2 px-5 font-bold hover:bg-accent-soft"
         >
           Pilih situasi lain

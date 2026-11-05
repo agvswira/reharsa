@@ -365,7 +365,7 @@ export function PracticeSession({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Link href="/" className="rounded text-sm text-muted underline">
+        <Link href="/latihan" className="rounded text-sm text-muted underline">
           Kembali ke daftar situasi
         </Link>
         <p className="text-sm text-muted">

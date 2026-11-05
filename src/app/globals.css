@@ -412,23 +412,12 @@ body {
   - .rise: muncul sekali saat halaman dibuka.
   - .reveal: muncul saat digulir ke layar (animation-timeline); browser yang
     belum mendukung langsung menampilkan isinya.
-  - .demo-meter: meter emosi contoh turun dari 8 ke 3, sekali.
   Semuanya mati saat pengguna memilih kurangi gerak.
 */
 @keyframes rise {
   from {
     opacity: 0;
     transform: translateY(16px);
-  }
-}
-@keyframes cool-down {
-  to {
-    background-color: var(--track);
-  }
-}
-@keyframes settle {
-  to {
-    background-color: var(--ink);
   }
 }
 
@@ -443,24 +432,9 @@ body {
       animation-range: entry 0% cover 22%;
     }
   }
-  .demo-meter [data-drop] {
-    animation: cool-down 0.5s ease forwards;
-    animation-delay: calc(1.6s + var(--i) * 0.18s);
-  }
-  .demo-meter [data-keep] {
-    animation: settle 0.5s ease forwards;
-    animation-delay: 2.6s;
-  }
 }
 
-/* Tanpa animasi, meter contoh langsung menunjukkan hasil akhirnya. */
 @media (prefers-reduced-motion: reduce) {
-  .demo-meter [data-drop] {
-    background-color: var(--track);
-  }
-  .demo-meter [data-keep] {
-    background-color: var(--ink);
-  }
   *,
   *::before,
   *::after {
@@ -468,4 +442,19 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* Saklar tema: kenop meluncur ke kanan saat gelap, sedikit memantul. */
+.theme-knob {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-theme="dark"] .theme-knob {
+  transform: translateX(1.25rem);
+}
+.theme-track:active .theme-knob,
+button:active > .theme-track .theme-knob {
+  width: 1.5rem;
+}
+[data-theme="dark"] button:active > .theme-track .theme-knob {
+  transform: translateX(0.95rem);
 }

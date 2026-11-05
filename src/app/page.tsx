@@ -1,28 +1,14 @@
-import type { CSSProperties } from "react";
-import { connection } from "next/server";
-import { Suspense } from "react";
+import Link from "next/link";
 import { PracticeTimeline } from "@/components/practice-timeline";
-import { ServiceNotice } from "@/components/service-notice";
-import { SCENARIOS, type Category, type Mood } from "@/lib/scenarios";
-import { serviceStatus } from "@/lib/server/env";
+import { channelLabel, GROUPS, SCENARIOS } from "@/lib/scenarios";
 
 // Halaman depan: komponen server tanpa JavaScript tambahan di browser.
 // Struktur mengikuti referensi (hero, perbandingan, bukti, langkah, prinsip,
 // penutup), isi dan gaya mengikuti DESIGN.md. Semua cuplikan percakapan dan
 // rapor di halaman ini adalah contoh dan ditandai begitu di layar.
 
-async function CurrentServiceNotice() {
-  await connection();
-  return <ServiceNotice status={serviceStatus()} />;
-}
-
-const MOODS: { value: Mood; label: string; hint: string }[] = [
-  { value: "sabar", label: "Sabar", hint: "mulai tenang" },
-  { value: "kesal", label: "Kesal", hint: "mulai jengkel" },
-  { value: "marah", label: "Marah", hint: "mulai emosi tinggi" },
-];
-
 const nyepi = SCENARIOS[0];
+const countries = new Set(SCENARIOS.map((s) => s.guest.origin)).size;
 
 // Skala tipografi dan tombol dari DESIGN.md (diturunkan dari referensi).
 const display =
@@ -35,32 +21,11 @@ const primaryButton =
 const ghostButton =
   "inline-flex h-[50px] items-center justify-center rounded-full border border-line-2 bg-accent-soft px-6 text-[15.5px] font-semibold text-ink hover:border-edge active:translate-y-px";
 
-/** Meter emosi contoh: 9 ruas merah (emosi 8) yang turun menjadi 4 ruas (emosi 3). */
-function DemoMeter() {
-  return (
-    <div className="demo-meter grid grid-cols-11 gap-1" aria-hidden="true">
-      {Array.from({ length: 11 }, (_, i) => {
-        if (i > 8)
-          return <span key={i} className="h-2.5 rounded-sm bg-track" />;
-        const drop = i > 3;
-        return (
-          <span
-            key={i}
-            {...(drop ? { "data-drop": "" } : { "data-keep": "" })}
-            style={{ "--i": 8 - i } as CSSProperties}
-            className="h-2.5 rounded-sm bg-alert"
-          />
-        );
-      })}
-    </div>
-  );
-}
-
 function Hero() {
   const facts = [
     `${SCENARIOS.length} situasi latihan`,
-    "Aksen Australia, India, Inggris",
-    "Dinilai dengan rubrik layanan front office",
+    `Tamu dengan aksen dari ${countries} negara`,
+    "Dinilai dengan rubrik layanan hotel",
     "Umpan balik dalam bahasa Indonesia",
     "Rekaman suara tidak disimpan",
   ];
@@ -70,48 +35,63 @@ function Hero() {
       className="flex flex-col items-center pt-6 text-center sm:pt-12"
     >
       <h1 id="hero-judul" className={display}>
-        <span className="rise block">Tamu marah di kelas,</span>
+        <span className="rise block">Latih bicara dengan tamu asing,</span>
         <span className="rise block [animation-delay:120ms]">
-          bukan di lobi hotel.
+          sebelum bertemu yang sungguhan.
         </span>
       </h1>
       <p className={`rise mt-6 ${lede} [animation-delay:300ms]`}>
-        Reharsa memerankan tamu hotel dan pewawancara kapal pesiar dari
-        Australia, India, dan Inggris lewat suara. Kamu menanganinya dalam
-        bahasa Inggris, lalu membaca rapor yang menunjuk kalimatmu sendiri.
+        Kamu melayani tamu hotel virtual lewat suara dalam bahasa Inggris, dari
+        reservasi telepon sampai keluhan. Setelahnya, rapor menunjuk kalimatmu
+        sendiri dan memberi contoh yang lebih baik.
       </p>
       <div className="rise mt-8 flex flex-wrap justify-center gap-3 [animation-delay:420ms]">
-        <a href="#pilih-situasi" className={primaryButton}>
+        <Link href="/latihan" className={primaryButton}>
           Mulai latihan
-        </a>
+        </Link>
         <a href="#cara-kerja" className={ghostButton}>
           Lihat cara kerjanya
         </a>
       </div>
+      <p className="rise mt-4 text-sm text-muted [animation-delay:480ms]">
+        Gratis, cukup buat akun dengan email.
+      </p>
 
-      {/* Pusat visual: kartu tamu dengan sorot cahaya di belakangnya
-          (pengganti kanvas animasi referensi, hanya gradasi CSS). */}
+      {/* Pusat visual: satu putaran latihan, dari ucapan tamu sampai rapor,
+          dengan sorot cahaya di belakangnya (hanya gradasi CSS). */}
       <div className="relative mt-16 w-full max-w-xl">
         <div
           aria-hidden="true"
           className="beam pointer-events-none absolute -inset-x-24 -bottom-16 -top-24"
         />
-        <figure
-          aria-label="Contoh: emosi tamu turun dari 8 ke 3"
-          className="rise card relative space-y-4 p-5 text-left [animation-delay:560ms] sm:p-6"
-        >
-          <div className="flex items-baseline justify-between gap-3">
-            <p className="text-lg font-semibold">{nyepi.guest.name}</p>
-            <p className="text-sm text-muted">Tamu dari {nyepi.guest.origin}</p>
-          </div>
-          <p lang="en" className="text-lg leading-relaxed text-soft">
-            “{nyepi.openingLines.marah}”
-          </p>
-          <DemoMeter />
+        <figure className="rise card relative space-y-5 p-5 text-left [animation-delay:560ms] sm:p-6">
           <figcaption className="text-sm text-muted">
-            Contoh: emosi tamu turun dari 8 ke 3 setelah kamu minta maaf dan
-            menawarkan teknisi dalam 15 menit.
+            Contoh latihan · {nyepi.title} · {channelLabel(nyepi)}
           </figcaption>
+          <div className="space-y-1">
+            <p className="text-sm font-semibold">
+              {nyepi.guest.name}, tamu dari {nyepi.guest.origin}
+            </p>
+            <p lang="en" className="text-lg leading-relaxed text-soft">
+              “{nyepi.openingLines.kesal}”
+            </p>
+          </div>
+          <div className="ml-6 space-y-1 rounded-2xl bg-accent-soft p-4">
+            <p className="text-sm font-semibold">Kamu, lewat suara</p>
+            <p lang="en" className="leading-relaxed">
+              “I&apos;m so sorry about the air con, Mr Henderson. Our technician
+              can be in your room within 15 minutes.”
+            </p>
+          </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-line pt-4">
+            <p className="text-sm text-muted">Rapor setelah percakapan</p>
+            <p className="font-display text-2xl font-semibold tabular-nums">
+              16 dari 20 poin
+            </p>
+            <p className="w-full text-sm text-muted">
+              Permintaan maaf 4/4 · Fokus berikutnya: penutup &amp; terima kasih
+            </p>
+          </div>
         </figure>
       </div>
 
@@ -220,6 +200,20 @@ function ReportProof() {
 function Steps() {
   const steps = [
     {
+      title: "Buat akun dan masuk",
+      body: "Cukup nama panggilan, email, dan password. Semua rapor tersimpan di akunmu.",
+      visual: (
+        <div className="space-y-1.5 text-sm">
+          <p className="rounded-md border border-line px-2.5 py-1 text-muted">
+            email@contoh.com
+          </p>
+          <p className="w-fit rounded-md bg-ink px-2.5 py-0.5 text-paper">
+            Masuk
+          </p>
+        </div>
+      ),
+    },
+    {
       title: "Pilih situasi dan suasana tamu",
       body: "Sabar, kesal, atau marah. Suasana menentukan cara tamu membuka percakapan.",
       visual: (
@@ -238,25 +232,8 @@ function Steps() {
       ),
     },
     {
-      title: "Izinkan mikrofon",
-      body: "Rekaman hanya dipakai untuk mengubah suaramu jadi teks dan menilai pengucapan.",
-      visual: (
-        <div className="space-y-2 text-sm">
-          <p>Reharsa ingin memakai mikrofon</p>
-          <div className="flex justify-end gap-2">
-            <span className="rounded-md border border-line px-2 py-0.5 text-muted">
-              Blokir
-            </span>
-            <span className="rounded-md bg-ink px-2 py-0.5 text-paper">
-              Izinkan
-            </span>
-          </div>
-        </div>
-      ),
-    },
-    {
       title: "Bicara sampai tamu puas",
-      body: "Tekan tombol, bicara, tekan lagi. Ucapanmu muncul sebagai teks saat kamu bicara.",
+      body: "Izinkan mikrofon, tekan tombol, bicara, tekan lagi. Ucapanmu muncul sebagai teks saat kamu bicara.",
       visual: (
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-alert text-white">
@@ -276,7 +253,7 @@ function Steps() {
     },
     {
       title: "Baca rapor",
-      body: "Total poin, satu fokus latihan berikutnya, dan rincian per kriteria.",
+      body: "Total poin, satu fokus latihan berikutnya, dan rincian per kriteria. Tersimpan di riwayatmu.",
       visual: (
         <div className="space-y-1">
           <p className="font-display text-2xl font-semibold tabular-nums">
@@ -296,8 +273,8 @@ function Steps() {
           Mulai dalam empat langkah.
         </h2>
         <p className={lede}>
-          Butuh Chrome atau Edge dan mikrofon. Akun tidak wajib; masuk hanya
-          untuk menyimpan rapor.
+          Butuh Chrome atau Edge, mikrofon, dan akun gratis supaya setiap rapor
+          tersimpan dan perkembanganmu terlihat.
         </p>
       </div>
       <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -321,136 +298,49 @@ function Steps() {
   );
 }
 
-const GROUPS: { category: Category; title: string; note: string }[] = [
-  {
-    category: "harian",
-    title: "Sering terjadi setiap hari",
-    note: "Situasi yang hampir pasti kamu temui di minggu pertama magang.",
-  },
-  {
-    category: "sulit",
-    title: "Situasi sulit",
-    note: "Jarang terjadi, tapi menentukan apakah tamu kembali lagi.",
-  },
-  {
-    category: "wawancara",
-    title: "Wawancara kerja",
-    note: "Latihan sebelum melamar ke hotel atau kapal pesiar.",
-  },
-];
-
-// Nomor urut mengikuti urutan tampil per grup, bukan urutan array.
-const ORDERED = GROUPS.flatMap((g) =>
-  SCENARIOS.filter((s) => s.category === g.category),
-);
-
-function ScenarioList() {
+function ScenarioPreview() {
   return (
     <section
-      id="pilih-situasi"
-      aria-labelledby="pilih-situasi-judul"
-      className="scroll-mt-20 space-y-6"
+      id="situasi"
+      aria-labelledby="situasi-judul"
+      className="reveal scroll-mt-20 space-y-10"
     >
-      <h2 id="pilih-situasi-judul" className={h2}>
-        Pilih situasi.
-      </h2>
-      <Suspense fallback={null}>
-        <CurrentServiceNotice />
-      </Suspense>
-      {GROUPS.map((g) => (
-        <section
-          key={g.category}
-          aria-labelledby={`grup-${g.category}`}
-          className="space-y-3"
-        >
-          <div className="space-y-1">
-            <h3
-              id={`grup-${g.category}`}
-              className="font-display text-2xl font-semibold"
-            >
-              {g.title}
-            </h3>
-            <p className="max-w-prose text-muted">{g.note}</p>
+      <div className="max-w-3xl space-y-4">
+        <h2 id="situasi-judul" className={h2}>
+          {SCENARIOS.length} situasi yang benar-benar terjadi.
+        </h2>
+        <p className={lede}>
+          Dari reservasi lewat telepon sampai tamu yang terjebak abu vulkanik.
+          Di tengah percakapan, tamu bisa memberi kabar baru yang memaksamu
+          menyesuaikan solusi, seperti di hotel sungguhan.
+        </p>
+      </div>
+      <div className="divide-y divide-line border-y border-line">
+        {GROUPS.map((g) => (
+          <div
+            key={g.category}
+            className="grid gap-4 py-7 md:grid-cols-[18rem_1fr] md:gap-10"
+          >
+            <div className="space-y-1">
+              <h3 className="text-xl font-bold">{g.title}</h3>
+              <p className="text-muted">{g.note}</p>
+            </div>
+            <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              {SCENARIOS.filter((s) => s.category === g.category).map((s) => (
+                <li key={s.id}>
+                  <p className="font-semibold">{s.title}</p>
+                  <p className="text-sm text-muted">
+                    {s.department} · {channelLabel(s)} · {s.guest.origin}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ol className="divide-y divide-line border-y border-line">
-            {SCENARIOS.filter((s) => s.category === g.category).map((s) => (
-              <li key={s.id} className="py-7">
-                <form
-                  action={`/latihan/${s.id}`}
-                  className="grid gap-5 md:grid-cols-[13rem_1fr]"
-                >
-                  <div className="space-y-1">
-                    <p className="font-display text-3xl font-semibold tabular-nums text-muted">
-                      {String(ORDERED.indexOf(s) + 1).padStart(2, "0")}
-                    </p>
-                    <p className="font-bold">{s.guest.name}</p>
-                    <p className="text-sm text-muted">
-                      {s.kind === "interview" ? "Pewawancara" : "Tamu"} dari{" "}
-                      {s.guest.origin}
-                    </p>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="space-y-1">
-                      <p className="text-sm text-muted">
-                        {s.department} ·{" "}
-                        {s.channel === "telepon" ? "Telepon" : "Tatap muka"}
-                      </p>
-                      <h4 className="text-xl font-bold">{s.title}</h4>
-                      <p className="max-w-prose">{s.situation}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted">Yang dinilai</p>
-                      <ul className="mt-1 flex flex-wrap gap-2">
-                        {s.criteria.map((c) => (
-                          <li
-                            key={c.id}
-                            className="rounded-md border border-line px-2.5 py-1 text-sm"
-                          >
-                            {c.label}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                      <fieldset>
-                        <legend className="mb-2 text-sm text-muted">
-                          Suasana awal{" "}
-                          {s.kind === "interview" ? "pewawancara" : "tamu"}
-                        </legend>
-                        <div className="flex flex-wrap gap-2">
-                          {MOODS.map((m) => (
-                            <label
-                              key={m.value}
-                              className="flex min-h-11 items-center gap-2 rounded-full border border-edge bg-surface px-3 hover:bg-paper has-[:checked]:border-ink has-[:checked]:font-bold"
-                            >
-                              <input
-                                type="radio"
-                                name="mood"
-                                value={m.value}
-                                defaultChecked={m.value === "kesal"}
-                                className="accent-[var(--accent)]"
-                              />
-                              {m.label}
-                              <span className="sr-only">, {m.hint}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </fieldset>
-                      <button
-                        type="submit"
-                        className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
-                      >
-                        Mulai situasi ini
-                        <span className="sr-only">: {s.title}</span>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ))}
+        ))}
+      </div>
+      <Link href="/latihan" className={primaryButton}>
+        Mulai latihan
+      </Link>
     </section>
   );
 }
@@ -471,7 +361,7 @@ function Principles() {
     },
     {
       title: "Reharsa tidak menyimpan rekaman suaramu.",
-      body: "Audio hanya dikirim ke layanan suara untuk diubah jadi teks dan dinilai, lalu tidak disimpan. Transkrip dan rapor disimpan hanya bila kamu masuk ke akunmu, dan hanya kamu yang bisa membukanya.",
+      body: "Audio hanya dikirim ke layanan suara untuk diubah jadi teks dan dinilai, lalu tidak disimpan. Transkrip dan rapor disimpan di akunmu, dan hanya kamu yang bisa membukanya.",
     },
     {
       title: "Alat latihan, bukan sertifikasi.",
@@ -525,9 +415,9 @@ function Close() {
         <span className="block">Layani dengan tenang.</span>
       </h2>
       <div className="mt-8 flex justify-center">
-        <a href="#pilih-situasi" className={primaryButton}>
-          Pilih situasi latihan
-        </a>
+        <Link href="/latihan" className={primaryButton}>
+          Mulai latihan
+        </Link>
       </div>
     </section>
   );
@@ -540,7 +430,7 @@ export default function Home() {
       <HowItWorks />
       <ReportProof />
       <Steps />
-      <ScenarioList />
+      <ScenarioPreview />
       <Principles />
       <Close />
     </div>

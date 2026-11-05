@@ -20,7 +20,7 @@ Sudah berfungsi:
 - Meter emosi tamu 0-10 yang berubah setiap giliran, beserta alasannya.
 - Mode ketik sebagai cadangan bila mikrofon atau layanan suara tidak tersedia.
 - Rapor: skor 0-4 per kriteria rubrik, kutipan ucapan siswa sebagai bukti, tingkat keyakinan penilai, contoh kalimat yang lebih baik, dan skor kejelasan pengucapan per kata.
-- Akun siswa (email + password, tidak wajib): rapor tersimpan otomatis, halaman riwayat dengan perbandingan skor 3 sesi pertama dan terbaru.
+- Akun siswa (email + password, wajib untuk berlatih): rapor tersimpan otomatis, halaman riwayat dengan perbandingan skor 3 sesi pertama dan terbaru. Halaman latihan dan semua API AI menolak permintaan tanpa sesi login, sehingga kuota layanan tidak bisa dipakai pengunjung anonim.
 - Tema gelap (bawaan) dan terang.
 
 Belum dibuat: skrip evaluasi otomatis (`npm run eval`).
@@ -115,7 +115,7 @@ Menambah provider, misalnya OpenRouter: tulis `OPENROUTER_BASE_URL`, `OPENROUTER
 
 ## Demo Account
 
-Latihan bisa dicoba tanpa login. Untuk melihat riwayat tersimpan, tersedia satu akun demo juri berisi 5 sesi latihan sungguhan (balasan tamu dan skor dibuat AI; jawaban siswa ditulis tim dengan kualitas bertahap). Kredensialnya dikirim lewat form panitia, tidak dicantumkan di repository. Akun dapat dibuat ulang dengan `npm run demo:seed` ([`scripts/seed-demo.mjs`](scripts/seed-demo.mjs)).
+Latihan memerlukan akun. Juri bisa membuat akun sendiri di halaman Daftar, atau memakai satu akun demo juri berisi 5 sesi latihan sungguhan (balasan tamu dan skor dibuat AI; jawaban siswa ditulis tim dengan kualitas bertahap). Kredensialnya dikirim lewat form panitia, tidak dicantumkan di repository. Akun dapat dibuat ulang dengan `npm run demo:seed` ([`scripts/seed-demo.mjs`](scripts/seed-demo.mjs)).
 
 ## Known Limitations
 

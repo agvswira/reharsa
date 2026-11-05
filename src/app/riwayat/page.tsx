@@ -55,11 +55,11 @@ async function History() {
       {sessions.length === 0 ? (
         <div className="card space-y-4 p-6 sm:p-8">
           <p className="text-lg">
-            Rapor tersimpan otomatis setiap kali kamu menyelesaikan latihan
-            dalam keadaan masuk.
+            Belum ada latihan. Rapor tersimpan otomatis setiap kali kamu
+            menyelesaikan satu situasi.
           </p>
           <Link
-            href="/#pilih-situasi"
+            href="/latihan"
             className="inline-flex h-[50px] items-center justify-center rounded-full bg-accent px-6 font-semibold text-accent-ink hover:opacity-90"
           >
             Mulai latihan pertama

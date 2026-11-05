@@ -798,3 +798,31 @@ export function getScenario(id: string): Scenario | undefined {
 }
 
 export const MAX_STUDENT_TURNS = 10;
+
+// Urutan tampil daftar situasi: dikelompokkan per kategori.
+export const GROUPS: { category: Category; title: string; note: string }[] = [
+  {
+    category: "harian",
+    title: "Sering terjadi setiap hari",
+    note: "Situasi yang hampir pasti kamu temui di minggu pertama magang.",
+  },
+  {
+    category: "sulit",
+    title: "Situasi sulit",
+    note: "Jarang terjadi, tapi menentukan apakah tamu kembali lagi.",
+  },
+  {
+    category: "wawancara",
+    title: "Wawancara kerja",
+    note: "Latihan sebelum melamar ke hotel atau kapal pesiar.",
+  },
+];
+
+// Nomor urut mengikuti urutan tampil per grup, bukan urutan array.
+export const ORDERED = GROUPS.flatMap((g) =>
+  SCENARIOS.filter((s) => s.category === g.category),
+);
+
+export function channelLabel(s: Scenario) {
+  return s.channel === "telepon" ? "Telepon" : "Tatap muka";
+}

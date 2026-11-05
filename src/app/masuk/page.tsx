@@ -11,7 +11,8 @@ export default function MasukPage(props: PageProps<"/masuk">) {
       <div className="space-y-2 text-center">
         <h1 className="text-[clamp(2rem,1.3rem+2.5vw,3rem)]">Masuk</h1>
         <p className="text-muted">
-          Rapor latihanmu tersimpan dan bisa dibaca lagi di halaman riwayat.
+          Masuk dulu untuk mulai latihan. Rapormu tersimpan dan bisa dibaca
+          lagi di halaman riwayat.
         </p>
       </div>
       <Suspense fallback={null}>

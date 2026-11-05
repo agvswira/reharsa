@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { PracticeSession } from "@/components/practice-session";
 import { getScenario, MOOD_START, SCENARIOS, type Mood } from "@/lib/scenarios";
+import { currentUser } from "@/lib/server/auth";
 import { serviceStatus } from "@/lib/server/env";
 
 export function generateStaticParams() {
@@ -42,6 +43,14 @@ async function Session({
 
   const raw = typeof search.mood === "string" ? search.mood : "kesal";
   const mood: Mood = raw in MOOD_START ? (raw as Mood) : "kesal";
+
+  // Latihan wajib masuk; setelah masuk, kembali ke situasi yang sama.
+  const user = await currentUser();
+  if (!user) {
+    redirect(
+      `/masuk?next=${encodeURIComponent(`/latihan/${scenario.id}?mood=${mood}`)}`,
+    );
+  }
 
   return (
     <PracticeSession

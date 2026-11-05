@@ -11,8 +11,8 @@ export default function DaftarPage(props: PageProps<"/daftar">) {
       <div className="space-y-2 text-center">
         <h1 className="text-[clamp(2rem,1.3rem+2.5vw,3rem)]">Buat akun</h1>
         <p className="text-muted">
-          Gratis. Akun dipakai untuk menyimpan rapor dan melihat
-          perkembanganmu. Latihan tetap bisa dicoba tanpa akun.
+          Gratis. Akun dipakai untuk berlatih, menyimpan setiap rapor, dan
+          melihat perkembanganmu.
         </p>
       </div>
       <Suspense fallback={null}>

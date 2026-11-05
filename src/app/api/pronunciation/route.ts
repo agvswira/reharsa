@@ -1,10 +1,12 @@
 import { errorResponse, ServiceError } from "@/lib/server/env";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { assessPronunciation, MAX_AUDIO_BYTES } from "@/lib/server/speech";
+import { requireUser } from "@/lib/server/auth";
 
 export async function POST(request: Request) {
   try {
     rateLimit(request, "pron", 200);
+    await requireUser(request);
     const form = await request.formData();
     const audio = form.get("audio");
     const reference = String(form.get("reference") ?? "").trim();

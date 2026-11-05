@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 const themeScript = `(function(){try{var t=localStorage.getItem("reharsa-theme");document.documentElement.dataset.theme=t==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}})()`;
 
 const navLink =
-  "hidden min-h-11 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:bg-accent-soft hover:text-ink md:inline-flex";
+  "inline-flex min-h-11 items-center rounded-full px-3.5 text-sm font-medium text-muted hover:bg-accent-soft hover:text-ink";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -50,30 +50,31 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Langsung ke konten
         </a>
         <header className="sticky top-0 z-30 border-b border-line bg-paper">
-          <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 px-4 sm:px-8">
+          {/* Tiga kolom: logo kiri, tautan halaman di tengah, akun dan tema di
+              kanan. Di layar kecil tautan tengah disembunyikan. */}
+          <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-4 px-4 sm:px-8 md:grid md:grid-cols-[1fr_auto_1fr]">
             <Link
               href="/"
-              className="rounded font-display text-xl font-semibold tracking-[-0.02em] text-ink"
+              className="justify-self-start rounded font-display text-xl font-semibold tracking-[-0.02em] text-ink"
             >
               Reharsa
             </Link>
-            <nav aria-label="Utama" className="flex items-center gap-1">
+            <nav aria-label="Halaman" className="hidden items-center gap-1 md:flex">
               <Link href="/#cara-kerja" className={navLink}>
                 Cara kerja
               </Link>
-              <Link href="/#rapor" className={navLink}>
-                Rapor
+              <Link href="/#situasi" className={navLink}>
+                Situasi
               </Link>
               <Link href="/#prinsip" className={navLink}>
                 Prinsip
               </Link>
+            </nav>
+            <nav
+              aria-label="Akun"
+              className="flex items-center gap-1 justify-self-end"
+            >
               <AccountNav />
-              <Link
-                href="/#pilih-situasi"
-                className="ml-1 hidden min-h-11 items-center rounded-full border border-line-2 px-4 text-sm font-semibold text-ink hover:bg-accent-soft sm:inline-flex"
-              >
-                Mulai latihan
-              </Link>
               <ThemeToggle />
             </nav>
           </div>

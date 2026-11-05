@@ -1,10 +1,12 @@
 import { errorResponse, ServiceError } from "@/lib/server/env";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { MAX_AUDIO_BYTES, transcribe } from "@/lib/server/speech";
+import { requireUser } from "@/lib/server/auth";
 
 export async function POST(request: Request) {
   try {
     rateLimit(request, "stt", 200);
+    await requireUser(request);
     const form = await request.formData();
     const audio = form.get("audio");
     if (!(audio instanceof Blob) || audio.size === 0) {

@@ -4,6 +4,7 @@ import { errorResponse, ServiceError } from "@/lib/server/env";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { getScenario, MAX_STUDENT_TURNS } from "@/lib/scenarios";
 import { TurnSchema } from "@/lib/types";
+import { requireUser } from "@/lib/server/auth";
 
 const BodySchema = z.object({
   scenarioId: z.string(),
@@ -14,6 +15,7 @@ const BodySchema = z.object({
 export async function POST(request: Request) {
   try {
     rateLimit(request, "guest", 200);
+    await requireUser(request);
     const body = BodySchema.safeParse(await request.json());
     if (!body.success) throw new ServiceError("Permintaan tidak valid.", 400);
 
