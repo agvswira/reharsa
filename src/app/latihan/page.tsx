@@ -15,7 +15,7 @@ import {
   recommend,
   type ScenarioProgress,
 } from "@/lib/progress";
-import { channelLabel, GROUPS, SCENARIOS } from "@/lib/scenarios";
+import { channelLabel, GROUPS, HOTEL_NAME, SCENARIOS } from "@/lib/scenarios";
 import { currentUser } from "@/lib/server/auth";
 import { serviceStatus } from "@/lib/server/env";
 import { listSessions } from "@/lib/server/history";
@@ -65,6 +65,7 @@ async function Picker() {
           Om Swastiastu, {user.name}.
         </h1>
         <p className="max-w-prose text-lg text-muted">
+          Shift-mu hari ini di {HOTEL_NAME}.{" "}
           {historyFailed
             ? "Skormu tidak bisa dimuat sekarang, tapi semua situasi tetap bisa dilatih."
             : tried === 0

@@ -32,6 +32,10 @@
   --accent-soft: rgb(244 239 230 / 0.07);
   /* Cahaya hangat yang lewat celah candi bentar di hero. */
   --lamp: rgb(240 190 120 / 0.16);
+  /* Bunga jepun: kelopak putih, pusat kuning. Hanya dekoratif. */
+  --petal: #f4efe6;
+  --petal-edge: #0d0b09;
+  --bloom: #f2c46d;
   --alert: #f87171;
   --alert-soft: rgb(248 113 113 / 0.12);
   --good: #4ade80;
@@ -60,6 +64,9 @@
   --accent-ink: #fbf8f1;
   --accent-soft: rgb(28 24 20 / 0.05);
   --lamp: rgb(200 120 40 / 0.12);
+  --petal: #fffdf8;
+  --petal-edge: rgb(28 24 20 / 0.55);
+  --bloom: #e0a53a;
   --alert: #b91c1c;
   --alert-soft: rgb(185 28 28 / 0.08);
   --good: #15803d;

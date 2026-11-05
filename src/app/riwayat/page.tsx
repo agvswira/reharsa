@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { Frangipani } from "@/components/frangipani";
 import { ScoreChart } from "@/components/score-chart";
 import {
   levelOf,
@@ -96,6 +97,7 @@ async function History() {
       <div className="space-y-6">
         <h1 className={pageTitle}>Riwayat latihan</h1>
         <div className="card space-y-4 p-6 sm:p-8">
+          <Frangipani size={36} />
           <p className="text-lg">
             Belum ada latihan. Setelah kamu menyelesaikan satu situasi, rapor,
             skor per kemampuan, dan grafik perkembanganmu muncul di sini.

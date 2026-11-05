@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { emotionLabel } from "@/components/emotion-meter";
+import { Frangipani } from "@/components/frangipani";
+import { GuestAvatar } from "@/components/guest-avatar";
 import { levelOf } from "@/lib/progress";
 import { sectionTitle } from "@/lib/ui";
-import type { Scenario } from "@/lib/scenarios";
+import { HOTEL_NAME, type Scenario } from "@/lib/scenarios";
 import type {
   Coaching,
   Evaluation,
@@ -72,6 +75,9 @@ export function Report({
     headingRef.current?.focus();
   }, []);
   const total = evaluation.criteria.reduce((sum, c) => sum + c.score, 0);
+  const finalEmotion = [...turns]
+    .reverse()
+    .find((t) => t.speaker === "guest")?.emotion;
   const max = scenario.criteria.length * 4;
   const labelOf = (id: string) =>
     scenario.criteria.find((c) => c.id === id)?.label ?? id;
@@ -93,9 +99,35 @@ export function Report({
   return (
     <div className="space-y-10">
       <section className="grid gap-8 lg:grid-cols-[1fr_20rem]">
-        <div className="space-y-3">
+        {/* Seperti kartu komentar tamu di hotel: siapa tamunya dan bagaimana
+            perasaannya di akhir. Skor tetap dari agen penilai, bukan tamu. */}
+        <div className="card space-y-4 p-6 sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <GuestAvatar scenario={scenario} size="lg" />
+              <div>
+                <p className="font-semibold">{scenario.guest.name}</p>
+                <p className="text-sm text-muted">
+                  {scenario.kind === "interview"
+                    ? "Pewawancara, kapal pesiar"
+                    : `Tamu di ${HOTEL_NAME}`}
+                </p>
+              </div>
+            </div>
+            {finalEmotion !== undefined ? (
+              <div className="flex items-center gap-2">
+                {finalEmotion <= 3 ? <Frangipani size={28} /> : null}
+                <p className="text-sm">
+                  <span className="text-muted">Perasaan di akhir: </span>
+                  <span className="font-semibold">
+                    {emotionLabel(finalEmotion)} ({finalEmotion}/10)
+                  </span>
+                </p>
+              </div>
+            ) : null}
+          </div>
           <p className="text-sm text-muted">
-            Rapor · {scenario.title}
+            Rapor layanan · {scenario.title}
             {dateLabel ? ` · ${dateLabel}` : ""}
           </p>
           <h1

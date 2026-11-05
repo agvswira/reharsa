@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CandiBentar } from "@/components/candi-bentar";
 import { GuestAvatar } from "@/components/guest-avatar";
@@ -426,16 +427,31 @@ function Principles() {
 
 function Close() {
   return (
+    // Satu-satunya foto tempat: candi bentar yang terbuka ke pantai, gerbang
+    // yang sama dengan motif hero, kini sungguhan. Lapisan gelap 0.68 menjaga
+    // teks terang di atasnya; titik paling terang tetap di atas 4.5:1. Panel
+    // ini selalu gelap di kedua tema, jadi warnanya ditulis tetap.
     <section
       aria-labelledby="penutup-judul"
-      className="reveal pt-10 text-center"
+      className="reveal relative isolate overflow-hidden rounded-[28px] px-6 py-24 text-center sm:py-32"
     >
-      <h2 id="penutup-judul" className={display}>
+      <Image
+        src="/places/gerbang-pantai.jpg"
+        alt="Gerbang candi bentar dari bata merah yang terbuka ke pantai di Bali"
+        fill
+        sizes="(min-width: 1152px) 1152px, 100vw"
+        className="-z-20 object-cover"
+      />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[rgb(13_11_9/0.68)]" />
+      <h2 id="penutup-judul" className={`${display} text-[#f4efe6]`}>
         <span className="block">Latihan dulu.</span>
         <span className="block">Layani dengan tenang.</span>
       </h2>
       <div className="mt-8 flex justify-center">
-        <Link href="/latihan" className={primaryButton}>
+        <Link
+          href="/latihan"
+          className="inline-flex h-[50px] items-center justify-center rounded-full bg-[#f4efe6] px-6 text-[15.5px] font-semibold text-[#0d0b09] hover:opacity-90 active:translate-y-px focus-visible:outline-[#f4efe6]"
+        >
           Mulai latihan
         </Link>
       </div>

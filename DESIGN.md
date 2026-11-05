@@ -16,6 +16,10 @@ Monokrom hangat bernuansa Bali: struktur dan ketenangan dari OpenLC, tetapi baha
 | Siluet candi bentar | Hanya hero halaman depan, layar sm ke atas | Gerbang yang menyambut tamu di hampir setiap hotel Bali; kartu percakapan berdiri di celahnya, artinya masuk ke layanan |
 | Cahaya hangat (`--lamp`) | Hanya di balik gerbang hero | Kesan cahaya sore lewat gerbang; satu-satunya warna hangat non-status |
 | Sapaan "Om Swastiastu" | Judul halaman Latihan | Salam yang dipakai di ruang publik Bali, termasuk hotel |
+| Bunga jepun (frangipani) | Saat tamu puas (pesan selesai, rapor dengan emosi akhir 3 ke bawah), keadaan kosong riwayat | Simbol sambutan di hotel Bali; muncul hanya di momen yang berarti, bukan hiasan. Kelopak putih (`--petal`), pusat kuning (`--bloom`) |
+| Foto candi bentar di pantai | Hanya bagian penutup halaman depan, dengan lapisan gelap 0.68 | Gerbang yang sama dengan motif hero, kini foto sungguhan; satu-satunya foto tempat. Kontras teks terburuk 6.7:1 |
+| Hotel Puri Sekar, Ubud | Kepala halaman latihan, pengantar Latihan, kartu tamu di rapor | Rasa tempat: siswa sedang bertugas di hotel, bukan mengerjakan soal |
+| Rapor sebagai kartu komentar tamu | Kepala rapor | Menampilkan tamu dan perasaannya di akhir (data emosi asli); skor tetap ditandai sebagai rapor layanan dari agen penilai |
 
 Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), pola ukiran atau batik sebagai latar berulang, dan foto stok pura atau sawah di hero. Ukiran patra punggel sempat dicoba lalu dibatalkan karena versi sederhananya terbaca sebagai sulur generik.
 

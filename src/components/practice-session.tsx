@@ -9,6 +9,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import { EmotionMeter } from "@/components/emotion-meter";
+import { Frangipani } from "@/components/frangipani";
 import { GuestAvatar } from "@/components/guest-avatar";
 import { MOOD_LABEL, topLevel } from "@/lib/progress";
 import { pageTitle } from "@/lib/ui";
@@ -25,6 +26,7 @@ import {
 } from "@/lib/client/audio";
 import {
   MAX_STUDENT_TURNS,
+  placeLabel,
   MOOD_START,
   type Mood,
   type Scenario,
@@ -373,7 +375,7 @@ export function PracticeSession({
           Kembali ke daftar situasi
         </Link>
         <p className="text-sm text-muted">
-          {scenario.department} ·{" "}
+          {placeLabel(scenario)} · {scenario.department} ·{" "}
           {scenario.channel === "telepon" ? "Telepon" : "Tatap muka"}
         </p>
         <h1 className={pageTitle}>
@@ -613,10 +615,14 @@ export function PracticeSession({
             ) : null}
 
             {resolved || limitReached ? (
-              <p className="card p-3">
-                {resolved
-                  ? `${scenario.guest.name} menganggap urusannya selesai. Lihat rapormu.`
-                  : `Batas ${MAX_STUDENT_TURNS} giliran tercapai. Lihat rapormu.`}
+              <p className="card flex items-center gap-3 p-4">
+                {/* Bunga jepun hanya muncul saat tamu benar-benar puas. */}
+                {resolved ? <Frangipani size={28} className="shrink-0" /> : null}
+                <span>
+                  {resolved
+                    ? `${scenario.guest.name} menganggap urusannya selesai. Lihat rapormu.`
+                    : `Batas ${MAX_STUDENT_TURNS} giliran tercapai. Lihat rapormu.`}
+                </span>
               </p>
             ) : null}
 

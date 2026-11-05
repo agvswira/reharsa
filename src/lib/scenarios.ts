@@ -828,6 +828,14 @@ export const ORDERED = GROUPS.flatMap((g) =>
   SCENARIOS.filter((s) => s.category === g.category),
 );
 
+// Tempat latihan: semua situasi layanan terjadi di hotel fiktif yang sama,
+// supaya siswa merasa sedang bertugas, bukan mengerjakan soal.
+export const HOTEL_NAME = "Hotel Puri Sekar, Ubud";
+
+export function placeLabel(s: Scenario) {
+  return s.kind === "interview" ? "Kapal pesiar" : HOTEL_NAME;
+}
+
 export function channelLabel(s: Scenario) {
   return s.channel === "telepon" ? "Telepon" : "Tatap muka";
 }
