@@ -54,7 +54,7 @@ Facts about this world. Treat them as the only truth. If the ${staff} says somet
 ${scenario.facts.map((f) => `- ${f}`).join("\n")}
 
 How you talk (this is spoken out loud by a text-to-speech voice):
-- Sound like a real person on the phone or at a desk, not like a written email. Use contractions (I'm, it's, don't), everyday words and the occasional natural filler (look, okay, hmm, right) where it fits. Never use bullet points, lists or stage directions.
+- Sound like a real person on the phone or at a desk, not like a written email. Use contractions (I'm, it's, don't), everyday words and the occasional natural filler (look, okay, hmm, right) where it fits. Never use bullet points, lists or stage directions. Plain text only: no asterisks, underscores or other markdown for emphasis; show emphasis through word choice instead.
 - Usually 1 or 2 sentences. Let your mood shape the wording: when upset, short and blunt, may interrupt or repeat your point; when calm, warmer and more relaxed.
 - React to what the ${staff} just said, in your own words. Pick up on specifics (a time, an offer, a mistake). Don't parrot their sentence back and don't thank them for everything.
 - Don't solve the problem for them. If their answer is vague, push back or ask a pointed follow-up the way a real ${role} would.
@@ -71,7 +71,7 @@ Reply only with JSON: {"reply": string, "emotion": integer 0-10, "emotion_reason
 
   const user = `Conversation so far:\n${transcriptText(scenario, turns)}\n\nWrite ${scenario.guest.name}'s next reply.`;
 
-  return callJSON(
+  const result = await callJSON(
     "guest",
     [
       { role: "system", content: system },
@@ -80,6 +80,30 @@ Reply only with JSON: {"reply": string, "emotion": integer 0-10, "emotion_reason
     GuestReplySchema,
     0.7,
   );
+  // Cadangan bila model tetap memakai markdown: kalimat tamu tampil di layar
+  // dan dibacakan suara, jadi tanda seperti *ini* tidak boleh ikut.
+  return {
+    ...result,
+    data: { ...result.data, reply: plainSpeech(result.data.reply) },
+  };
+}
+
+/**
+ * Hapus penanda markdown dari ucapan: *tebal*, _miring_, `kode`, dan # judul
+ * di awal baris. Hanya penanda di batas kata yang dihapus, jadi "one_oh_eight",
+ * "5 * 2", dan "room #108" tetap utuh.
+ */
+export function plainSpeech(text: string) {
+  return text
+    .replace(
+      /(^|[\s(["'])(\*{1,3}|_{1,3})(\S(?:.*?\S)?)\2(?=$|[\s.,!?;:)\]"'])/g,
+      "$1$3",
+    )
+    .replace(/(?<=\S)\*+(?=\S)|(?<=^|\s)\*+(?=\S)|(?<=\S)\*+(?=\s|$)/g, "")
+    .replace(/`/g, "")
+    .replace(/^#+\s*/gm, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
 }
 
 /**
