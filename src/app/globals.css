@@ -2,7 +2,9 @@
 
 /*
   Arah desain: lihat DESIGN.md. Monokrom, diturunkan dari landing page
-  OpenLC. Gelap adalah bawaan; terang adalah kebalikan monokromnya.
+  OpenLC, dihangatkan dengan bahan bangunan Bali. Terang (batu paras) adalah
+  bawaan; gelap (batu candi) lewat saklar tema. Blok :root di bawah memuat
+  token gelap plus token bersama; tema terang menimpa token warnanya.
   Nama token lama dipertahankan supaya komponen tidak perlu diubah satu
   per satu:
   - paper = latar, surface = kartu, ink = teks utama, line = garis tipis,

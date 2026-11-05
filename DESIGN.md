@@ -24,6 +24,8 @@ Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), p
 
 ## Token
 
+Tabel pertama adalah tema gelap (batu candi), beserta peran setiap token. Nilai tema terang, yang menjadi bawaan, ada di tabel berikutnya.
+
 | Token | Nilai | Pakai untuk | Kontras |
 | --- | --- | --- | --- |
 | `--bg` | `#0d0b09` ke `#110e0b` (gradasi vertikal) | Latar halaman, batu candi | |
@@ -44,9 +46,9 @@ Warna tingkat sengaja dihangatkan dan diredam (bata, oker, hijau daun) supaya ti
 
 Tambahan Reharsa dibanding referensi: tiga warna tingkat (`--alert`, `--warn`, `--good`). Warna ini hanya dipakai di bar skor, grafik riwayat, dan meter emosi, tidak pernah sebagai hiasan atau aksen. Tombol, teks, dan tepi tetap monokrom.
 
-### Tema terang (pilihan pemilik)
+### Tema terang (bawaan)
 
-Gelap adalah bawaan. Tema terang tetap tersedia lewat tombol di header, sebagai batu paras:
+Terang (batu paras) adalah bawaan sejak nuansa Bali diterapkan, karena krem paras paling terasa hangat dan Bali. Tema gelap (batu candi) tetap tersedia lewat saklar di header, dan pilihan pengguna diingat:
 
 | Token | Nilai | Kontras |
 | --- | --- | --- |
@@ -68,7 +70,7 @@ Di tema terang, tombol utama menjadi pil gelap hangat dengan teks krem.
 
 | Pola di referensi | Keputusan |
 | --- | --- |
-| Hanya tema gelap | Gelap sebagai bawaan, tema terang tetap ada |
+| Hanya tema gelap | Awalnya gelap sebagai bawaan; sejak nuansa Bali, terang (paras) menjadi bawaan dan gelap tetap ada |
 | Bento grid untuk jaminan | Diganti daftar dua kolom |
 | Ikon Lucide di deretan fakta | Dihapus, fakta ditandai titik kecil |
 | Panah di banyak tombol | Dihapus |

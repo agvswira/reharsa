@@ -24,15 +24,15 @@ export const metadata: Metadata = {
     "Latihan berbicara dengan tamu hotel virtual dan dapatkan rapor pelayanan berbasis rubrik.",
 };
 
-// Menetapkan tema sebelum halaman tampil supaya tidak berkedip. Gelap adalah
-// bawaan; terang hanya bila pengguna memilihnya lewat tombol tema.
-const themeScript = `(function(){try{var t=localStorage.getItem("reharsa-theme");document.documentElement.dataset.theme=t==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}})()`;
+// Menetapkan tema sebelum halaman tampil supaya tidak berkedip. Terang (batu
+// paras) adalah bawaan; gelap hanya bila pengguna memilihnya lewat saklar.
+const themeScript = `(function(){try{var t=localStorage.getItem("reharsa-theme");document.documentElement.dataset.theme=t==="dark"?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="id"
-      data-theme="dark"
+      data-theme="light"
       className={`${mona.variable} ${bricolage.variable} h-full antialiased`}
       suppressHydrationWarning
     >
