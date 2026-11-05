@@ -1,62 +1,91 @@
 @import "tailwindcss";
 
 /*
-  Arah desain: tenang dan fokus, seperti lembar latihan.
-  - Kertas hangat + tinta gelap: dibaca lama tanpa silau saat membaca transkrip.
-  - Satu aksen hijau tua: hanya untuk aksi utama (mulai, rekam) dan fokus.
-  - Merah bata: hanya untuk status (emosi tamu tinggi, skor rendah).
+  Arah desain: lihat DESIGN.md. Monokrom, diturunkan dari landing page
+  OpenLC. Gelap adalah bawaan; terang adalah kebalikan monokromnya.
+  Nama token lama dipertahankan supaya komponen tidak perlu diubah satu
+  per satu:
+  - paper = latar, surface = kartu, ink = teks utama, line = garis tipis,
+    edge = tepi kontrol (minimal 3:1), track = ruas kosong meter.
+  - accent = warna tombol utama (putih di gelap, hitam di terang).
+  - alert = satu-satunya warna status, selalu disertai teks.
 */
 
-:root {
-  --paper: #f7f5f0;
-  --surface: #ffffff;
-  --ink: #1f2328;
-  --muted: #555b63;
-  --line: #d9d4c9;
-  /* Tepi kontrol (kolom ketik, pilihan): 3.65:1 terhadap latar. */
-  --edge: #857f73;
-  --accent: #1d6b57;
-  --accent-ink: #ffffff;
-  --accent-soft: #e3efe9;
-  --alert: #a63d2a;
-  --alert-soft: #f6e4df;
-  color-scheme: light;
+:root,
+:root[data-theme="dark"] {
+  --paper: #000000;
+  --paper-2: #060606;
+  --surface: #0d0d0f;
+  --surface-2: #08080a;
+  --ink: #f4f4f5;
+  --soft: #d4d4d8;
+  --muted: #a1a1aa;
+  --line: rgb(255 255 255 / 0.08);
+  --line-2: rgb(255 255 255 / 0.14);
+  --track: rgb(255 255 255 / 0.16);
+  --edge: rgb(255 255 255 / 0.42);
+  --accent: #f4f4f5;
+  --accent-ink: #000000;
+  --accent-soft: rgb(255 255 255 / 0.07);
+  --alert: #f87171;
+  --alert-soft: rgb(248 113 113 / 0.12);
+  --glow: rgb(255 255 255 / 0.16);
+  --card-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.6),
+    0 28px 56px -32px rgb(0 0 0 / 0.95);
+  color-scheme: dark;
 }
 
-:root[data-theme="dark"] {
-  --paper: #15171a;
-  --surface: #1d2024;
-  --ink: #ecead5;
-  --muted: #a7acb2;
-  --line: #33373d;
-  --edge: #7d838a;
-  --accent: #6cc4a8;
-  --accent-ink: #0d1f19;
-  --accent-soft: #1d332b;
-  --alert: #ec8a75;
-  --alert-soft: #3a2420;
-  color-scheme: dark;
+:root[data-theme="light"] {
+  --paper: #fafafa;
+  --paper-2: #f4f4f5;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --ink: #0a0a0b;
+  --soft: #27272a;
+  --muted: #52525b;
+  --line: rgb(0 0 0 / 0.08);
+  --line-2: rgb(0 0 0 / 0.14);
+  --track: rgb(0 0 0 / 0.1);
+  --edge: rgb(0 0 0 / 0.45);
+  --accent: #0a0a0b;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(0 0 0 / 0.05);
+  --alert: #b91c1c;
+  --alert-soft: rgb(185 28 28 / 0.08);
+  --glow: rgb(0 0 0 / 0.06);
+  --card-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.8), 0 1px 2px rgb(0 0 0 / 0.06),
+    0 24px 48px -32px rgb(0 0 0 / 0.25);
+  color-scheme: light;
 }
 
 @theme inline {
   --color-paper: var(--paper);
   --color-surface: var(--surface);
   --color-ink: var(--ink);
+  --color-soft: var(--soft);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-track: var(--track);
   --color-edge: var(--edge);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
   --color-alert: var(--alert);
   --color-alert-soft: var(--alert-soft);
-  --font-sans: var(--font-atkinson);
-  --font-display: var(--font-fraunces);
+  --shadow-card: var(--card-shadow);
+  --radius-card: 18px;
+  --font-sans: var(--font-mona);
+  --font-display: var(--font-bricolage);
 }
 
 body {
-  background: var(--paper);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)
+    fixed;
   color: var(--ink);
+  line-height: 1.6;
 }
 
 @layer base {
@@ -73,17 +102,99 @@ body {
     cursor: not-allowed;
   }
   :focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
   }
   h1,
   h2 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    letter-spacing: -0.028em;
+    line-height: 1.06;
+    text-wrap: balance;
   }
 }
 
+@layer components {
+  /* Kartu: hampir hitam (atau putih) dengan sorotan tipis di tepi atas. */
+  .card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    box-shadow: var(--card-shadow);
+  }
+  /* Sorot cahaya di belakang pusat visual hero: gradasi saja, tanpa blur. */
+  .beam {
+    background:
+      radial-gradient(ellipse 38% 55% at 50% 45%, var(--glow), transparent 70%),
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        var(--glow) 45%,
+        transparent 100%
+      )
+        center / 2px 100% no-repeat;
+  }
+}
+
+/*
+  Animasi, hanya CSS (tanpa library):
+  - .rise: muncul sekali saat halaman dibuka.
+  - .reveal: muncul saat digulir ke layar (animation-timeline); browser yang
+    belum mendukung langsung menampilkan isinya.
+  - .demo-meter: meter emosi contoh turun dari 8 ke 3, sekali.
+  Semuanya mati saat pengguna memilih kurangi gerak.
+*/
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes cool-down {
+  to {
+    background-color: var(--track);
+  }
+}
+@keyframes settle {
+  to {
+    background-color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+  .demo-meter [data-drop] {
+    animation: cool-down 0.5s ease forwards;
+    animation-delay: calc(1.6s + var(--i) * 0.18s);
+  }
+  .demo-meter [data-keep] {
+    animation: settle 0.5s ease forwards;
+    animation-delay: 2.6s;
+  }
+}
+
+/* Tanpa animasi, meter contoh langsung menunjukkan hasil akhirnya. */
 @media (prefers-reduced-motion: reduce) {
+  .demo-meter [data-drop] {
+    background-color: var(--track);
+  }
+  .demo-meter [data-keep] {
+    background-color: var(--ink);
+  }
   *,
   *::before,
   *::after {

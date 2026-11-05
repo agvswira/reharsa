@@ -27,7 +27,7 @@ export function ServiceNotice({ status }: { status: ServiceStatus }) {
   return (
     <div
       role="status"
-      className="space-y-2 rounded-md border border-line bg-surface p-4 text-sm"
+      className="space-y-2 card p-4 text-sm"
     >
       <p className="font-bold">Beberapa layanan belum lengkap</p>
       <ul className="list-disc space-y-1 pl-5 text-muted">

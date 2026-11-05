@@ -9,7 +9,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="inline-flex min-h-11 items-center rounded-md bg-accent px-5 font-bold text-accent-ink hover:opacity-90"
+        className="inline-flex min-h-11 items-center rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90"
       >
         Lihat daftar situasi
       </Link>

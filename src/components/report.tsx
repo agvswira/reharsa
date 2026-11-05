@@ -32,7 +32,7 @@ function ScoreBar({ score }: { score: number }) {
         <span
           key={n}
           className={`h-2.5 w-8 rounded-sm ${
-            n <= score ? (score <= 2 ? "bg-alert" : "bg-ink") : "bg-line"
+            n <= score ? (score <= 2 ? "bg-alert" : "bg-ink") : "bg-track"
           }`}
         />
       ))}
@@ -95,7 +95,7 @@ export function Report({
           <p className="max-w-prose text-lg">{coaching.summary}</p>
         </div>
         {showFocus ? (
-          <div className="self-start rounded-md border border-line bg-surface p-4">
+          <div className="self-start card p-4">
             <p className="text-sm text-muted">Fokus latihan berikutnya</p>
             <p className="font-display text-xl font-semibold">
               {labelOf(focus.id)}
@@ -197,7 +197,7 @@ export function Report({
                   {weakWords.map((w) => (
                     <li
                       key={w.word}
-                      className="rounded-md border border-line bg-surface px-3 py-1"
+                      className="card px-3 py-1"
                     >
                       {w.word}{" "}
                       <span className="text-sm text-muted tabular-nums">
@@ -225,7 +225,7 @@ export function Report({
         )}
       </section>
 
-      <details className="rounded-md border border-line bg-surface p-4">
+      <details className="card p-4">
         <summary className="font-bold">Transkrip lengkap</summary>
         <ol className="mt-3 space-y-2 text-sm">
           {turns.map((t, i) => (
@@ -243,13 +243,13 @@ export function Report({
         <button
           type="button"
           onClick={onRestart}
-          className="min-h-11 rounded-md bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+          className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
         >
           Ulangi situasi ini
         </button>
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center rounded-md border border-ink px-5 font-bold hover:bg-surface"
+          className="inline-flex min-h-11 items-center rounded-full border border-line-2 px-5 font-bold hover:bg-accent-soft"
         >
           Pilih situasi lain
         </Link>

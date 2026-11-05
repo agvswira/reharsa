@@ -338,7 +338,7 @@ export function PracticeSession({
       className={`min-h-11 w-full rounded-md px-5 font-bold active:translate-y-px disabled:opacity-50 ${
         resolved || limitReached
           ? "bg-accent text-accent-ink hover:opacity-90"
-          : "border border-edge text-ink hover:bg-surface"
+          : "border border-edge text-ink hover:bg-accent-soft"
       }`}
     >
       {phase === "evaluating" ? "Menilai..." : "Selesai dan lihat rapor"}
@@ -346,7 +346,7 @@ export function PracticeSession({
   );
 
   const guestCard = (
-    <div className="rounded-md border border-line bg-surface p-4">
+    <div className="card p-4">
       <p className="text-sm text-muted">{guestLabel}</p>
       <p className="font-display text-xl font-semibold">{scenario.guest.name}</p>
       <p className="text-sm text-muted">
@@ -404,7 +404,7 @@ export function PracticeSession({
                 </dd>
               </div>
             </dl>
-            <details className="rounded-md border border-line bg-surface p-4">
+            <details className="card p-4">
               <summary className="font-bold">
                 Fakta yang boleh kamu pakai ({scenario.facts.length})
               </summary>
@@ -425,7 +425,7 @@ export function PracticeSession({
             <button
               type="button"
               onClick={begin}
-              className="min-h-12 w-full rounded-md bg-accent px-5 text-lg font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
+              className="min-h-12 w-full rounded-full bg-accent px-5 text-lg font-bold text-accent-ink hover:opacity-90 active:translate-y-px"
             >
               Mulai percakapan
             </button>
@@ -439,7 +439,7 @@ export function PracticeSession({
             </h2>
 
             {/* Di HP meter emosi menempel di atas supaya tetap terlihat. */}
-            <div className="sticky top-0 z-10 -mx-4 border-b border-line bg-paper px-4 py-3 lg:hidden">
+            <div className="sticky top-[4.3rem] z-10 -mx-4 border-b border-line bg-paper px-4 py-3 lg:hidden">
               <EmotionMeter value={emotion} who={who} compact />
             </div>
 
@@ -520,7 +520,7 @@ export function PracticeSession({
                     type="button"
                     onClick={() => void requestGuest(turns)}
                     disabled={waiting}
-                    className="min-h-11 rounded-md border border-alert px-4 font-bold hover:bg-surface disabled:opacity-50"
+                    className="min-h-11 rounded-md border border-alert px-4 font-bold hover:bg-accent-soft disabled:opacity-50"
                   >
                     Kirim ulang
                   </button>
@@ -529,7 +529,7 @@ export function PracticeSession({
             ) : null}
 
             {resolved || limitReached ? (
-              <p className="rounded-md border border-line bg-surface p-3">
+              <p className="card p-3">
                 {resolved
                   ? `${scenario.guest.name} menganggap urusannya selesai. Lihat rapormu.`
                   : `Batas ${MAX_STUDENT_TURNS} giliran tercapai. Lihat rapormu.`}
@@ -579,13 +579,13 @@ export function PracticeSession({
                       rows={2}
                       maxLength={2000}
                       placeholder="Type what you would say..."
-                      className="w-full rounded-md border border-edge bg-surface p-3 text-lg text-ink placeholder:text-muted"
+                      className="w-full rounded-2xl border border-edge bg-surface p-4 text-lg text-ink placeholder:text-muted"
                     />
                     <div className="flex flex-wrap items-center gap-3">
                       <button
                         type="submit"
                         disabled={waiting || !draft.trim()}
-                        className="min-h-11 rounded-md bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px disabled:opacity-50"
+                        className="min-h-11 rounded-full bg-accent px-5 font-bold text-accent-ink hover:opacity-90 active:translate-y-px disabled:opacity-50"
                       >
                         Kirim jawaban
                       </button>
@@ -656,7 +656,7 @@ export function PracticeSession({
                             <span
                               key={t}
                               className={`w-1.5 rounded-sm transition-[height] duration-75 ${
-                                level >= t ? "bg-alert" : "bg-line"
+                                level >= t ? "bg-alert" : "bg-track"
                               }`}
                               style={{ height: `${30 + t * 70}%` }}
                             />
@@ -682,17 +682,17 @@ export function PracticeSession({
 
           <aside
             aria-label="Info latihan"
-            className="space-y-4 lg:sticky lg:top-6 lg:self-start"
+            className="space-y-4 lg:sticky lg:top-24 lg:self-start"
           >
             <div className="hidden lg:block">{guestCard}</div>
-            <div className="hidden rounded-md border border-line bg-surface p-4 lg:block">
+            <div className="hidden card p-4 lg:block">
               <EmotionMeter value={emotion} reason={emotionReason} who={who} />
             </div>
             <div className="space-y-1">
               <p className="text-sm text-muted">Tujuan</p>
               <p>{scenario.goal}</p>
             </div>
-            <details className="rounded-md border border-line bg-surface p-4">
+            <details className="card p-4">
               <summary className="font-bold">
                 Fakta yang boleh kamu pakai
               </summary>

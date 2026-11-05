@@ -37,7 +37,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-pressed={theme === "dark"}
-      className="min-h-11 rounded-md border border-line px-3 text-sm text-ink hover:bg-surface active:translate-y-px"
+      className="min-h-11 rounded-full border border-line-2 px-4 text-sm text-ink hover:bg-accent-soft active:translate-y-px"
     >
       {theme === "dark" ? "Tema terang" : "Tema gelap"}
     </button>

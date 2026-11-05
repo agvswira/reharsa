@@ -41,7 +41,7 @@ export function EmotionMeter({
           <span
             key={i}
             className={`${compact ? "h-1.5" : "h-2.5"} rounded-sm transition-colors duration-300 ${
-              i <= value ? (value >= 7 ? "bg-alert" : "bg-ink") : "bg-line"
+              i <= value ? (value >= 7 ? "bg-alert" : "bg-ink") : "bg-track"
             }`}
           />
         ))}
