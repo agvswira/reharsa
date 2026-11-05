@@ -3,7 +3,7 @@ import { GUEST_PHOTOS } from "@/lib/guest-photos";
 import { initials } from "@/lib/progress";
 import type { Scenario } from "@/lib/scenarios";
 
-const SIZE = { sm: 36, md: 44, lg: 64 } as const;
+const SIZE = { sm: 36, md: 44, lg: 64, xl: 144 } as const;
 
 // Foto tamu dalam lingkaran. Nama tamu selalu tertulis di sebelahnya, jadi
 // foto ini dekoratif (alt kosong). Bila foto tidak ada, inisial jadi
