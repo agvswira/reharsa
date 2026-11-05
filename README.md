@@ -8,7 +8,7 @@ Karya untuk AI Web Innovation Challenge Bali DigiFest 2026, subtema Education & 
 
 Siswa SMK pariwisata dan mahasiswa D3/D4 pariwisata jarang punya kesempatan berlatih bicara dengan tamu asing sungguhan, padahal kemampuan itu menentukan kelulusan magang, uji kompetensi, dan wawancara kerja (termasuk kapal pesiar). Role-play di kelas biasanya dilakukan antarteman, dan satu guru tidak bisa memberi umpan balik rinci ke setiap siswa.
 
-Pengguna utama: siswa dan mahasiswa pariwisata/perhotelan. Pengguna kedua: guru perhotelan.
+Pengguna: siswa SMK dan mahasiswa D3/D4 pariwisata/perhotelan.
 
 ## Key Features
 
@@ -22,7 +22,7 @@ Sudah berfungsi:
 - Rapor: skor 1-4 per kriteria rubrik, kutipan ucapan siswa sebagai bukti, tingkat keyakinan penilai, contoh kalimat yang lebih baik, dan skor kejelasan pengucapan per kata.
 - Tema terang dan gelap.
 
-Belum dibuat: akun pengguna, riwayat latihan, dashboard guru, skrip evaluasi otomatis (`npm run eval`).
+Belum dibuat: akun siswa dan riwayat latihan, skrip evaluasi otomatis (`npm run eval`).
 
 ## Tech Stack
 
@@ -117,7 +117,7 @@ Tidak perlu login pada versi ini.
 - Kuota tier gratis (Groq, Azure F0) dan provider custom bisa habis saat banyak pengguna.
 - Skor pengucapan Azure memakai acuan en-US; ditampilkan sebagai kejelasan kata dan tidak dihitung ke poin rapor.
 - Skor rapor adalah alat latihan, bukan sertifikasi.
-- Belum ada riwayat latihan dan dashboard guru.
+- Belum ada akun siswa dan riwayat latihan.
 
 ## Third-party Resources / Credits
 

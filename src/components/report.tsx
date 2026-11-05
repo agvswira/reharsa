@@ -134,7 +134,7 @@ export function Report({
               )}
               {c.confidence < 0.6 ? (
                 <p className="text-sm text-alert">
-                  Penilai kurang yakin dengan skor ini. Minta guru mengecek.
+                  Penilai kurang yakin dengan skor ini; anggap sebagai perkiraan.
                 </p>
               ) : null}
             </li>

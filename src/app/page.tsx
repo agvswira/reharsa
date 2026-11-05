@@ -422,7 +422,7 @@ function Principles() {
     },
     {
       title: "Alat latihan, bukan sertifikasi.",
-      body: "Skor membantu kamu tahu apa yang perlu dilatih. Kalau penilai kurang yakin, rapor memberi tahu kamu untuk bertanya ke guru.",
+      body: "Skor membantu kamu tahu apa yang perlu dilatih. Kalau penilai kurang yakin, rapor memberi tahu bahwa skor itu hanya perkiraan.",
     },
   ];
   return (
