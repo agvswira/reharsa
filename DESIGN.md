@@ -13,15 +13,14 @@ Monokrom hangat bernuansa Bali: struktur dan ketenangan dari OpenLC, tetapi baha
 | Unsur | Di mana | Alasan |
 | --- | --- | --- |
 | Palet batu candi dan paras | Seluruh aplikasi | Bahan bangunan khas hotel dan pura Bali; tetap monokrom, jadi bersih dan modern |
-| Siluet candi bentar | Hanya hero halaman depan, layar sm ke atas | Gerbang yang menyambut tamu di hampir setiap hotel Bali; kartu percakapan berdiri di celahnya, artinya masuk ke layanan |
-| Cahaya hangat (`--lamp`) | Hanya di balik gerbang hero | Kesan cahaya sore lewat gerbang; satu-satunya warna hangat non-status |
+| Cahaya hangat (`--lamp`) | Hanya di balik kartu percakapan di hero | Kesan cahaya sore; satu-satunya warna hangat non-status selain pusat bunga jepun |
 | Sapaan "Om Swastiastu" | Judul halaman Latihan | Salam yang dipakai di ruang publik Bali, termasuk hotel |
 | Bunga jepun (frangipani) | Saat tamu puas (pesan selesai, rapor dengan emosi akhir 3 ke bawah), keadaan kosong riwayat | Simbol sambutan di hotel Bali; muncul hanya di momen yang berarti, bukan hiasan. Kelopak putih (`--petal`), pusat kuning (`--bloom`) |
 | Foto candi bentar di pantai | Hanya bagian penutup halaman depan, dengan lapisan gelap 0.68 | Gerbang yang sama dengan motif hero, kini foto sungguhan; satu-satunya foto tempat. Kontras teks terburuk 6.7:1 |
 | Hotel Puri Sekar, Ubud | Kepala halaman latihan, pengantar Latihan, kartu tamu di rapor | Rasa tempat: siswa sedang bertugas di hotel, bukan mengerjakan soal |
 | Rapor sebagai kartu komentar tamu | Kepala rapor | Menampilkan tamu dan perasaannya di akhir (data emosi asli); skor tetap ditandai sebagai rapor layanan dari agen penilai |
 
-Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), pola ukiran atau batik sebagai latar berulang, dan foto stok pura atau sawah di hero. Ukiran patra punggel sempat dicoba lalu dibatalkan karena versi sederhananya terbaca sebagai sulur generik.
+Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), pola ukiran atau batik sebagai latar berulang, dan foto stok pura atau sawah di hero. Ukiran patra punggel sempat dicoba lalu dibatalkan karena versi sederhananya terbaca sebagai sulur generik. Siluet candi bentar gambar sendiri di hero juga dibatalkan: tanpa ornamen karang yang menjorok, bentuknya terbaca sebagai piramida berundak. Candi bentar cukup hadir lewat foto asli di bagian penutup.
 
 ## Token
 
@@ -35,7 +34,7 @@ Yang sengaja tidak dipakai: kain poleng dan simbol sakral (bermakna religius), p
 | `--hair` | `rgb(244 239 230 / .08)` | Tepi kartu | dekorasi |
 | `--hair-2` | `rgb(244 239 230 / .14)` | Tepi tombol hantu | |
 | `--edge` | `rgb(244 239 230 / .42)` | Tepi kontrol input (minimal 3:1) | |
-| `--lamp` | `rgb(240 190 120 / .16)` | Cahaya di balik candi bentar, tidak di tempat lain | dekorasi |
+| `--lamp` | `rgb(240 190 120 / .16)` | Cahaya di balik kartu hero, tidak di tempat lain | dekorasi |
 | `--alert` | `#f87171` | Status merah: emosi tamu tinggi, skor "perlu dilatih" (di bawah 50%), error. Selalu disertai teks | 6.7:1 di kartu |
 | `--warn` | `#fbbf24` | Tingkat skor "cukup" (50 sampai 74%). Selalu disertai teks | 11.1:1 di kartu |
 | `--good` | `#4ade80` | Tingkat skor "kuat" (75% ke atas). Selalu disertai teks | 10.6:1 di kartu |

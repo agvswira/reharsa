@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CandiBentar } from "@/components/candi-bentar";
 import { GuestAvatar } from "@/components/guest-avatar";
 import { PracticeTimeline } from "@/components/practice-timeline";
 import {
@@ -61,12 +60,10 @@ function Hero() {
         </a>
       </div>
 
-      {/* Pusat visual: satu putaran latihan, dari ucapan tamu sampai rapor.
-          Kartunya berdiri di celah candi bentar, gerbang yang menyambut tamu
-          di hotel Bali, dengan cahaya hangat dari baliknya. Gerbang hanya
-          tampil di layar yang cukup lebar untuk kedua sisinya. */}
+      {/* Pusat visual: satu putaran latihan, dari ucapan tamu sampai rapor,
+          dengan cahaya hangat di baliknya (hanya gradasi CSS). Candi bentar
+          tampil sebagai foto asli di bagian penutup, bukan gambar sederhana. */}
       <div className="relative mt-16 w-full max-w-xl">
-        <CandiBentar className="pointer-events-none absolute bottom-0 left-1/2 hidden w-[200%] max-w-none -translate-x-1/2 text-ink sm:block" />
         <div
           aria-hidden="true"
           className="beam pointer-events-none absolute -inset-x-24 -bottom-16 -top-24"
